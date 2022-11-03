@@ -1,0 +1,18 @@
+{
+    "account": "帳號",
+    "copy": "複製",
+    "email": "E-mail",
+    "email_hint": "請輸入正確E-mail地址",
+    "greeting_morning": "早安",
+    "greeting_afternoon": "午安",
+    "greeting_evening": "午安",
+    "greeting_night": "晚安",
+    "home": "首頁",
+    "list": "列表",
+    "password": "密碼",
+    "password_hint": "密碼不能小於6個字",
+    "settings": "設定",
+    "sign_in": "登入",
+    "sign_out": "登出",
+    "sign_up": "註冊"
+}
