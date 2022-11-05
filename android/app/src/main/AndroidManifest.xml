@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_template">
+    package="com.example.laundry_savior">
    <application
-        android:label="flutter_template"
+        android:label="Laundry Savior"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

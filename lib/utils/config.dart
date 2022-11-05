@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AppConfig {
-  static const String title = "Flutter Template";
+  static const String title = "Laundry Savior";
   Locale? locale;
 }
