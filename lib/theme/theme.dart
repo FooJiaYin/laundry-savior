@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'colors.dart';
+import 'dimensions.dart';
 import 'font.dart';
 
 export 'colors.dart';
+export 'decoration.dart';
+export 'dimensions.dart';
 export 'font.dart';
 
 class CustomTheme with ChangeNotifier {
@@ -113,66 +117,6 @@ class CustomTheme with ChangeNotifier {
   //             ),
   //           ),
   //     );
-}
-
-class Dimensions {
-  /// 24
-  static const screenPadding = 24.0;
-
-  /// 48
-  static const screenPaddingWide = 48.0;
-
-  /// 12
-  static const containerPadding = 12.0;
-
-  /// 12
-  static const cardRadius = 12.0;
-
-  /// 20
-  static const iconSize = 20.0;
-
-  /// 50
-  static const buttonRadius = 50.0;
-
-  /// 12
-  static const itemMargin = 12.0;
-
-  /// 36, 10
-  static EdgeInsetsGeometry buttonPadding = const EdgeInsets.symmetric(
-    horizontal: 36.0,
-    vertical: 12.0,
-  );
-}
-
-class ThemeDecoration {
-  static List<BoxShadow> shadow = [
-    BoxShadow(
-      color: Colors.grey.withOpacity(0.2),
-      spreadRadius: 1,
-      blurRadius: 5,
-      offset: const Offset(0, 4), // changes position of shadow
-    ),
-  ]; // changes position of shadow
-  static const List<BoxShadow> neumorphicShadow = [
-    BoxShadow(
-      color: ThemeColors.grey30,
-      blurRadius: 12,
-      offset: Offset(4, 4), // changes position of shadow
-    ),
-    BoxShadow(
-      color: Colors.white,
-      blurRadius: 10,
-      offset: Offset(-4, -4), // changes position of shadow
-    ),
-  ];
-  static const List<BoxShadow> neumorphicShadowPressed = [
-    BoxShadow(
-      color: ThemeColors.backgroundColor,
-      spreadRadius: -6.0,
-      blurRadius: 6.0,
-      offset: Offset(-0.5, -0.5), // changes position of shadow
-    ),
-  ];
 }
 
 /* ThemeData(
