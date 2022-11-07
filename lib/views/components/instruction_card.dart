@@ -20,6 +20,7 @@ class InstructionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: leading icon
     return NeumorphicContainer(
       padding: const EdgeInsets.only(top: 22, left: 22, bottom: 18, right: 12),
       child: Column(

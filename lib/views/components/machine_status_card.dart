@@ -27,6 +27,7 @@ class MachineStatusCard extends StatelessWidget {
             style: ThemeFont.style(fontSize: 12, color: ThemeColors.grey),
           ),
           const SizedBox(height: 4),
+          // TODO: Render circular progress for in_use status
           SvgPicture.asset('assets/images/home_${data.status.code.name}.svg'),
           const SizedBox(height: 6),
           Text(

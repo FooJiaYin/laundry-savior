@@ -25,6 +25,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  
+  // TODO: Use services/fake_data provide data
   Machine machineAvailable = Machine(
     id: 0,
     floor: 8,
@@ -71,6 +73,7 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Column(
         children: <Widget>[
+          // TODO: Differenct instructions
           const InstructionCard(
             title: "Welcome to Laundry Savior",
             description: 'Tell us where do you live!',
@@ -79,6 +82,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 40),
           _floorSelector(),
           const SizedBox(height: 24),
+          // TODO: Update when switched floor
           ..._machineSection(
             iconName: "drop_filled",
             title: S.of(context).washing_machine,
