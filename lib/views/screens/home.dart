@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../generated/l10n.dart';
 import '../../models/machine.dart';
 import '../../models/machine_status.dart';
 import '../../theme/theme.dart';
 import '../../utils/config.dart';
+import '../../utils/string.dart';
 import '../components/instruction_card.dart';
 import '../components/machine_status_card.dart';
 import '../components/neumorphic_toggle.dart';
@@ -23,12 +25,34 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  Machine machine = Machine(
+  Machine machineAvailable = Machine(
     id: 0,
     floor: 8,
     section: 'A',
     type: WashingMachine,
     status: MachineStatus(code: StatusCode.available),
+  );
+  Machine machineInUse = Machine(
+    id: 1,
+    floor: 8,
+    section: 'A',
+    type: WashingMachine,
+    status: MachineStatus(
+      code: StatusCode.in_use,
+      durationEstimated: const Duration(minutes: 40),
+      durationPassed: const Duration(minutes: 13),
+    ),
+  );
+  Machine machineOverdue = Machine(
+    id: 2,
+    floor: 8,
+    section: 'A',
+    type: WashingMachine,
+    status: MachineStatus(
+      code: StatusCode.overdue,
+      durationEstimated: const Duration(minutes: 40),
+      durationPassed: const Duration(minutes: 10),
+    ),
   );
 
   @override
@@ -55,7 +79,18 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 40),
           _floorSelector(),
           const SizedBox(height: 24),
-          ..._machineSection(),
+          ..._machineSection(
+            iconName: "drop_filled",
+            title: S.of(context).washing_machine,
+            machines: [machineAvailable, machineInUse, machineInUse, machineOverdue],
+          ),
+          const SizedBox(height: 32),
+          ..._machineSection(
+            iconName: "wind",
+            title: S.of(context).dryer_machine,
+            machines: [machineAvailable, machineAvailable, machineOverdue],
+          ),
+          const SizedBox(height: 40),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -103,24 +138,30 @@ class _HomePageState extends State<HomePage> {
         ],
       );
 
-  List<Widget> _machineSection() =>
+  List<Widget> _machineSection({
+    required String iconName,
+    required String title,
+    List<Machine> machines = const [],
+  }) =>
       [
         Row(
           children: [
-            SvgPicture.asset("assets/icons/drop_filled.svg", width: 20, height: 20),
+            SvgPicture.asset("assets/icons/$iconName.svg", width: 20, height: 20),
             const SizedBox(width: 8),
-            Text("Washing Machine", style: ThemeFont.header()),
+            Text(title.capitalizeEach, style: ThemeFont.header()),
           ],
         ),
         const SizedBox(height: 20),
-        Row(
-          children: [
-            MachineStatusCard(data: machine),
-            const SizedBox(width: 24),
-            MachineStatusCard(data: machine),
-            const SizedBox(width: 24),
-            MachineStatusCard(data: machine),
-          ],
-        ),
+        GridView.count(
+          clipBehavior: Clip.none,
+          crossAxisCount: 3,
+          crossAxisSpacing: 24,
+          mainAxisSpacing: 24,
+          childAspectRatio: 0.65,
+          primary: true,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          children: machines.map((machine) => MachineStatusCard(data: machine)).toList(),
+        )
       ];
 }

@@ -18,24 +18,22 @@ class MachineStatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: NeumorphicContainer(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text(
-              '${data.floor}${data.section}',
-              style: ThemeFont.style(fontSize: 12, color: ThemeColors.grey),
-            ),
-            const SizedBox(height: 4),
-            SvgPicture.asset('assets/images/home_${data.status.code.name}.svg'),
-            const SizedBox(height: 6),
-            Text(
-              data.status.code.name.splitUnderScore.capitalizeEach,
-              style: ThemeFont.style(fontSize: 12),
-            ),
-          ],
-        ),
+    return NeumorphicContainer(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Text(
+            '${data.floor}${data.section}',
+            style: ThemeFont.style(fontSize: 12, color: ThemeColors.grey),
+          ),
+          const SizedBox(height: 4),
+          SvgPicture.asset('assets/images/home_${data.status.code.name}.svg'),
+          const SizedBox(height: 6),
+          Text(
+            data.status.code.name.splitUnderScore.capitalizeEach,
+            style: ThemeFont.style(fontSize: 12),
+          ),
+        ],
       ),
     );
   }

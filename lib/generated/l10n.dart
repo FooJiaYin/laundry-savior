@@ -50,21 +50,31 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `帳號`
+  /// `Account`
   String get account {
     return Intl.message(
-      '帳號',
+      'Account',
       name: 'account',
       desc: '',
       args: [],
     );
   }
 
-  /// `複製`
+  /// `Copy`
   String get copy {
     return Intl.message(
-      '複製',
+      'Copy',
       name: 'copy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `dryer machine`
+  String get dryer_machine {
+    return Intl.message(
+      'dryer machine',
+      name: 'dryer_machine',
       desc: '',
       args: [],
     );
@@ -80,131 +90,151 @@ class S {
     );
   }
 
-  /// `請輸入正確E-mail地址`
+  /// `Email Address`
   String get email_hint {
     return Intl.message(
-      '請輸入正確E-mail地址',
+      'Email Address',
       name: 'email_hint',
       desc: '',
       args: [],
     );
   }
 
-  /// `早安`
+  /// `Good Morning`
   String get greeting_morning {
     return Intl.message(
-      '早安',
+      'Good Morning',
       name: 'greeting_morning',
       desc: '',
       args: [],
     );
   }
 
-  /// `午安`
+  /// `Good Afternoon`
   String get greeting_afternoon {
     return Intl.message(
-      '午安',
+      'Good Afternoon',
       name: 'greeting_afternoon',
       desc: '',
       args: [],
     );
   }
 
-  /// `午安`
+  /// `Good evening`
   String get greeting_evening {
     return Intl.message(
-      '午安',
+      'Good evening',
       name: 'greeting_evening',
       desc: '',
       args: [],
     );
   }
 
-  /// `晚安`
+  /// `Good night`
   String get greeting_night {
     return Intl.message(
-      '晚安',
+      'Good night',
       name: 'greeting_night',
       desc: '',
       args: [],
     );
   }
 
-  /// `首頁`
+  /// `Home`
   String get home {
     return Intl.message(
-      '首頁',
+      'Home',
       name: 'home',
       desc: '',
       args: [],
     );
   }
 
-  /// `列表`
+  /// `Laundry is done!`
+  String get laundry_done_message {
+    return Intl.message(
+      'Laundry is done!',
+      name: 'laundry_done_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lists`
   String get list {
     return Intl.message(
-      '列表',
+      'Lists',
       name: 'list',
       desc: '',
       args: [],
     );
   }
 
-  /// `密碼`
+  /// `password`
   String get password {
     return Intl.message(
-      '密碼',
+      'password',
       name: 'password',
       desc: '',
       args: [],
     );
   }
 
-  /// `密碼不能小於6個字`
+  /// `Password`
   String get password_hint {
     return Intl.message(
-      '密碼不能小於6個字',
+      'Password',
       name: 'password_hint',
       desc: '',
       args: [],
     );
   }
 
-  /// `設定`
+  /// `Settings`
   String get settings {
     return Intl.message(
-      '設定',
+      'Settings',
       name: 'settings',
       desc: '',
       args: [],
     );
   }
 
-  /// `登入`
+  /// `Log In`
   String get sign_in {
     return Intl.message(
-      '登入',
+      'Log In',
       name: 'sign_in',
       desc: '',
       args: [],
     );
   }
 
-  /// `登出`
+  /// `Log Out`
   String get sign_out {
     return Intl.message(
-      '登出',
+      'Log Out',
       name: 'sign_out',
       desc: '',
       args: [],
     );
   }
 
-  /// `註冊`
+  /// `Sign Up`
   String get sign_up {
     return Intl.message(
-      '註冊',
+      'Sign Up',
       name: 'sign_up',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `washing machine`
+  String get washing_machine {
+    return Intl.message(
+      'washing machine',
+      name: 'washing_machine',
       desc: '',
       args: [],
     );
@@ -216,6 +246,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
+      Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(
           languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
     ];
