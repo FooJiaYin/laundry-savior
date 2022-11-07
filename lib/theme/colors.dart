@@ -5,7 +5,7 @@ class ThemeColors {
   static const primaryLight = Color(0xFFE6F3F5);
   static const primaryDark = Color(0xFF00727C);
   static const secondaryColor = royalBlue;
-  static const textColor = darkGrey;
+  static const textColor = grey;
   static const backgroundColor = Color(0xFFF2F4F7);
   static const blue = Color(0xFF3A9FE9);
   static const royalBlue = Color(0xFF547EEC);

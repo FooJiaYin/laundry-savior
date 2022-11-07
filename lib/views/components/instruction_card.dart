@@ -26,8 +26,8 @@ class InstructionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: ThemeFont.title(fontSize: 16)),
-          Text(description, style: ThemeFont.style(color: ThemeColors.grey, fontSize: 12)),
+          Text(title, style: ThemeFont.title()),
+          Text(description, style: ThemeFont.style(fontSize: 12)),
           const SizedBox(height: 20),
           if (actionWidget != null) actionWidget!,
         ],

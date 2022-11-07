@@ -36,7 +36,12 @@ class SettingItem extends StatelessWidget {
                 SvgPicture.asset("assets/icons/$iconName.svg", width: 24, height: 24),
                 const SizedBox(width: 12),
                 Flexible(
-                  child: Text(title.capitalizeEach, softWrap: true, overflow: TextOverflow.clip),
+                  child: Text(
+                    title.capitalizeEach,
+                    softWrap: true,
+                    overflow: TextOverflow.clip,
+                    style: ThemeFont.title(),
+                  ),
                 )
               ],
             ),
@@ -44,9 +49,9 @@ class SettingItem extends StatelessWidget {
           const SizedBox(width: 20),
           Row(
             children: [
-              Text(value?.toString().capitalizeFirst ?? 'Not Set', style: const TextStyle(color: ThemeColors.grey)),
+              Text(value?.toString().capitalizeFirst ?? ""),
               const SizedBox(width: 4),
-              const Icon(Icons.keyboard_arrow_right, color: ThemeColors.grey),
+              const Icon(Icons.keyboard_arrow_right),
             ],
           ),
         ],

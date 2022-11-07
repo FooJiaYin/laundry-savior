@@ -30,7 +30,7 @@ class MachineStatusCard extends StatelessWidget {
         children: [
           Text(
             '${data.floor}${data.section}',
-            style: ThemeFont.style(fontSize: 12, color: ThemeColors.grey),
+            style: ThemeFont.style(fontSize: 12),
           ),
           const SizedBox(height: 4),
           // TODO: Render circular progress for in_use status
@@ -38,7 +38,7 @@ class MachineStatusCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             data.status.code.name.splitUnderScore.capitalizeEach,
-            style: ThemeFont.style(fontSize: 12),
+            style: ThemeFont.title(fontSize: 12),
           ),
         ],
       ),

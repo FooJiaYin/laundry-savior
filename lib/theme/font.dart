@@ -5,6 +5,7 @@ class ThemeFont {
   static const fontFamilly = "Lexend";
   static const color = ThemeColors.textColor;
   static const headerColor = ThemeColors.grey;
+  static const titleColor = ThemeColors.darkGrey;
   static const textSize = 16.0;
   static const h1TextSize = 28.0;
   static const h2TextSize = 24.0;
@@ -90,7 +91,7 @@ class ThemeFont {
     double? fontSize,
   }) =>
       style(
-        color: color ?? ThemeFont.color,
+        color: color ?? ThemeFont.titleColor,
         fontWeight: fontWeight,
         fontSize: fontSize ?? textSize,
       );

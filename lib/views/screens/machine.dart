@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -52,7 +51,7 @@ class _MachinePageState extends State<MachinePage> {
         child: Circle(
           shadows: [
             BoxShadow(color: ThemeColors.grey.withOpacity(0.38), offset: const Offset(1, 2), blurRadius: 4, spreadRadius: -1),
-            const BoxShadow(color: Colors.white, offset: const Offset(-1, -2), blurRadius: 4, spreadRadius: -1),
+            const BoxShadow(color: Colors.white, offset: Offset(-1, -2), blurRadius: 4, spreadRadius: -1),
           ],
           child: SvgPicture.asset('assets/images/machine_${data.status.code.name}.svg'),
         ),
@@ -77,7 +76,7 @@ class _MachinePageState extends State<MachinePage> {
           onPressed: () => goToNextStep(data: data, step: UseStep.mode),
         ),
         const SizedBox(height: 24),
-        Text("or Insert Coin into the machine", style: ThemeFont.style(color: ThemeColors.grey))
+        Text("or Insert Coin into the machine")
       ],
       UseStep.mode: <Widget>[
         Container(
@@ -137,7 +136,6 @@ class _MachinePageState extends State<MachinePage> {
         const SizedBox(height: 24),
         Text(
           "You’ll be reminded when the laundry is done.",
-          style: ThemeFont.style(color: ThemeColors.grey),
           textAlign: TextAlign.center,
         ),
       ],
@@ -154,7 +152,6 @@ class _MachinePageState extends State<MachinePage> {
         const SizedBox(height: 24),
         Text(
           "Seem like someone haven’t take their laundry.",
-          style: ThemeFont.style(color: ThemeColors.grey),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
@@ -179,7 +176,6 @@ class _MachinePageState extends State<MachinePage> {
           const SizedBox(height: 14),
           Text(
             "${data.floor} Floor, Area ${data.section}",
-            style: ThemeFont.style(color: ThemeColors.grey),
           ),
           const SizedBox(height: 40),
           _machinePicture(),
