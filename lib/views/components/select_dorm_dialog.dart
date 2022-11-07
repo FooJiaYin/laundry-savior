@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
+import '../../theme/colors.dart';
 import '../widgets/container.dart';
 import 'select_dialog.dart';
 
@@ -18,12 +19,36 @@ class SelectDormDialog extends StatelessWidget {
         childAspectRatio: 8.0 / 5,
         shrinkWrap: true,
         children: [
-          CardContainer(margin: EdgeInsets.zero, child: Text(''), backgroundColor: Colors.red),
-          CardContainer(margin: EdgeInsets.zero, child: Text(''), backgroundColor: Colors.red),
-          CardContainer(margin: EdgeInsets.zero, child: Text(''), backgroundColor: Colors.red),
-          CardContainer(margin: EdgeInsets.zero, child: Text(''), backgroundColor: Colors.red),
-          CardContainer(margin: EdgeInsets.zero, child: Text(''), backgroundColor: Colors.red),
+          DormitoryItem(),
+          DormitoryItem(),
+          DormitoryItem(),
+          DormitoryItem(),
+          DormitoryItem(),
         ],
+      ),
+    );
+  }
+}
+
+class DormitoryItem extends StatelessWidget {
+  const DormitoryItem({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CardContainer(
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      // TODO: Replace with NetworkImage
+      backgroundImage: AssetImage("assets/images/dorm.png"),
+      child: ColoredBox(
+        color: ThemeColors.grey.withOpacity(0.5),
+        child: Center(
+          child: Text(
+            "Male 1",
+            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 12),
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     );
   }

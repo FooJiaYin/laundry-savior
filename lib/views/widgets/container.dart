@@ -14,6 +14,7 @@ class CardContainer extends StatelessWidget {
     this.padding = const EdgeInsets.all(Dimensions.containerPadding),
     this.margin = const EdgeInsets.only(bottom: Dimensions.itemMargin),
     this.gradient,
+    this.backgroundImage,
     this.shadows,
     this.onTap,
     this.onLongPress,
@@ -27,6 +28,7 @@ class CardContainer extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
   final Gradient? gradient;
+  final ImageProvider? backgroundImage;
   final List<BoxShadow>? shadows;
   final void Function()? onTap;
   final void Function()? onLongPress;
@@ -42,6 +44,7 @@ class CardContainer extends StatelessWidget {
         margin: margin,
         decoration: BoxDecoration(
           color: backgroundColor,
+          image: backgroundImage != null? DecorationImage(image: backgroundImage!, fit: BoxFit.cover) : null,
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
           border: borderColor != null ? Border.all(color: borderColor!, width: 2.0) : null,
           boxShadow: shadows,
