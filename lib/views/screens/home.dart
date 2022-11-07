@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../models/machine.dart';
+import '../../models/machine_status.dart';
 import '../../theme/theme.dart';
 import '../../utils/config.dart';
 import '../components/instruction_card.dart';
+import '../components/machine_status_card.dart';
 import '../components/neumorphic_toggle.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
@@ -19,7 +22,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
+  int _selectedIndex = 0;
+  Machine machine = Machine(
+    id: 0,
+    floor: 8,
+    section: 'A',
+    type: WashingMachine,
+    status: MachineStatus(code: StatusCode.available),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +54,8 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 40),
           _floorSelector(),
+          const SizedBox(height: 24),
+          ..._machineSection(),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -89,4 +102,25 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       );
+
+  List<Widget> _machineSection() =>
+      [
+        Row(
+          children: [
+            SvgPicture.asset("assets/icons/drop_filled.svg", width: 20, height: 20),
+            const SizedBox(width: 8),
+            Text("Washing Machine", style: ThemeFont.header()),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            MachineStatusCard(data: machine),
+            const SizedBox(width: 24),
+            MachineStatusCard(data: machine),
+            const SizedBox(width: 24),
+            MachineStatusCard(data: machine),
+          ],
+        ),
+      ];
 }
