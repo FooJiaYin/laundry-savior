@@ -3,13 +3,15 @@ import 'dart:convert';
 
 import 'machine_status.dart';
 
+export 'machine_status.dart';
+
 class Machine {
-  int id;
-  int floor;
-  String? section;
-  Type type;
-  MachineStatus status;
-  Machine({
+  final int id;
+  final int floor;
+  final String? section;
+  final Type type;
+  final MachineStatus status;
+  const Machine({
     required this.id,
     required this.floor,
     this.section,
@@ -91,7 +93,7 @@ class Machine {
 } 
 
 class WashingMachine extends Machine {
-  WashingMachine({
+  const WashingMachine({
     required int id, 
     required int floor, 
     String? section, 
@@ -106,7 +108,7 @@ class WashingMachine extends Machine {
 }
 
 class DryerMachine extends Machine {
-  DryerMachine({
+  const DryerMachine({
     required int id, 
     required int floor, 
     String? section, 

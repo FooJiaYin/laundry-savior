@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../generated/l10n.dart';
+import '../../models/dormitory.dart';
 import '../../models/machine.dart';
-import '../../models/machine_status.dart';
+import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
 import '../../utils/config.dart';
 import '../../utils/string.dart';
 import '../components/instruction_card.dart';
 import '../components/machine_status_card.dart';
 import '../components/neumorphic_toggle.dart';
+import '../components/select_dorm_dialog.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
 import 'settings.dart';
@@ -24,42 +26,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Dormitory dorm;
+  List<Machine> washingMachines = [];
+  List<Machine> dryerMachines = [];
   int _selectedIndex = 0;
-  
-  // TODO: Use services/fake_data provide data
-  Machine machineAvailable = Machine(
-    id: 0,
-    floor: 8,
-    section: 'A',
-    type: WashingMachine,
-    status: MachineStatus(code: StatusCode.available),
-  );
-  Machine machineInUse = Machine(
-    id: 1,
-    floor: 8,
-    section: 'A',
-    type: WashingMachine,
-    status: MachineStatus(
-      code: StatusCode.in_use,
-      durationEstimated: const Duration(minutes: 40),
-      durationPassed: const Duration(minutes: 13),
-    ),
-  );
-  Machine machineOverdue = Machine(
-    id: 2,
-    floor: 8,
-    section: 'A',
-    type: WashingMachine,
-    status: MachineStatus(
-      code: StatusCode.overdue,
-      durationEstimated: const Duration(minutes: 40),
-      durationPassed: const Duration(minutes: 10),
-    ),
-  );
+
+  loadItems() async {
+    dorm = await FakeData.getDormitory();
+    washingMachines = await FakeData.getWashingMachines(dorm);
+    dryerMachines = await FakeData.getDryerMachines(dorm);
+    setState(() {});
+  }  
 
   @override
   void initState() {
     super.initState();
+    loadItems();
   }
 
   @override
@@ -74,11 +56,11 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: <Widget>[
           // TODO: Differenct instructions
-          const InstructionCard(
-            title: "Welcome to Laundry Savior",
-            description: 'Tell us where do you live!',
-            actionWidget: ActionText('Select Dorm', color: ThemeColors.royalBlue),
-          ),
+          InstructionCard(
+              title: "Welcome to Laundry Savior",
+              description: 'Tell us where do you live!',
+              actionWidget: ActionText('Select Dorm', color: ThemeColors.royalBlue),
+              onTap: () => showDialog(context: context, builder: (BuildContext context) => SelectDormDialog())),
           const SizedBox(height: 40),
           _floorSelector(),
           const SizedBox(height: 24),
@@ -86,13 +68,13 @@ class _HomePageState extends State<HomePage> {
           ..._machineSection(
             iconName: "drop_filled",
             title: S.of(context).washing_machine,
-            machines: [machineAvailable, machineInUse, machineInUse, machineOverdue],
+            machines: washingMachines,
           ),
           const SizedBox(height: 32),
           ..._machineSection(
             iconName: "wind",
             title: S.of(context).dryer_machine,
-            machines: [machineAvailable, machineAvailable, machineOverdue],
+            machines: dryerMachines,
           ),
           const SizedBox(height: 40),
         ],

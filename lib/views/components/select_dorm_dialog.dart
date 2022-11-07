@@ -1,37 +1,59 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import '../../theme/colors.dart';
+import '../../models/dormitory.dart';
+import '../../services/fake_data.dart';
+import '../../theme/theme.dart';
 import '../widgets/container.dart';
 import 'select_dialog.dart';
 
-class SelectDormDialog extends StatelessWidget {
+class SelectDormDialog extends StatefulWidget {
   const SelectDormDialog({Key? key}) : super(key: key);
+
+  @override
+  State<SelectDormDialog> createState() => _SelectDormDialogState();
+}
+
+class _SelectDormDialogState extends State<SelectDormDialog> {
+  List<Dormitory> dorms = [];
+
+  loadItems() async {
+    dorms = await FakeData.getDormitories("ntu");
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadItems();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SelectDialog(
       title: "Select Dormitory",
       child: GridView.count(
+        clipBehavior: Clip.none,
         crossAxisCount: 3,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
         childAspectRatio: 8.0 / 5,
+        primary: true,
         shrinkWrap: true,
-        children: [
-          DormitoryItem(),
-          DormitoryItem(),
-          DormitoryItem(),
-          DormitoryItem(),
-          DormitoryItem(),
-        ],
+        physics: const NeverScrollableScrollPhysics(),
+        children: dorms.map((dorm) => DormitoryItem(data: dorm)).toList(),
       ),
     );
   }
 }
 
 class DormitoryItem extends StatelessWidget {
-  const DormitoryItem({Key? key}) : super(key: key);
+  const DormitoryItem({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
+
+  final Dormitory data;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +61,12 @@ class DormitoryItem extends StatelessWidget {
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
       // TODO: Replace with NetworkImage
-      backgroundImage: AssetImage("assets/images/dorm.png"),
+      backgroundImage: AssetImage(data.imageUrl),
       child: ColoredBox(
         color: ThemeColors.grey.withOpacity(0.5),
         child: Center(
           child: Text(
-            "Male 1",
+            data.name,
             style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 12),
             textAlign: TextAlign.center,
           ),

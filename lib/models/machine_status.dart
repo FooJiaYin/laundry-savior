@@ -10,7 +10,7 @@ class MachineStatus {
   final StatusCode code;
   final Duration? durationPassed;
   final Duration? durationEstimated;
-  MachineStatus({
+  const MachineStatus({
     required this.code,
     this.durationPassed,
     this.durationEstimated,
