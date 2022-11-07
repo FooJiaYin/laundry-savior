@@ -1,0 +1,21 @@
+{
+    "account": "Account",
+    "copy": "Copy",
+    "dryer_machine": "dryer machine",
+    "email": "E-mail",
+    "email_hint": "Email Address",
+    "greeting_morning": "Good Morning",
+    "greeting_afternoon": "Good Afternoon",
+    "greeting_evening": "Good evening",
+    "greeting_night": "Good night",
+    "home": "Home",
+    "laundry_done_message": "Laundry is done!", 
+    "list": "Lists",
+    "password": "password",
+    "password_hint": "Password",
+    "settings": "Settings",
+    "sign_in": "Log In",
+    "sign_out": "Log Out",
+    "sign_up": "Sign Up",
+    "washing_machine": "washing machine"
+}

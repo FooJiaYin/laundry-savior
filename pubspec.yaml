@@ -79,7 +79,7 @@ flutter:
           weight: 700
 
 flutter_intl:
-  main_locale: zh_Hant_TW
+  # main_locale: zh_Hant_TW
   enabled: true
 
 flutter_icons:

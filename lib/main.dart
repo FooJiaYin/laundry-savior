@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       themeMode: ThemeMode.light,
       theme: CustomTheme.defaultTheme,
       darkTheme: CustomTheme.darkTheme,
-      locale: const Locale.fromSubtags(languageCode: 'zh_Hant_TW'),
+      // locale: const Locale.fromSubtags(languageCode: 'zh_Hant_TW'),
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -62,8 +62,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeDependencies() async {
-    // always use zh_Hant_TW now.
-    setState(() => config.locale = const Locale.fromSubtags(languageCode: 'zh_Hant_TW'));
+    // setState(() => config.locale = const Locale.fromSubtags(languageCode: 'zh_Hant_TW'));
+    // setState(() => config.locale = Localizations.localeOf(context));
     super.didChangeDependencies();
   }
 
