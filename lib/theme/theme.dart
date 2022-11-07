@@ -26,8 +26,8 @@ class CustomTheme with ChangeNotifier {
     primaryColorDark: ThemeColors.primaryDark,
     primaryColorLight: ThemeColors.primaryLight,
     scaffoldBackgroundColor: ThemeColors.backgroundColor,
-    backgroundColor: Colors.grey.shade400,
-    shadowColor: Colors.grey.withOpacity(0.2),
+    backgroundColor: ThemeColors.backgroundColor,
+    shadowColor: ThemeColors.grey,
     disabledColor: Colors.grey,
 
     textTheme: ThemeFont.textTheme,
@@ -83,8 +83,10 @@ class CustomTheme with ChangeNotifier {
 
     dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Dimensions.cardRadius),
+        borderRadius: BorderRadius.circular(14),
       ),
+      titleTextStyle: ThemeFont.header(fontSize: 20),
+      contentTextStyle: ThemeFont.header(fontSize: 20),
     ),
   );
 

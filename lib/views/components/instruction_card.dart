@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
-import '../widgets/container.dart';
 import 'neumorphic_container.dart';
 
 class InstructionCard extends StatelessWidget {
@@ -11,18 +10,21 @@ class InstructionCard extends StatelessWidget {
     required this.description,
     this.leading,
     this.actionWidget,
+    this.onTap,
   }) : super(key: key);
 
   final String title;
   final String description;
   final Widget? leading;
   final Widget? actionWidget;
+  final dynamic onTap;
 
   @override
   Widget build(BuildContext context) {
     // TODO: leading icon
     return NeumorphicContainer(
       padding: const EdgeInsets.only(top: 22, left: 22, bottom: 18, right: 12),
+      onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -8,7 +8,7 @@ class CardContainer extends StatelessWidget {
     required this.child,
     this.width = double.infinity,
     this.height,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = ThemeColors.backgroundColor,
     this.borderColor,
     this.borderRadius = Dimensions.cardRadius,
     this.padding = const EdgeInsets.all(Dimensions.containerPadding),
