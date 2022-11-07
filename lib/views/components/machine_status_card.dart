@@ -20,6 +20,12 @@ class MachineStatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return NeumorphicContainer(
       padding: const EdgeInsets.all(16),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (context) => MachinePage(data: data),
+        ),
+      ),
       child: Column(
         children: [
           Text(
