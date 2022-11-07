@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       stream: API.isAuthenticated(),
       builder: (context, AsyncSnapshot<bool> isAuthenticated) {
         final auth = isAuthenticated.hasData ? (isAuthenticated.data ?? false) : false;
-        return auth ? BottomTabNavigationPage() : const WelcomePage();
+        return const HomePage();
       },
     );
   }

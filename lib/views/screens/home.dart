@@ -7,7 +7,7 @@ import '../widgets/scaffold_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
-  
+
   final String title = AppConfig.title;
 
   @override
