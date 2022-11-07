@@ -10,6 +10,7 @@ class CustomTheme with ChangeNotifier {
 
   static ThemeData defaultTheme = ThemeData(
     useMaterial3: true,
+    fontFamily: ThemeFont.fontFamilly,
 
     /// Colors
     primaryColor: ThemeColors.primaryColor,

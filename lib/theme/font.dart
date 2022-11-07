@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 class ThemeFont {
+  static const fontFamilly = "Lexend";
   static const color = ThemeColors.textColor;
   static const textSize = 16.0;
   static const h1TextSize = 28.0;
