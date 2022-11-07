@@ -70,21 +70,24 @@ class Button extends StatelessWidget {
 }
 
 class RoundIconButton extends StatelessWidget {
-  const RoundIconButton(this.icon, {
+  const RoundIconButton(
+    this.icon, {
     Key? key,
     this.backgroundSize = 44,
     this.backgroundColor = Colors.white,
     this.iconSize = Dimensions.iconSize,
     this.iconColor = ThemeColors.primaryColor,
     this.borderRadius = 100,
+    this.shadows,
     this.onTap,
   }) : super(key: key);
-  final IconData icon;
+  final dynamic icon;
   final double backgroundSize;
   final Color backgroundColor;
   final double iconSize;
   final Color iconColor;
   final double borderRadius;
+  final List<BoxShadow>? shadows;
   final Function()? onTap;
 
   @override
@@ -92,16 +95,17 @@ class RoundIconButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: backgroundSize, 
+        width: backgroundSize,
         height: backgroundSize,
         margin: EdgeInsets.zero,
-        alignment: Alignment.center, 
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
           color: backgroundColor,
+          boxShadow: shadows,
         ),
-        child: Icon(icon, size: iconSize, color: iconColor), 
-      ), 
+        child: icon.runtimeType == IconData ? Icon(icon, size: iconSize, color: iconColor) : icon,
+      ),
     );
   }
 }

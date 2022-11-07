@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+
 import '../../theme/theme.dart';
 import '../../utils/config.dart';
-import '../widgets/container.dart';
-
+import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
+import 'settings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,54 +17,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Padding(
+          padding: const EdgeInsets.only(left: Dimensions.containerPadding),
+          child: _titleRow(),
+        ),
       ),
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CardContainer(
-              shadows: ThemeDecoration.shadow,
-              child: Column(
-                children: [
-                  const Text(
-                    'You have pushed the button this many times:',
-                  ),
-                  Text(
-                    '$_counter',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            CardContainer(
-              shadows: ThemeDecoration.shadow,
-              child: Column(
-                children: [
-                  const Text(
-                    'You have pushed the button this many times:',
-                  ),
-                  Text(
-                    '$_counter',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ],
-              ),
-            ),
-          ],
+        children: <Widget>[],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  Widget _titleRow() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(widget.title),
+          RoundIconButton(
+            SvgPicture.asset("assets/icons/settings.svg", width: 20, height: 20),
+            backgroundSize: 40,
+            backgroundColor: ThemeColors.backgroundColor,
+            shadows: ThemeDecoration.neumorphicShadow,
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => const SettingPage(),
+              ),
+            ),
+          ),
+        ],
+      );
 }

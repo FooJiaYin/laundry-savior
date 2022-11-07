@@ -58,9 +58,12 @@ class CustomTheme with ChangeNotifier {
       ),
     ),
 
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: ThemeColors.backgroundColor,
-      foregroundColor: ThemeColors.textColor,
+      foregroundColor: ThemeColors.grey,
+      surfaceTintColor: ThemeColors.backgroundColor,
+      titleTextStyle: ThemeFont.header(fontSize: 24),
+      toolbarHeight: 40,
     ),
 
     navigationBarTheme: const NavigationBarThemeData(
@@ -150,6 +153,18 @@ class ThemeDecoration {
       offset: const Offset(0, 4), // changes position of shadow
     ),
   ]; // changes position of shadow
+  static const List<BoxShadow> neumorphicShadow = [
+    BoxShadow(
+      color: ThemeColors.grey30,
+      blurRadius: 12,
+      offset: Offset(4, 4), // changes position of shadow
+    ),
+    BoxShadow(
+      color: Colors.white,
+      blurRadius: 10,
+      offset: Offset(-4, -4), // changes position of shadow
+    ),
+  ];
 }
 
 /* ThemeData(
