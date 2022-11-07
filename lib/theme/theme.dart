@@ -39,7 +39,7 @@ class CustomTheme with ChangeNotifier {
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        textStyle: MaterialStateProperty.all(const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+        textStyle: MaterialStateProperty.all(const TextStyle(fontSize: 20)),
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(Dimensions.buttonPadding),
         shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
         backgroundColor: MaterialStateProperty.all<Color>(ThemeColors.primaryColor),
@@ -140,7 +140,7 @@ class Dimensions {
   /// 36, 10
   static EdgeInsetsGeometry buttonPadding = const EdgeInsets.symmetric(
     horizontal: 36.0,
-    vertical: 10.0,
+    vertical: 12.0,
   );
 }
 

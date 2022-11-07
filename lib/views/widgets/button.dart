@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
@@ -6,11 +7,12 @@ class Button extends StatelessWidget {
   const Button({
     Key? key,
     this.text = "",
-    this.width,
     this.textStyle,
     this.backgroundColor,
     this.borderColor,
     this.borderRadius,
+    this.gradient,
+    this.width,
     this.padding,
     this.disabled = false,
     this.onPressed,
@@ -22,50 +24,69 @@ class Button extends StatelessWidget {
   final Color? backgroundColor;
   final Color? borderColor;
   final double? borderRadius;
+  final Gradient? gradient;
   final double? width;
   final EdgeInsetsGeometry? padding;
   final bool disabled;
   final dynamic onPressed;
   final dynamic onLongPress;
 
+  TextStyle buttonTextStyle() {
+    var style = ThemeFont.style();
+    if (borderColor != null) {
+      style = style.merge(TextStyle(color: borderColor));
+    } else if (disabled) {
+      style = style.merge(TextStyle(color: Colors.black54));
+    }
+    return style.merge(textStyle);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return backgroundColor != null || borderColor == null
-    ? ElevatedButton( 
-      onPressed: onPressed, 
-      onLongPress: disabled? onPressed : onLongPress, 
-      style: ButtonStyle(
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(padding ?? Dimensions.buttonPadding),
-          minimumSize: width != null ? MaterialStateProperty.all<Size>(Size(width!, 0)) : MaterialStateProperty.all<Size>(Size.zero),
-          shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
-          side: borderColor != null ? MaterialStateProperty.all(BorderSide(color: borderColor!)) : null,
-          backgroundColor: onPressed == null || disabled 
-            ? MaterialStateProperty.all<Color>(Theme.of(context).disabledColor)
-            : backgroundColor != null
-            ? MaterialStateProperty.all<Color>(backgroundColor!)
-            : null,
-        ),
-      child: Text(text, style: textStyle ?? 
-        (borderColor != null ? TextStyle(color: borderColor) : 
-          disabled ? const TextStyle(color: Colors.black54): null),),
-    ) 
-    : OutlinedButton( 
-      onPressed: disabled? null : onPressed, 
-      onLongPress: disabled? null : onLongPress, 
-      style: ButtonStyle(
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(padding ?? Dimensions.buttonPadding),
-          minimumSize: width != null ? MaterialStateProperty.all<Size>(Size(width!, 0)) : MaterialStateProperty.all<Size>(Size.zero),
-          shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
-          side: MaterialStateProperty.all(BorderSide(color: borderColor!)),
-          shape: borderRadius != null ? MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius!))) : null,
-          // backgroundColor: onPressed == null || disabled 
-          //   ? MaterialStateProperty.all<Color>(Colors.grey)
-          //   : MaterialStateProperty.all<Color>(backgroundColor!)
-        ),
-      child: Text(text, style: TextStyle(color: borderColor).merge(textStyle)),
-    );
+    var button = backgroundColor != null || borderColor == null
+        ? ElevatedButton(
+            onPressed: onPressed,
+            onLongPress: disabled ? onPressed : onLongPress,
+            style: ElevatedButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              padding: padding ?? Dimensions.buttonPadding,
+              minimumSize: width != null ? Size(width!, 0) : Size.zero,
+              surfaceTintColor: backgroundColor ?? Colors.transparent,
+              shadowColor: Colors.transparent,
+              side: borderColor != null ? BorderSide(color: borderColor!) : null,
+              primary: onPressed == null || disabled
+                  ? Theme.of(context).disabledColor
+                  : backgroundColor ??
+                      (gradient != null
+                          ? Colors.transparent
+                          : null),
+            ),
+            child: Text(text, style: buttonTextStyle()),
+          )
+        : OutlinedButton(
+            onPressed: disabled ? null : onPressed,
+            onLongPress: disabled ? onPressed : onLongPress,
+            style: ButtonStyle(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(padding ?? Dimensions.buttonPadding),
+              minimumSize: width != null ? MaterialStateProperty.all<Size>(Size(width!, 0)) : MaterialStateProperty.all<Size>(Size.zero),
+              shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
+              side: MaterialStateProperty.all(BorderSide(color: borderColor!)),
+              shape: borderRadius != null ? MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius!))) : null,
+              // backgroundColor: onPressed == null || disabled
+              //   ? MaterialStateProperty.all<Color>(Colors.grey)
+              //   : MaterialStateProperty.all<Color>(backgroundColor!)
+            ),
+            child: Text(text, style: buttonTextStyle()),
+          );
+    return gradient != null
+        ? Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? Dimensions.buttonRadius)),
+              gradient: gradient,
+            ),
+            child: button)
+        : button;
   }
 }
 

@@ -6,8 +6,8 @@ import '../../generated/l10n.dart';
 import '../../models/machine.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
+import '../components/neumorphic_button.dart';
 import '../components/neumorphic_container.dart';
-import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
 import '../widgets/shape.dart';
 
@@ -68,7 +68,8 @@ class _MachinePageState extends State<MachinePage> {
                 child: Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
               ),
               const SizedBox(height: 24),
-              Button(
+              NeumorphicButton(
+                gradient: ThemeColors.blueRingGradient,
                 text: "Pay by phone",
               ),
               const SizedBox(height: 24),
