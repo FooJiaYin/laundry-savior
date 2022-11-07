@@ -10,6 +10,8 @@ class Circle extends StatelessWidget {
     this.color,
     this.borderColor,
     this.borderWidth,
+    this.shadows,
+    this.child,
   }) : super(key: key);
 
   final double? size;
@@ -18,6 +20,8 @@ class Circle extends StatelessWidget {
   final Color? color;
   final Color? borderColor;
   final double? borderWidth;
+  final List<BoxShadow>? shadows;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +33,11 @@ class Circle extends StatelessWidget {
           color: borderColor ?? Colors.transparent,
           width: borderWidth ?? 0,
         ),
+        boxShadow: shadows,
       ),
-      width: width ?? size ?? 5,
-      height: height ?? size ?? 5,
+      width: width ?? size,
+      height: height ?? size,
+      child: child,
     );
   }
 }

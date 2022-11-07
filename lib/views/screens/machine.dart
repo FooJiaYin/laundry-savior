@@ -9,6 +9,7 @@ import '../../utils/string.dart';
 import '../components/neumorphic_container.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
+import '../widgets/shape.dart';
 
 enum UseStep { pay, mode, using }
 
@@ -31,7 +32,13 @@ class _MachinePageState extends State<MachinePage> {
         width: null,
         padding: const EdgeInsets.all(32),
         borderRadius: 43.0,
-        child: SvgPicture.asset('assets/images/machine_${data.status.code.name}.svg'),
+        child: Circle(
+          shadows: [
+            BoxShadow(color: ThemeColors.grey.withOpacity(0.38), offset: const Offset(1, 2), blurRadius: 4, spreadRadius: -1),
+            const BoxShadow(color: Colors.white, offset: const Offset(-1, -2), blurRadius: 4, spreadRadius: -1),
+          ],
+          child: SvgPicture.asset('assets/images/machine_${data.status.code.name}.svg'),
+        ),
       );
 
   @override
