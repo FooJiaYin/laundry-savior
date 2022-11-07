@@ -165,6 +165,14 @@ class ThemeDecoration {
       offset: Offset(-4, -4), // changes position of shadow
     ),
   ];
+  static const List<BoxShadow> neumorphicShadowPressed = [
+    BoxShadow(
+      color: ThemeColors.backgroundColor,
+      spreadRadius: -6.0,
+      blurRadius: 6.0,
+      offset: Offset(-0.5, -0.5), // changes position of shadow
+    ),
+  ];
 }
 
 /* ThemeData(

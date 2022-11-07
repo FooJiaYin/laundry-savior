@@ -67,6 +67,7 @@ class ThemeFont {
     double? fontSize,
   }) =>
       TextStyle(
+        fontFamily: fontFamilly,
         color: color ?? ThemeFont.color,
         fontWeight: fontWeight,
         fontSize: fontSize ?? textSize,

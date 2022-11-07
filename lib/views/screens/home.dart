@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../theme/theme.dart';
 import '../../utils/config.dart';
 import '../components/instruction_card.dart';
+import '../components/neumorphic_toggle.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
 import 'settings.dart';
@@ -40,6 +41,8 @@ class _HomePageState extends State<HomePage> {
             description: 'Tell us where do you live!',
             actionWidget: ActionText('Select Dorm', color: ThemeColors.royalBlue),
           ),
+          const SizedBox(height: 40),
+          _floorSelector(),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -59,6 +62,29 @@ class _HomePageState extends State<HomePage> {
               MaterialPageRoute<void>(
                 builder: (context) => const SettingPage(),
               ),
+            ),
+          ),
+        ],
+      );
+
+  Widget _floorSelector() => Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text("Guo-Ching Dorm", style: ThemeFont.title(fontSize: 12)),
+          ),
+          Expanded(
+            flex: 3,
+            child: NeumorphicToggle(
+              // selectedIndex: _selectedIndex,
+              height: 36,
+              optionWidgets: const [
+                Text("8F", textAlign: TextAlign.center),
+                Text("All floors", textAlign: TextAlign.center),
+              ],
+              onChanged: (value) => setState(() {
+                _selectedIndex = value;
+              }),
             ),
           ),
         ],

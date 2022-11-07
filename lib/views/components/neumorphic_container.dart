@@ -8,6 +8,8 @@ class NeumorphicContainer extends CardContainer {
   const NeumorphicContainer({
     Key? key,
     required child,
+    this.pressed = false,
+    this.shadowRotation = 0,
     width = double.infinity,
     height,
     backgroundColor = ThemeColors.backgroundColor,
@@ -29,14 +31,42 @@ class NeumorphicContainer extends CardContainer {
     padding: padding,
     margin: margin,
     gradient: gradient,
-    shadows: shadows ?? ThemeDecoration.neumorphicShadow,
+    shadows: shadows ?? (pressed ? ThemeDecoration.neumorphicShadowPressed : ThemeDecoration.neumorphicShadow),
     onTap: onTap,
     onLongPress: onLongPress,
     key: key,
   );
 
+  final bool pressed;
+  final double shadowRotation;
+
+  Widget pressedContainer() => Stack(
+      children: [
+        CardContainer(
+          margin: margin,
+          padding: padding,
+          gradient: gradient ?? LinearGradient(
+            transform: GradientRotation(shadowRotation),
+            colors: [
+              ThemeColors.grey.withOpacity(0.2),
+              backgroundColor,
+              Colors.white.withOpacity(1),
+            ],
+          ),
+          child: child,
+        ),
+        CardContainer(
+          margin: margin,
+          padding: padding,
+          backgroundColor: Colors.transparent,
+          shadows: shadows,
+          child: child,
+        )
+      ],
+    );
+
   @override
   Widget build(BuildContext context) {
-    return super.build(context);
+    return pressed?  pressedContainer() : super.build(context);
   }
 }
