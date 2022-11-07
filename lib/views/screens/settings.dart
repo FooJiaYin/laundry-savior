@@ -22,7 +22,22 @@ class _SettingPageState extends State<SettingPage> {
         automaticallyImplyLeading: false,
       ),
       child: Column(
-        children: [],
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("General", style: ThemeFont.header()),
+          const SettingItem(iconName: "home_outlined", title: "My Dormitory", value: "Guo-Ching, 8f"),
+          const SettingItem(iconName: "money", title: "Default Payment Method", value: "Not Set"),
+          const SettingItem(iconName: "ball", title: "Language", value: "System"),
+          const SizedBox(height: 24),
+          Text("Reminder", style: ThemeFont.header()),
+          const SettingItem(iconName: "drop_outlined", title: "Machine Available", value: "notification\n30m before"),
+          const SettingItem(iconName: "wind", title: "Laundry done", value: "notification\n30m before"),
+          const SizedBox(height: 24),
+          Text("Other", style: ThemeFont.header()),
+          const SettingItem(iconName: "question", title: "FAQ"),
+          const SettingItem(iconName: "mail", title: "Feedback"),
+          const SizedBox(height: 40),
+        ],
       ),
     );
   }
