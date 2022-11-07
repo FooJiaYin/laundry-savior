@@ -105,15 +105,10 @@ class _HomePageState extends State<HomePage> {
         children: [
           Text(widget.title),
           RoundIconButton(
-            SvgPicture.asset("assets/icons/settings.svg", width: 20, height: 20),
-            backgroundSize: 40,
-            backgroundColor: ThemeColors.backgroundColor,
-            shadows: ThemeDecoration.neumorphicShadow,
+            SvgPicture.asset("assets/icons/settings.svg"),
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute<void>(
-                builder: (context) => const SettingPage(),
-              ),
+              MaterialPageRoute<void>(builder: (context) => const SettingPage()),
             ),
           ),
         ],

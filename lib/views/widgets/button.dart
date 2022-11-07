@@ -54,12 +54,7 @@ class Button extends StatelessWidget {
               surfaceTintColor: backgroundColor ?? Colors.transparent,
               shadowColor: Colors.transparent,
               side: borderColor != null ? BorderSide(color: borderColor!) : null,
-              primary: onPressed == null || disabled
-                  ? Theme.of(context).disabledColor
-                  : backgroundColor ??
-                      (gradient != null
-                          ? Colors.transparent
-                          : null),
+              primary: onPressed == null || disabled ? Theme.of(context).disabledColor : backgroundColor ?? (gradient != null ? Colors.transparent : null),
             ),
             child: Text(text, style: buttonTextStyle()),
           )
@@ -85,7 +80,8 @@ class Button extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? Dimensions.buttonRadius)),
               gradient: gradient,
             ),
-            child: button)
+            child: button,
+          )
         : button;
   }
 }
@@ -94,26 +90,26 @@ class RoundIconButton extends StatelessWidget {
   const RoundIconButton(
     this.icon, {
     Key? key,
-    this.backgroundSize = 44,
-    this.backgroundColor = Colors.white,
+    this.backgroundSize = Dimensions.iconButtonSize,
+    this.backgroundColor = ThemeColors.backgroundColor,
     this.iconSize = Dimensions.iconSize,
-    this.iconColor = ThemeColors.primaryColor,
+    this.iconColor,
     this.borderRadius = 100,
-    this.shadows,
+    this.shadows = ThemeDecoration.neumorphicShadow,
     this.onTap,
   }) : super(key: key);
   final dynamic icon;
   final double backgroundSize;
   final Color backgroundColor;
   final double iconSize;
-  final Color iconColor;
+  final Color? iconColor;
   final double borderRadius;
   final List<BoxShadow>? shadows;
   final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         width: backgroundSize,
@@ -125,7 +121,7 @@ class RoundIconButton extends StatelessWidget {
           color: backgroundColor,
           boxShadow: shadows,
         ),
-        child: icon.runtimeType == IconData ? Icon(icon, size: iconSize, color: iconColor) : icon,
+        child: icon.runtimeType == IconData ? Icon(icon, size: iconSize, color: iconColor) : SizedBox(width: iconSize, height: iconSize, child: icon),
       ),
     );
   }

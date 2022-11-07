@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
 import '../../theme/theme.dart';
+import '../components/app_bar.dart';
 import '../components/setting_item.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
@@ -18,7 +19,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return ScaffoldPage(
       appBar: AppBar(
-        title: _titleRow(),
+        title: CenterAppBar(title: S.of(context).settings),
         automaticallyImplyLeading: false,
       ),
       child: Column(
@@ -41,20 +42,4 @@ class _SettingPageState extends State<SettingPage> {
       ),
     );
   }
-
-  Widget _titleRow() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          RoundIconButton(
-            Icons.keyboard_arrow_left_rounded,
-            backgroundSize: 40,
-            iconColor: ThemeColors.grey,
-            backgroundColor: ThemeColors.backgroundColor,
-            shadows: ThemeDecoration.neumorphicShadow,
-            onTap: () => Navigator.pop(context),
-          ),
-          Text(S.of(context).settings),
-          const SizedBox(width: 40),
-        ],
-      );
 }
