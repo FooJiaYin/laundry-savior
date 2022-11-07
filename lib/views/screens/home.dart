@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../theme/theme.dart';
 import '../../utils/config.dart';
+import '../components/instruction_card.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
 import 'settings.dart';
@@ -17,6 +18,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,13 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       child: Column(
-        children: <Widget>[],
+        children: <Widget>[
+          const InstructionCard(
+            title: "Welcome to Laundry Savior",
+            description: 'Tell us where do you live!',
+            actionWidget: ActionText('Select Dorm', color: ThemeColors.royalBlue),
+          ),
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
