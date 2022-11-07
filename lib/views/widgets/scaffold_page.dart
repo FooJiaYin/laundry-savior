@@ -27,6 +27,7 @@ class ScaffoldPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var defaultPadding = const EdgeInsets.all(Dimensions.screenPadding);
     return 
       Scaffold(
         appBar: appBar,
@@ -40,7 +41,7 @@ class ScaffoldPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Container(
               height: height,
-              padding: padding ?? const EdgeInsets.all(Dimensions.screenPadding),
+              padding: padding ?? (appBar != null ? defaultPadding.copyWith(top: 8) : defaultPadding),
               child: child,
             ),
           ),

@@ -63,7 +63,7 @@ class CustomTheme with ChangeNotifier {
       foregroundColor: ThemeColors.grey,
       surfaceTintColor: ThemeColors.backgroundColor,
       titleTextStyle: ThemeFont.header(fontSize: 24),
-      toolbarHeight: 40,
+      toolbarHeight: 68,
     ),
 
     navigationBarTheme: const NavigationBarThemeData(
