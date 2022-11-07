@@ -4,6 +4,7 @@ import 'colors.dart';
 class ThemeFont {
   static const fontFamilly = "Lexend";
   static const color = ThemeColors.textColor;
+  static const headerColor = ThemeColors.grey;
   static const textSize = 16.0;
   static const h1TextSize = 28.0;
   static const h2TextSize = 24.0;
@@ -71,12 +72,23 @@ class ThemeFont {
         fontSize: fontSize ?? textSize,
       );
 
-  static TextStyle title({
+  static TextStyle header({
     Color? color,
     FontWeight fontWeight = FontWeight.bold,
     double? fontSize,
   }) =>
-      TextStyle(
+      style(
+        color: color ?? ThemeFont.headerColor,
+        fontWeight: fontWeight,
+        fontSize: fontSize ?? textSize,
+      );
+
+  static TextStyle title({
+    Color? color,
+    FontWeight fontWeight = FontWeight.normal,
+    double? fontSize,
+  }) =>
+      style(
         color: color ?? ThemeFont.color,
         fontWeight: fontWeight,
         fontSize: fontSize ?? textSize,
