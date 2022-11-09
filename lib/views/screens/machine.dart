@@ -45,10 +45,7 @@ class _MachinePageState extends State<MachinePage> {
         padding: const EdgeInsets.all(32),
         borderRadius: 43.0,
         child: Circle(
-          shadows: [
-            BoxShadow(color: ThemeColors.grey.withOpacity(0.38), offset: const Offset(1, 2), blurRadius: 4, spreadRadius: -1),
-            const BoxShadow(color: Colors.white, offset: Offset(-1, -2), blurRadius: 4, spreadRadius: -1),
-          ],
+          shadows: ThemeDecoration.circleShadow,
           child: SvgPicture.asset('assets/images/machine_${data.status.code.name}.svg'),
         ),
       );

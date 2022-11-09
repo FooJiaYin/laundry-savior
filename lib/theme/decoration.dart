@@ -31,4 +31,18 @@ class ThemeDecoration {
       offset: Offset(-0.5, -0.5), // changes position of shadow
     ),
   ];
+  static List<BoxShadow> circleShadow = [
+    BoxShadow(
+      color: ThemeColors.grey.withOpacity(0.38),
+      offset: const Offset(1, 2),
+      blurRadius: 4,
+      spreadRadius: -1,
+    ),
+    const BoxShadow(
+      color: Colors.white,
+      offset: Offset(-1, -2),
+      blurRadius: 4,
+      spreadRadius: -1,
+    ),
+  ];
 }
