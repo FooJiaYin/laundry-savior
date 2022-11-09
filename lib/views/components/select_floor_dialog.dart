@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../models/global_state.dart';
 import '../../theme/theme.dart';
 import 'option_item.dart';
 import 'select_dialog.dart';
@@ -45,6 +46,7 @@ class FloorItem extends StatelessWidget {
       verticalMargin: 4,
       onTap: () => {
         // TODO: Set dorm & floor in shared preference
+        GlobalState.of(context, listen: false).update(floor: id),
         Navigator.pop(context),
         Navigator.pop(context)
       },

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
+import '../../models/global_state.dart';
 import '../../theme/theme.dart';
 import '../components/app_bar.dart';
+import '../components/select_dorm_dialog.dart';
 import '../components/setting_item.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
@@ -17,6 +19,7 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
+    var state = GlobalState.of(context);
     return ScaffoldPage(
       appBar: AppBar(
         title: CenterAppBar(title: S.of(context).settings),
@@ -26,14 +29,23 @@ class _SettingPageState extends State<SettingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("General", style: ThemeFont.header()),
-          const SettingItem(iconName: "home_outlined", title: "My Dormitory", value: "Guo-Ching, 8f"),
+          SettingItem(
+            iconName: "home_outlined",
+            title: "My Dormitory",
+            value: "${state.dormitory?.name ?? 'Unset'}, ${state.floor}F",
+            onTap: () => showDialog(context: context, builder: (context) => SelectDormDialog()),
+          ),
+          // TODO: Change Default Payment Method
           const SettingItem(iconName: "money", title: "Default Payment Method", value: "Not Set"),
+          // TODO: Change Language
           const SettingItem(iconName: "ball", title: "Language", value: "System"),
           const SizedBox(height: 24),
+          // TODO: Change reminder setting
           Text("Reminder", style: ThemeFont.header()),
           const SettingItem(iconName: "drop_outlined", title: "Machine Available", value: "notification\n30m before"),
           const SettingItem(iconName: "wind", title: "Laundry done", value: "notification\n30m before"),
           const SizedBox(height: 24),
+          // TODO: FAQ & Feedback
           Text("Other", style: ThemeFont.header()),
           const SettingItem(iconName: "question", title: "FAQ"),
           const SettingItem(iconName: "mail", title: "Feedback"),

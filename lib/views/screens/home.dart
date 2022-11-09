@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../generated/l10n.dart';
 import '../../models/dormitory.dart';
+import '../../models/global_state.dart';
 import '../../models/machine.dart';
 import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
@@ -11,7 +12,6 @@ import '../../utils/string.dart';
 import '../components/instruction_card.dart';
 import '../components/machine_status_card.dart';
 import '../components/neumorphic_toggle.dart';
-import '../components/select_dorm_dialog.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
 import 'settings.dart';
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     washingMachines = await FakeData.getWashingMachines(dorm);
     dryerMachines = await FakeData.getDryerMachines(dorm);
     setState(() {});
-  }  
+  }
 
   @override
   void initState() {
@@ -46,6 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalState state = GlobalState.of(context);
     return ScaffoldPage(
       appBar: AppBar(
         title: Padding(
@@ -58,7 +59,7 @@ class _HomePageState extends State<HomePage> {
           // TODO: Differenct instructions
           InstructionCard(),
           const SizedBox(height: 40),
-          _floorSelector(),
+          _floorSelector(state.dormitory, state.floor),
           const SizedBox(height: 24),
           // TODO: Update when switched floor
           ..._machineSection(
@@ -92,20 +93,21 @@ class _HomePageState extends State<HomePage> {
         ],
       );
 
-  Widget _floorSelector() => Row(
+  Widget _floorSelector(Dormitory? dorm, int? floor) => Row(
         children: [
           Expanded(
             flex: 2,
-            child: Text("Guo-Ching Dorm", style: ThemeFont.title(fontSize: 12)),
+            child: Text("${dorm?.name ?? 'Your'} Dorm", style: ThemeFont.title(fontSize: 12)),
           ),
           Expanded(
             flex: 3,
             child: NeumorphicToggle(
               // selectedIndex: _selectedIndex,
+              radius: 100,
               height: 36,
-              optionWidgets: const [
-                Text("8F", textAlign: TextAlign.center),
-                Text("All floors", textAlign: TextAlign.center),
+              optionWidgets: [
+                Text("Floor ${floor ?? 8}", textAlign: TextAlign.center),
+                const Text("All floors", textAlign: TextAlign.center),
               ],
               onChanged: (value) => setState(() {
                 _selectedIndex = value;

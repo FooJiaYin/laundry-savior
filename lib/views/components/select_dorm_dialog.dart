@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import '../../models/dormitory.dart';
 import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
+import '../../models/global_state.dart';
 import '../widgets/container.dart';
 import 'select_dialog.dart';
+import 'select_floor_dialog.dart';
 
 class SelectDormDialog extends StatefulWidget {
   const SelectDormDialog({Key? key}) : super(key: key);
@@ -52,6 +54,11 @@ class DormitoryItem extends StatelessWidget {
 
   final Dormitory data;
 
+  onDormSelected(context) {
+    GlobalState.of(context, listen: false).update(dormitory: data);
+    showDialog(context: context, builder: (context) => SelectFloorDialog(data.floors));
+  }
+
   @override
   Widget build(BuildContext context) {
     return CardContainer(
@@ -59,7 +66,7 @@ class DormitoryItem extends StatelessWidget {
       padding: EdgeInsets.zero,
       // TODO: Replace with NetworkImage
       backgroundImage: AssetImage(data.imageUrl),
-      onTap: () => showDialog(context: context, builder: (context) => SelectFloorDialog(data.floors)),
+      onTap: () => onDormSelected(context),
       child: ColoredBox(
         color: ThemeColors.grey.withOpacity(0.5),
         child: Center(
