@@ -73,7 +73,7 @@ class _MachinePageState extends State<MachinePage> {
         NeumorphicButton(
           gradient: ThemeColors.blueRingGradient,
           text: "Pay by phone",
-          onPressed: () => goToNextStep(data: data, step: UseStep.mode),
+          onPressed: () => showDialog(context: context, builder: (context) => PaymentDialog(data)),
         ),
         const SizedBox(height: 24),
         Text("or Insert Coin into the machine")
