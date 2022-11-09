@@ -20,20 +20,23 @@ class CenterAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (leftIcon != null) leftIcon!,
-          if (title != null)
-            Flexible(
-              child: Text(
-                title!,
-                style: titleStyle,
-                textAlign: TextAlign.center,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (leftIcon != null) leftIcon!,
+            if (title != null)
+              Flexible(
+                child: Text(
+                  title!,
+                  style: titleStyle,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-          if (rightIcon != null) rightIcon!,
-        ],
+            if (rightIcon != null) rightIcon!,
+          ],
+        ),
       ),
     );
   }

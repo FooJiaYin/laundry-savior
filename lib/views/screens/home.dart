@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
     return ScaffoldPage(
       appBar: AppBar(
         title: Padding(
-          padding: const EdgeInsets.only(left: Dimensions.containerPadding),
+          padding: const EdgeInsets.only(left: Dimensions.containerPadding, bottom: 8),
           child: _titleRow(),
         ),
       ),

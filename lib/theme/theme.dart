@@ -29,9 +29,7 @@ class CustomTheme with ChangeNotifier {
     backgroundColor: ThemeColors.backgroundColor,
     shadowColor: ThemeColors.grey,
     disabledColor: Colors.grey,
-
     textTheme: ThemeFont.textTheme,
-
     buttonTheme: ButtonThemeData(
       // 4
       padding: Dimensions.buttonPadding,
@@ -40,7 +38,6 @@ class CustomTheme with ChangeNotifier {
       ),
       // disabledColor: _theme.disabledColor,
     ),
-
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         textStyle: MaterialStateProperty.all(const TextStyle(fontSize: 20)),
@@ -50,37 +47,31 @@ class CustomTheme with ChangeNotifier {
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
       ),
     ),
-
     iconTheme: const IconThemeData(
       color: ThemeColors.textColor,
       size: 20,
     ),
-
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(ThemeColors.primaryColor),
       ),
     ),
-
     appBarTheme: AppBarTheme(
       backgroundColor: ThemeColors.backgroundColor,
       foregroundColor: ThemeColors.grey,
       surfaceTintColor: ThemeColors.backgroundColor,
       titleTextStyle: ThemeFont.header(fontSize: 24),
-      toolbarHeight: 68,
+      toolbarHeight: 64,
     ),
-
     navigationBarTheme: const NavigationBarThemeData(
       indicatorColor: ThemeColors.primaryColor,
     ),
-
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       selectedItemColor: ThemeColors.primaryColor,
       unselectedItemColor: ThemeColors.textColor,
       selectedLabelStyle: TextStyle(fontSize: 12),
       showUnselectedLabels: true,
     ),
-
     dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
