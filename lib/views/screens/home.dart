@@ -56,11 +56,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: <Widget>[
           // TODO: Differenct instructions
-          InstructionCard(
-              title: "Welcome to Laundry Savior",
-              description: 'Tell us where do you live!',
-              actionWidget: ActionText('Select Dorm', color: ThemeColors.royalBlue),
-              onTap: () => showDialog(context: context, builder: (BuildContext context) => SelectDormDialog())),
+          InstructionCard(),
           const SizedBox(height: 40),
           _floorSelector(),
           const SizedBox(height: 24),

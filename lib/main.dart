@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
+import 'models/global_state.dart';
 import 'services/api.dart';
 import 'services/fake_data.dart';
 import 'theme/theme.dart';
@@ -22,6 +24,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   AppConfig config = AppConfig();
+  GlobalState globalState = GlobalState();
 
   @override
   void initState() {
@@ -29,12 +32,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
   }
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
+  Widget app(BuildContext context) {
     return MaterialApp(
       title: AppConfig.title,
-      home: app(context),
+      home: const HomePage(),
       routes: AppRoute.route(context),
       themeMode: ThemeMode.light,
       theme: CustomTheme.defaultTheme,
@@ -50,12 +51,17 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 
-  Widget app(BuildContext context) {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
     return StreamBuilder<bool>(
       stream: API.isAuthenticated(),
       builder: (context, AsyncSnapshot<bool> isAuthenticated) {
         final auth = isAuthenticated.hasData ? (isAuthenticated.data ?? false) : false;
-        return const HomePage();
+        return ChangeNotifierProvider(
+          create: (context) => globalState,
+          child: app(context),
+        );
       },
     );
   }
