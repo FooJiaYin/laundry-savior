@@ -45,10 +45,11 @@ class NeumorphicContainer extends CardContainer {
         CardContainer(
           margin: margin,
           padding: padding,
+          borderRadius: borderRadius,
           gradient: gradient ?? LinearGradient(
             transform: GradientRotation(shadowRotation),
             colors: [
-              ThemeColors.grey.withOpacity(0.2),
+              ThemeColors.grey.withOpacity(0.5),
               backgroundColor,
               Colors.white.withOpacity(1),
             ],
@@ -58,6 +59,7 @@ class NeumorphicContainer extends CardContainer {
         CardContainer(
           margin: margin,
           padding: padding,
+          borderRadius: borderRadius,
           backgroundColor: Colors.transparent,
           shadows: shadows,
           child: child,

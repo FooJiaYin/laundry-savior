@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
@@ -6,14 +7,18 @@ import 'neumorphic_container.dart';
 class NeumorphicToggle extends StatefulWidget {
   const NeumorphicToggle({
     Key? key,
-    required this.optionWidgets,
-    this.height = 48,
     // this.selectedIndex = 0,
+    this.height = 48,
+    this.radius,
+    this.gradient,
+    required this.optionWidgets,
     this.onChanged,
   }) : super(key: key);
 
   final double height;
   // final int selectedIndex;
+  final double? radius;
+  final Gradient? gradient;
   final List<Widget> optionWidgets;
   final ValueChanged<int>? onChanged;
 
@@ -23,7 +28,7 @@ class NeumorphicToggle extends StatefulWidget {
 
 class _NeumorphicToggleState extends State<NeumorphicToggle> {
   int selectedIndex = 0;
-  Duration animationDuration = const Duration(milliseconds: 400);
+  Duration animationDuration = const Duration(milliseconds: 200);
 
   Alignment _alignment(int idx) {
     var percentX = selectedIndex / (widget.optionWidgets.length - 1);
@@ -46,10 +51,11 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
           height: widget.height,
           child: Stack(
             children: [
-              const NeumorphicContainer(
+              NeumorphicContainer(
                 pressed: true,
                 shadowRotation: 1.4,
-                gradient: LinearGradient(
+                borderRadius: widget.radius ?? Dimensions.cardRadius,
+                gradient: const LinearGradient(
                   transform: GradientRotation(1.4),
                   stops: [0.3, 0.5, 0.7],
                   colors: [
@@ -58,7 +64,7 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
                     Colors.white,
                   ],
                 ),
-                child: SizedBox.expand(),
+                child: const SizedBox.expand(),
               ),
               AnimatedAlign(
                 alignment: _alignment(selectedIndex),
@@ -66,9 +72,11 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
                 child: FractionallySizedBox(
                   widthFactor: 1 / widget.optionWidgets.length,
                   heightFactor: 1,
-                  child: const NeumorphicContainer(
-                    gradient: ThemeColors.blueLinearGradient,
-                    child: SizedBox.expand(),
+                  child: NeumorphicContainer(
+                    borderRadius: widget.radius ?? Dimensions.cardRadius,
+                    gradient: widget.gradient,
+                    // shadows: ThemeDecoration.circleShadow,
+                    child: const SizedBox.expand(),
                   ),
                 ),
               ),
@@ -83,7 +91,11 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
                           child: AnimatedDefaultTextStyle(
                             duration: animationDuration,
                             style: ThemeFont.title(
-                              color: selectedIndex == e.key ? Colors.white : ThemeColors.grey,
+                              color: selectedIndex == e.key
+                                  ? widget.gradient != null
+                                      ? Colors.white
+                                      : ThemeColors.primaryColor
+                                  : ThemeColors.grey,
                               // fontWeight: selectedIndex == e.key ? FontWeight.bold : FontWeight.normal,
                             ),
                             child: e.value,
