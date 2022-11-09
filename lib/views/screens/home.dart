@@ -14,7 +14,6 @@ import '../components/machine_status_card.dart';
 import '../components/neumorphic_toggle.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
-import 'settings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -85,10 +84,7 @@ class _HomePageState extends State<HomePage> {
           Text(widget.title),
           RoundIconButton(
             SvgPicture.asset("assets/icons/settings.svg"),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute<void>(builder: (context) => const SettingPage()),
-            ),
+            onTap: () => Navigator.pushNamed(context, "/settings"),
           ),
         ],
       );

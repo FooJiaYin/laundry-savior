@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'screens/bottom_nav.dart';
 import 'screens/home.dart';
 import 'screens/list.dart';
+import 'screens/machine.dart';
 import 'screens/settings.dart';
 import 'screens/sign_in.dart';
 import 'screens/sign_up.dart';
@@ -22,6 +23,7 @@ class AppRoute {
         "/sign_in": (context) => SignInPage(),
         "/sign_up": (context) => const SignUpPage(),
         "/home": (context) => BottomTabNavigationPage(tab: TabItem.home),
+        "/settings": (context) => SettingPage(),
       };
 }
 
