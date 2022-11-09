@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
 import 'neumorphic_container.dart';
+import 'option_item.dart';
 
 class SettingItem extends StatelessWidget {
   const SettingItem({
@@ -22,10 +23,9 @@ class SettingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NeumorphicContainer(
+    return OptionItem(
       height: 64.0,
       padding: const EdgeInsets.only(left: 14, right: 8),
-      margin: const EdgeInsets.symmetric(vertical: 8),
       onTap: onTap,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,8 +50,6 @@ class SettingItem extends StatelessWidget {
           Row(
             children: [
               Text(value?.toString().capitalizeFirst ?? ""),
-              const SizedBox(width: 4),
-              const Icon(Icons.keyboard_arrow_right),
             ],
           ),
         ],
