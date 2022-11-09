@@ -5,14 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../models/machine.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
-import'../screens/machine.dart';
+import '../screens/machine.dart';
 import 'neumorphic_container.dart';
 
 class MachineStatusCard extends StatelessWidget {
-  const MachineStatusCard({
-    Key? key,
-    required this.data,
-  }) : super(key: key);
+  const MachineStatusCard(this.data, {Key? key}) : super(key: key);
 
   final Machine data;
 
@@ -23,7 +20,7 @@ class MachineStatusCard extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute<void>(
-          builder: (context) => MachinePage(data: data),
+          builder: (context) => MachinePage(data),
         ),
       ),
       child: Column(

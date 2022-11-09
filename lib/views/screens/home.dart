@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
           primary: true,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          children: machines.map((machine) => MachineStatusCard(data: machine)).toList(),
+          children: machines.map((machine) => MachineStatusCard(machine)).toList(),
         )
       ];
 }

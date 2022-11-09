@@ -14,11 +14,7 @@ import '../widgets/shape.dart';
 enum UseStep { pay, mode, using }
 
 class MachinePage extends StatefulWidget {
-  const MachinePage({
-    Key? key,
-    required this.data,
-    this.step,
-  }) : super(key: key);
+  const MachinePage(this.data, {Key? key}) : super(key: key);
 
   final Machine data;
   final UseStep? step;
@@ -37,10 +33,10 @@ class _MachinePageState extends State<MachinePage> {
   //       step = UseStep.values[step.index + 1];
   //     }),;
 
-  goToNextStep({data, step}) => Navigator.push(
+  goToNextStep(data, {state}) => Navigator.push(
         context,
         MaterialPageRoute<void>(
-          builder: (context) => MachinePage(data: data, step: step),
+          builder: (context) => MachinePage(data),
         ),
       );
 
@@ -92,7 +88,7 @@ class _MachinePageState extends State<MachinePage> {
         NeumorphicButton(
           text: "Delicate Wash",
           onPressed: () => goToNextStep(
-            data: data.copyWith(
+            data.copyWith(
               status: MachineStatus(
                 code: StatusCode.in_use,
                 durationEstimated: const Duration(minutes: 40),
@@ -105,7 +101,7 @@ class _MachinePageState extends State<MachinePage> {
         NeumorphicButton(
           text: "Normal Wash",
           onPressed: () => goToNextStep(
-            data: data.copyWith(
+            data.copyWith(
               status: MachineStatus(
                 code: StatusCode.in_use,
                 durationEstimated: const Duration(minutes: 40),

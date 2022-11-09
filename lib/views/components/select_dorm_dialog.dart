@@ -41,17 +41,14 @@ class _SelectDormDialogState extends State<SelectDormDialog> {
         primary: true,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        children: dorms.map((dorm) => DormitoryItem(data: dorm)).toList(),
+        children: dorms.map((dorm) => DormitoryItem(dorm)).toList(),
       ),
     );
   }
 }
 
 class DormitoryItem extends StatelessWidget {
-  const DormitoryItem({
-    Key? key,
-    required this.data,
-  }) : super(key: key);
+  const DormitoryItem(this.data, {Key? key}) : super(key: key);
 
   final Dormitory data;
 
