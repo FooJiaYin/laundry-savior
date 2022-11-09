@@ -9,11 +9,13 @@ class SelectDialog extends StatelessWidget {
     Key? key,
     this.title,
     this.child,
+    this.padding = Dimensions.dialogContainerPadding,
     this.children = const <Widget>[],
   }) : super(key: key);
 
   final String? title;
   final Widget? child;
+  final EdgeInsets padding;
   final List<Widget> children;
 
   @override
@@ -21,12 +23,17 @@ class SelectDialog extends StatelessWidget {
     return Dialog(
       insetPadding: Dimensions.dialogInsetPadding,
       child: CardContainer(
-        padding: Dimensions.dialogContainerPadding,
+        padding: padding,
         child: Column(
           children: [
-            CenterAppBar(title: title, titleStyle: ThemeFont.header(fontSize: 20)),
-            const SizedBox(height: 32),
-            if (child != null) child!,
+            // Fix title height so that ListView below can expand
+            Container(
+              height: 40,
+              padding: EdgeInsets.symmetric(horizontal: Dimensions.dialogContainerPadding.left - padding.left),
+              child: CenterAppBar(title: title, titleStyle: ThemeFont.header(fontSize: 20)),
+            ),
+            const SizedBox(height: 16),
+            if (child != null) Expanded(child: child!),
             ...children,
           ],
         ),

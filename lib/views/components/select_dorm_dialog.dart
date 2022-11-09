@@ -62,6 +62,7 @@ class DormitoryItem extends StatelessWidget {
       padding: EdgeInsets.zero,
       // TODO: Replace with NetworkImage
       backgroundImage: AssetImage(data.imageUrl),
+      onTap: () => showDialog(context: context, builder: (context) => SelectFloorDialog(data.floors)),
       child: ColoredBox(
         color: ThemeColors.grey.withOpacity(0.5),
         child: Center(

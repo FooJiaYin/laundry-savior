@@ -26,18 +26,20 @@ class Dimensions {
   static const itemMargin = 12.0;
 
   /// 36, 10
-  static EdgeInsetsGeometry buttonPadding = const EdgeInsets.symmetric(
+  static const EdgeInsetsGeometry buttonPadding = EdgeInsets.symmetric(
     horizontal: 36.0,
     vertical: 12.0,
   );
 
-  static EdgeInsets dialogInsetPadding = const EdgeInsets.symmetric(
+  static const EdgeInsets dialogInsetPadding = EdgeInsets.symmetric(
     horizontal: 24,
     vertical: 72,
   );
 
-  static EdgeInsets dialogContainerPadding = const EdgeInsets.symmetric(
-    horizontal: 20,
-    vertical: 36,
+  static const EdgeInsets dialogContainerPadding = EdgeInsets.only(
+    left: 20,
+    right: 20,
+    top: 36,
+    bottom: 24,
   );
 }

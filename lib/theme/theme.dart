@@ -85,8 +85,13 @@ class CustomTheme with ChangeNotifier {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
       ),
+      backgroundColor: ThemeColors.backgroundColor,
       titleTextStyle: ThemeFont.header(fontSize: 20),
       contentTextStyle: ThemeFont.header(fontSize: 20),
+    ),
+    listTileTheme: const ListTileThemeData(
+      textColor: ThemeColors.textColor,
+      iconColor: ThemeColors.textColor,
     ),
   );
 
