@@ -4,15 +4,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../generated/l10n.dart';
 import '../../models/global_state.dart';
 import '../../models/machine.dart';
-import '../../models/machine_status.dart';
+import '../../services/payment.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
 import '../components/neumorphic_button.dart';
 import '../components/neumorphic_container.dart';
+import '../components/payment_dialog.dart';
 import '../widgets/scaffold_page.dart';
 import '../widgets/shape.dart';
 
-enum UseStep { pay, mode, using }
+export '../../models/machine.dart';
 
 class MachinePage extends StatefulWidget {
   const MachinePage(this.data, {Key? key}) : super(key: key);
@@ -60,13 +61,20 @@ class _MachinePageState extends State<MachinePage> {
           child: Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
         ),
         const SizedBox(height: 24),
+        if (state.defaultPaymentMethod != null)
+          NeumorphicButton(
+            gradient: ThemeColors.blueRingGradient,
+            text: "Use ${state.defaultPaymentMethod}",
+            onPressed: () => Payment.pay(context, paymentMethod: state.defaultPaymentMethod!, machine: data),
+          ),
+        if (state.defaultPaymentMethod != null) const SizedBox(height: 12),
         NeumorphicButton(
-          gradient: ThemeColors.blueRingGradient,
-          text: "Pay by phone",
+          gradient: state.defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
+          text: "Select a payment method",
           onPressed: () => showDialog(context: context, builder: (context) => PaymentDialog(data)),
         ),
         const SizedBox(height: 24),
-        Text("or Insert Coin into the machine")
+        const Text("or Insert Coin into the machine")
       ],
       Status.mode: <Widget>[
         Container(

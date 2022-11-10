@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/global_state.dart';
+import '../../services/payment.dart';
 import '../../theme/theme.dart';
 import '../screens/machine.dart';
 import 'payment_method.dart';
@@ -27,13 +28,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
       if (setAsDefault) {
         GlobalState.of(context, listen: false).update(defaultPaymentMethod: name);
       }
-      // TODO: Payment
-      Navigator.push(
-        context,
-        MaterialPageRoute<void>(
-          builder: (context) => MachinePage(widget.data),
-        ),
-      );
+      Payment.pay(context, machine: widget.data, paymentMethod: name);
     }
 
     return SelectDialog(
