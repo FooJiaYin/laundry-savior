@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../models/global_state.dart';
 import '../../theme/theme.dart';
 import '../screens/machine.dart';
 import 'option_item.dart';
@@ -24,7 +25,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
   Widget build(BuildContext context) {
     selectMode(String name) {
       if (setAsDefault) {
-        // TODO:set default payment method
+        GlobalState.of(context, listen: false).update(defaultPaymentMethod: name);
       }
       // TODO: Payment
       Navigator.push(

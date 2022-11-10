@@ -35,8 +35,12 @@ class _SettingPageState extends State<SettingPage> {
             value: (state.dormitory?.name ?? 'Unset') + (state.floor != null ? ", ${state.floor}F" : ""),
             onTap: () => showDialog(context: context, builder: (context) => SelectDormDialog()),
           ),
-          // TODO: Change Default Payment Method
-          const SettingItem(iconName: "money", title: "Default Payment Method", value: "Not Set"),
+          // Default Payment Method
+          SettingItem(
+            iconName: "money",
+            title: "Default Payment Method",
+            value: state.defaultPaymentMethod ?? "Not Set",
+          ),
           // TODO: Change Language
           const SettingItem(iconName: "ball", title: "Language", value: "System"),
           const SizedBox(height: 24),
