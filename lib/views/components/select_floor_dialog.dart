@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/global_state.dart';
 import '../../theme/theme.dart';
+import '../../utils/string.dart';
 import 'option_item.dart';
 import 'select_dialog.dart';
 
@@ -16,7 +17,7 @@ class SelectFloorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SelectDialog(
-      title: "Select Floor",
+      title: "${GlobalState.of(context).dormitory!.name} Dorm",
       padding: const EdgeInsets.only(top: 36, bottom: 24, left: 8, right: 8),
       // Use ListView to enable scroll
       child: ListView.builder(
@@ -41,6 +42,7 @@ class FloorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDefault = id == GlobalState.of(context).floor;
     return OptionItem(
       padding: const EdgeInsets.only(top: 16, bottom: 16, left: 14, right: 8),
       verticalMargin: 4,
@@ -50,7 +52,14 @@ class FloorItem extends StatelessWidget {
         Navigator.pop(context),
         Navigator.pop(context)
       },
-      child: Center(child: Text("${id}th Floor", style: ThemeFont.header())),
+      child: Center(
+        child: Text(
+          "${id.ordinal} Floor",
+          style: ThemeFont.header(
+            color: isDefault ? ThemeColors.primaryColor : null,
+          ),
+        ),
+      ),
     );
   }
 }

@@ -168,7 +168,7 @@ class _MachinePageState extends State<MachinePage> {
           ),
           const SizedBox(height: 14),
           Text(
-            "${data.floor} Floor, Area ${data.section}",
+            "${data.floor} Floor" + (data.section != null ? ", Area ${data.section}" : ""),
           ),
           const SizedBox(height: 40),
           _machinePicture(),

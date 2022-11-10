@@ -102,8 +102,8 @@ class _HomePageState extends State<HomePage> {
               radius: 100,
               height: 36,
               optionWidgets: [
-                Text("Floor ${floor ?? 8}", textAlign: TextAlign.center),
-                const Text("All floors", textAlign: TextAlign.center),
+                Text("${floor != null ? floor.ordinal : 'Your'} Floor", textAlign: TextAlign.center),
+                const Text("All Floors", textAlign: TextAlign.center),
               ],
               onChanged: (value) => setState(() {
                 _selectedIndex = value;

@@ -32,7 +32,7 @@ class _SettingPageState extends State<SettingPage> {
           SettingItem(
             iconName: "home_outlined",
             title: "My Dormitory",
-            value: "${state.dormitory?.name ?? 'Unset'}, ${state.floor}F",
+            value: (state.dormitory?.name ?? 'Unset') + (state.floor != null ? ", ${state.floor}F" : ""),
             onTap: () => showDialog(context: context, builder: (context) => SelectDormDialog()),
           ),
           // TODO: Change Default Payment Method
