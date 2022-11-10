@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../generated/l10n.dart';
+import '../../models/global_state.dart';
 import '../../models/machine.dart';
 import '../../models/machine_status.dart';
 import '../../theme/theme.dart';
@@ -17,7 +18,6 @@ class MachinePage extends StatefulWidget {
   const MachinePage(this.data, {Key? key}) : super(key: key);
 
   final Machine data;
-  final UseStep? step;
 
   @override
   State<MachinePage> createState() => _MachinePageState();
@@ -26,19 +26,15 @@ class MachinePage extends StatefulWidget {
 class _MachinePageState extends State<MachinePage> {
   Machine get data => widget.data;
 
-  // UseStep step = UseStep.pay;
-
-  // goToNextState() => setState(() {
-  //       print(step.index);
-  //       step = UseStep.values[step.index + 1];
-  //     }),;
-
-  goToNextStep(data, {state}) => Navigator.push(
-        context,
-        MaterialPageRoute<void>(
-          builder: (context) => MachinePage(data),
-        ),
-      );
+  goToNextStep({required MachineStatus machineStatus, Status? status}) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute<void>(
+        builder: (context) => MachinePage(data),
+      ),
+      (route) => route.isFirst,
+    );
+  }
 
   Widget _machinePicture() => NeumorphicContainer(
         width: null,
@@ -52,6 +48,7 @@ class _MachinePageState extends State<MachinePage> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalState state = GlobalState.of(context);
     // TODO: refactor this
     // TODO: Message for dryer machine
     // TODO: i18n strings
@@ -71,7 +68,7 @@ class _MachinePageState extends State<MachinePage> {
         const SizedBox(height: 24),
         Text("or Insert Coin into the machine")
       ],
-      UseStep.mode: <Widget>[
+      Status.mode: <Widget>[
         Container(
           alignment: Alignment.bottomCenter,
           height: 76,
@@ -176,7 +173,7 @@ class _MachinePageState extends State<MachinePage> {
           SizedBox(
             height: 220,
             child: Column(
-              children: contents[widget.step ?? data.status.code]!,
+              children: contents[state.status] ?? contents[data.status.code] ?? [],
             ),
           ),
         ],
