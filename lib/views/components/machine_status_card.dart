@@ -2,11 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../models/machine.dart';
+import '../../models/global_state.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
 import '../screens/machine.dart';
 import 'neumorphic_container.dart';
+import 'select_dorm_dialog.dart';
 
 class MachineStatusCard extends StatelessWidget {
   const MachineStatusCard(this.data, {Key? key}) : super(key: key);
@@ -17,20 +18,22 @@ class MachineStatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return NeumorphicContainer(
       padding: const EdgeInsets.all(16),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute<void>(
-          builder: (context) => MachinePage(data),
-        ),
-      ),
+      onTap: () => GlobalState.of(context, listen: false).anonymous
+          ? showDialog(context: context, builder: (context) => SelectDormDialog())
+          : Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => MachinePage(data),
+              ),
+            ),
       child: Column(
         children: [
           Text(
-            '${data.floor}${data.section}',
+            data.locationString,
             style: ThemeFont.style(fontSize: 12),
           ),
           const SizedBox(height: 4),
-          // TODO: Render circular progress for in_use status
+          // TODO: Display progress when in use
           SvgPicture.asset('assets/images/home_${data.status.code.name}.svg'),
           const SizedBox(height: 6),
           Text(
