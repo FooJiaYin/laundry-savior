@@ -49,7 +49,7 @@ class SettingItem extends StatelessWidget {
           const SizedBox(width: 20),
           Row(
             children: [
-              Text(value?.toString().capitalizeFirst ?? ""),
+              Text(value?.toString().capitalizeFirst ?? "", textAlign: TextAlign.right),
             ],
           ),
         ],

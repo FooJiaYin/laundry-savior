@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'dormitory.dart';
 import 'machine.dart';
+import 'reminder_config.dart';
 
 enum Status { idle, waitingFloor, waitingAll, pay, mode, using }
 
@@ -11,7 +12,10 @@ class GlobalState with ChangeNotifier {
   int? floor;
   Machine? currentMachine;
   Status status = Status.idle;
+  Type? waitingMachine = WashingMachine;
   String? defaultPaymentMethod;
+  ReminderConfig machineAvailable = ReminderConfig.defaultConfig;
+  ReminderConfig laundryDone = ReminderConfig.defaultConfig;
   bool get anonymous => dormitory == null || floor == null;
 
   reset() {
@@ -24,18 +28,21 @@ class GlobalState with ChangeNotifier {
   }
 
   update({
-    Dormitory? dormitory,
-    int? floor,
-    Machine? currentMachine,
-    Status? status,
-    String? defaultPaymentMethod,
-    GlobalState? state,
+    dormitory = "",
+    floor = "",
+    currentMachine = "",
+    status,
+    defaultPaymentMethod = "",
+    machineAvailable,
+    laundryDone
   }) {
-    this.dormitory = dormitory ?? state?.dormitory ?? this.dormitory;
-    this.floor = floor ?? state?.floor ?? this.floor;
-    this.currentMachine = currentMachine ?? state?.currentMachine ?? this.currentMachine;
-    this.status = status ?? state?.status ?? this.status;
-    this.defaultPaymentMethod = defaultPaymentMethod ?? state?.defaultPaymentMethod ?? this.defaultPaymentMethod;
+    this.dormitory = dormitory != "" ? dormitory : this.dormitory;
+    this.floor = floor != "" ? floor : this.floor;
+    this.currentMachine = currentMachine != "" ? currentMachine : this.currentMachine;
+    this.status = status ?? this.status;
+    this.defaultPaymentMethod = defaultPaymentMethod != "" ? defaultPaymentMethod : this.defaultPaymentMethod;
+    this.machineAvailable = machineAvailable ?? this.machineAvailable;
+    this.laundryDone = laundryDone ?? this.laundryDone;
     notifyListeners();
   }
 

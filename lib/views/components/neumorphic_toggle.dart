@@ -7,7 +7,7 @@ import 'neumorphic_container.dart';
 class NeumorphicToggle extends StatefulWidget {
   const NeumorphicToggle({
     Key? key,
-    // this.selectedIndex = 0,
+    this.initialIndex = 0,
     this.height = 48,
     this.radius,
     this.gradient,
@@ -16,7 +16,7 @@ class NeumorphicToggle extends StatefulWidget {
   }) : super(key: key);
 
   final double height;
-  // final int selectedIndex;
+  final int initialIndex;
   final double? radius;
   final Gradient? gradient;
   final List<Widget> optionWidgets;
@@ -29,6 +29,12 @@ class NeumorphicToggle extends StatefulWidget {
 class _NeumorphicToggleState extends State<NeumorphicToggle> {
   int selectedIndex = 0;
   Duration animationDuration = const Duration(milliseconds: 200);
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.initialIndex;
+  }
 
   Alignment _alignment(int idx) {
     var percentX = selectedIndex / (widget.optionWidgets.length - 1);

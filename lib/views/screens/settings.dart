@@ -5,6 +5,7 @@ import '../../models/global_state.dart';
 import '../../theme/theme.dart';
 import '../components/app_bar.dart';
 import '../components/default_payment_dialog.dart';
+import '../components/reminder_config_dialog.dart';
 import '../components/select_dorm_dialog.dart';
 import '../components/setting_item.dart';
 import '../widgets/scaffold_page.dart';
@@ -29,26 +30,49 @@ class _SettingPageState extends State<SettingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("General", style: ThemeFont.header()),
+          // Dormitory & Floor
           SettingItem(
             iconName: "home_outlined",
             title: "My Dormitory",
             value: (state.dormitory?.name ?? 'Unset') + (state.floor != null ? ", ${state.floor}F" : ""),
-            onTap: () => showDialog(context: context, builder: (context) => SelectDormDialog()),
+            onTap: () => showDialog(context: context, builder: (context) => const SelectDormDialog()),
           ),
           // Default Payment Method
           SettingItem(
             iconName: "money",
             title: "Default Payment Method",
             value: state.defaultPaymentMethod ?? "Not Set",
-            onTap: () => showDialog(context: context, builder: (context) => DefaultPaymentDialog()),
+            onTap: () => showDialog(context: context, builder: (context) => const DefaultPaymentDialog()),
           ),
           // TODO: Change Language
           const SettingItem(iconName: "ball", title: "Language", value: "System"),
           const SizedBox(height: 24),
-          // TODO: Change reminder setting
+          // Reminder setting
           Text("Reminder", style: ThemeFont.header()),
-          const SettingItem(iconName: "drop_outlined", title: "Machine Available", value: "notification\n30m before"),
-          const SettingItem(iconName: "wind", title: "Laundry done", value: "notification\n30m before"),
+          SettingItem(
+            iconName: "bell_outlined",
+            title: "Machine available",
+            value: state.machineAvailable.summary,
+            onTap: () => showDialog(
+              context: context,
+              builder: (context) => ReminderConfigDialog(
+                title: "Machine Available",
+                config: state.machineAvailable,
+              ),
+            ),
+          ),
+          SettingItem(
+            iconName: "bell_outlined",
+            title: "Laundry done",
+            value: state.laundryDone.summary,
+            onTap: () => showDialog(
+              context: context,
+              builder: (context) => ReminderConfigDialog(
+                title: "Laundry Done",
+                config: state.laundryDone,
+              ),
+            ),
+          ),
           const SizedBox(height: 24),
           // TODO: FAQ & Feedback
           Text("Other", style: ThemeFont.header()),
