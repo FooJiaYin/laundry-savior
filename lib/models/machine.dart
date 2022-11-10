@@ -10,14 +10,16 @@ class Machine {
   final int floor;
   final String? section;
   final Type type;
-  final MachineStatus status;
-  const Machine({
+  MachineStatus status;
+  Machine({
     required this.id,
     required this.floor,
     this.section,
     required this.type,
     required this.status,
   });
+
+  get locationString => "$floor${section ?? ' Floor'}";
 
   Machine copyWith({
     int? id,
@@ -93,7 +95,7 @@ class Machine {
 } 
 
 class WashingMachine extends Machine {
-  const WashingMachine({
+  WashingMachine({
     required int id, 
     required int floor, 
     String? section, 
@@ -104,11 +106,11 @@ class WashingMachine extends Machine {
     status: status, 
     type: WashingMachine, 
     section: section,
-  );  
+  );
 }
 
 class DryerMachine extends Machine {
-  const DryerMachine({
+  DryerMachine({
     required int id, 
     required int floor, 
     String? section, 

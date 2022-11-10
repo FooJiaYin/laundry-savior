@@ -9,9 +9,9 @@ import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
 import '../../utils/config.dart';
 import '../../utils/string.dart';
-import '../components/instruction_card.dart';
 import '../components/machine_status_card.dart';
 import '../components/neumorphic_toggle.dart';
+import '../components/status_card.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
 
@@ -55,12 +55,11 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Column(
         children: <Widget>[
-          // TODO: Differenct instructions
-          InstructionCard(),
+          StatusCard(),
           const SizedBox(height: 40),
           _floorSelector(state.dormitory, state.floor),
           const SizedBox(height: 24),
-          // TODO: Update when switched floor
+          // TODO: Waiting switch
           ..._machineSection(
             iconName: "drop_filled",
             title: S.of(context).washing_machine,
@@ -113,6 +112,7 @@ class _HomePageState extends State<HomePage> {
         ],
       );
 
+  // TODO: Update when floor switched
   List<Widget> _machineSection({
     required String iconName,
     required String title,

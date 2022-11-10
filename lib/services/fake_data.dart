@@ -68,21 +68,21 @@ class FakeData {
     ];
   }
 
-  static const washingMachine = WashingMachine(
+  static WashingMachine washingMachine = WashingMachine(
     id: 0,
     floor: 8,
     section: 'A',
     status: MachineStatus(code: StatusCode.available),
   );
 
-  static const dryerMachine = DryerMachine(
+  static DryerMachine dryerMachine = DryerMachine(
     id: 0,
     floor: 8,
     section: 'A',
     status: MachineStatus(code: StatusCode.available),
   );
 
-  static final inUse = const MachineStatus(
+  static const inUse = MachineStatus(
     code: StatusCode.in_use,
     durationEstimated: Duration(minutes: 40),
     durationPassed: Duration(minutes: 13),

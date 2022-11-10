@@ -28,6 +28,9 @@ class _MachinePageState extends State<MachinePage> {
   Machine get data => widget.data;
 
   goToNextStep({required MachineStatus machineStatus, Status? status}) {
+    var state = GlobalState.of(context, listen: false);
+    state.currentMachine!.status = machineStatus;
+    state.update(status: status ?? state.status);
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute<void>(
@@ -53,6 +56,22 @@ class _MachinePageState extends State<MachinePage> {
     // TODO: refactor this
     // TODO: Message for dryer machine
     // TODO: i18n strings
+
+    wash(String mode) {
+      goToNextStep(
+        machineStatus: const MachineStatus(
+          code: StatusCode.in_use,
+          durationEstimated: Duration(minutes: 40),
+          durationPassed: Duration.zero,
+        ),
+        status: Status.using,
+      );
+      Future.delayed(const Duration(seconds: 10), () {
+        state.currentMachine!.status = MachineStatus(code: StatusCode.overdue);
+        state.update();
+      });
+    }
+
     var contents = {
       StatusCode.available: <Widget>[
         Container(
@@ -87,31 +106,9 @@ class _MachinePageState extends State<MachinePage> {
           ),
         ),
         const SizedBox(height: 24),
-        NeumorphicButton(
-          text: "Delicate Wash",
-          onPressed: () => goToNextStep(
-            data.copyWith(
-              status: MachineStatus(
-                code: StatusCode.in_use,
-                durationEstimated: const Duration(minutes: 40),
-                durationPassed: Duration.zero,
-              ),
-            ),
-          ),
-        ),
+        NeumorphicButton(text: "Delicate Wash", onPressed: () => wash("Delicate")),
         const SizedBox(height: 24),
-        NeumorphicButton(
-          text: "Normal Wash",
-          onPressed: () => goToNextStep(
-            data.copyWith(
-              status: MachineStatus(
-                code: StatusCode.in_use,
-                durationEstimated: const Duration(minutes: 40),
-                durationPassed: Duration.zero,
-              ),
-            ),
-          ),
-        ),
+        NeumorphicButton(text: "Normal Wash", onPressed: () => wash("Normal")),
       ],
       StatusCode.in_use: <Widget>[
         Container(
@@ -132,7 +129,7 @@ class _MachinePageState extends State<MachinePage> {
           ),
         ),
         const SizedBox(height: 24),
-        Text(
+        const Text(
           "You’ll be reminded when the laundry is done.",
           textAlign: TextAlign.center,
         ),
@@ -142,22 +139,24 @@ class _MachinePageState extends State<MachinePage> {
           alignment: Alignment.bottomCenter,
           height: 76,
           child: Text(
-            "Launry overdue!",
+            "Launry is done!",
             style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
             textAlign: TextAlign.center,
           ),
         ),
         const SizedBox(height: 24),
         Text(
-          "Seem like someone haven’t take their laundry.",
+          data == state.currentMachine ? "Please collect your laundry ASAP!" : "Seem like someone haven’t take their laundry.",
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
-        NeumorphicButton(
-          text: "Ping",
-          gradient: ThemeColors.pinkRingGradient,
-          onPressed: () => {},
-        ),
+        // TODO: Notification
+        if (data != state.currentMachine)
+          NeumorphicButton(
+            text: "Ping",
+            gradient: ThemeColors.pinkRingGradient,
+            onPressed: () => {},
+          ),
       ],
     };
 
