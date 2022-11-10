@@ -3,12 +3,8 @@ import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/account.dart';
 import '../models/dormitory.dart';
-import '../models/file.dart';
 import '../models/machine.dart';
-import '../models/sample.dart';
-import '../models/user.dart';
 
 class FakeData {
   static final authenticated = StreamController<bool>.broadcast();
@@ -26,52 +22,10 @@ class FakeData {
     return authenticated.stream;
   }
 
-  static Future signIn(Account account) async {
-    authenticated.add(true);
-  }
-
-  static Future signOut() async {
-    authenticated.add(false);
-  }
-
-  /// Example
-  static Future<List<SampleData>> getData() async {
-    var sample = SampleData(
-      name: "First Item",
-      description: "Hello World!",
-      user: User(
-          id: 123,
-          name: "Alice",
-          profileImage: File(url: "https://d1hjkbq40fs2x4.cloudfront.net/2016-07-16/files/cat-sample_1313.jpg"),
-          email: "a@gmail.com",
-          createdTime: DateTime.now(),
-          lastActive: DateTime.now()),
-      createdTime: DateTime.now(),
-      tags: ["cats", "cute"],
-    );
-    return [
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-      sample,
-    ];
-  }
-
   static WashingMachine washingMachine = WashingMachine(
     id: 0,
     floor: 8,
-    section: 'A',
+    // section: 'A',
     status: MachineStatus(code: StatusCode.available),
   );
 
@@ -100,6 +54,7 @@ class FakeData {
       washingMachine.copyWith(status: inUse),
       washingMachine.copyWith(status: inUse),
       washingMachine.copyWith(status: overdue),
+      washingMachine.copyWith(status: overdue),
     ];
   }
 
@@ -111,7 +66,7 @@ class FakeData {
     ];
   }
 
-  static const dorm = Dormitory(
+  static const dorm1 = Dormitory(
     id: 'ntu_male_1',
     name: "Male 1",
     imageUrl: "assets/images/dorm.png",
@@ -119,11 +74,22 @@ class FakeData {
     floors: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
   );
 
+  static const dorm2 = Dormitory(
+    id: 'ntu_male_2',
+    name: "Male 2",
+    imageUrl: "assets/images/dorm.png",
+    university: "ntu",
+    floors: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  );
+
   static Future<Dormitory> getDormitory() async {
-    return dorm;
+    return dorm1;
   }
 
   static Future<List<Dormitory>> getDormitories(String university) async {
-    return List<Dormitory>.generate(20, (i) => dorm);
+    return [
+      ...List<Dormitory>.generate(10, (i) => dorm1),
+      ...List<Dormitory>.generate(10, (i) => dorm2),
+    ];
   }
 }

@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/account.dart';
 import '../models/api/auth_token.dart';
 import '../models/api/response.dart';
 
@@ -72,27 +71,27 @@ class API {
     return authenticated.stream;
   }
 
-  static Future signIn(Account account) async {
-    final response = await instance.post(
-      '/Auth/SignIn',
-      data: account.toMap(),
-      options: Options(headers: getHeader(useAuth: false)),
-    );
-    authToken = AuthToken.fromMap(response.data['data']);
+  // static Future signIn(Account account) async {
+  //   final response = await instance.post(
+  //     '/Auth/SignIn',
+  //     data: account.toMap(),
+  //     options: Options(headers: getHeader(useAuth: false)),
+  //   );
+  //   authToken = AuthToken.fromMap(response.data['data']);
 
-    // 登入後存下token並廣播登入成功
-    final sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('AUTH_TOKEN', authToken!.token);
-    await sharedPreferences.setString('API_REFRESH_TOKEN', authToken!.refreshToken);
-    authenticated.add(true);
-  }
+  //   // 登入後存下token並廣播登入成功
+  //   final sharedPreferences = await SharedPreferences.getInstance();
+  //   await sharedPreferences.setString('AUTH_TOKEN', authToken!.token);
+  //   await sharedPreferences.setString('API_REFRESH_TOKEN', authToken!.refreshToken);
+  //   authenticated.add(true);
+  // }
 
-  static Future signOut() async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.remove('AUTH_TOKEN');
-    await sharedPreferences.remove('API_REFRESH_TOKEN');
-    authenticated.add(false);
-  }
+  // static Future signOut() async {
+  //   final sharedPreferences = await SharedPreferences.getInstance();
+  //   await sharedPreferences.remove('AUTH_TOKEN');
+  //   await sharedPreferences.remove('API_REFRESH_TOKEN');
+  //   authenticated.add(false);
+  // }
   
   /// Example
   /* static Future<List<DataModel>> getData(DateTime date) async {
