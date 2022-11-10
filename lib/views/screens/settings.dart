@@ -4,9 +4,9 @@ import '../../generated/l10n.dart';
 import '../../models/global_state.dart';
 import '../../theme/theme.dart';
 import '../components/app_bar.dart';
+import '../components/default_payment_dialog.dart';
 import '../components/select_dorm_dialog.dart';
 import '../components/setting_item.dart';
-import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
 
 class SettingPage extends StatefulWidget {
@@ -40,6 +40,7 @@ class _SettingPageState extends State<SettingPage> {
             iconName: "money",
             title: "Default Payment Method",
             value: state.defaultPaymentMethod ?? "Not Set",
+            onTap: () => showDialog(context: context, builder: (context) => DefaultPaymentDialog()),
           ),
           // TODO: Change Language
           const SettingItem(iconName: "ball", title: "Language", value: "System"),

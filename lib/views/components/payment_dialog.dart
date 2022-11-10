@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/global_state.dart';
 import '../../theme/theme.dart';
 import '../screens/machine.dart';
-import 'option_item.dart';
+import 'payment_method.dart';
 import 'select_dialog.dart';
 
 class PaymentDialog extends StatefulWidget {
@@ -60,10 +60,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
           ),
           Text("Select Payment Method", style: ThemeFont.header()),
           const SizedBox(height: 12),
-          PaymentMethod(name: "Line Pay", onTap: selectMode),
-          PaymentMethod(name: "Apple Pay", onTap: selectMode),
-          PaymentMethod(name: "JKO Pay", onTap: selectMode),
-          PaymentMethod(name: "Credit Card", onTap: selectMode),
+          ...paymentMethods(onSelect: selectMode),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -81,25 +78,6 @@ class _PaymentDialogState extends State<PaymentDialog> {
           )
         ],
       ),
-    );
-  }
-}
-
-class PaymentMethod extends StatelessWidget {
-  const PaymentMethod({
-    Key? key,
-    required this.name,
-    this.onTap,
-  }) : super(key: key);
-
-  final String name;
-  final dynamic onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return OptionItem(
-      onTap: () => onTap(name),
-      child: Text(name),
     );
   }
 }
