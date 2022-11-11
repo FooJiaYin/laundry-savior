@@ -49,7 +49,7 @@ class Dormitory {
       name: map['name'] as String,
       imageUrl: map['imageUrl'] as String,
       university: map['university'] as String,
-      floors: List<int>.from((map['floors'] as List<int>)),
+      floors: List<int>.from((map['floors'].cast<int>())),
     );
   }
 

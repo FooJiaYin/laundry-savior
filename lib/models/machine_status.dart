@@ -30,7 +30,7 @@ class MachineStatus {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'code': code.toString(),
+      'code': code.name,
       'durationPassed': durationPassed?.inSeconds,
       'durationEstimated': durationEstimated?.inSeconds,
     };
@@ -39,8 +39,8 @@ class MachineStatus {
   factory MachineStatus.fromMap(Map<String, dynamic> map) {
     return MachineStatus(
       code: map['code'] != null ? StatusCode.parse(map['code']) : StatusCode.available,
-      durationPassed: Duration(seconds: map['durationPassed']),
-      durationEstimated: Duration(seconds: map['durationEstimated']),
+      durationPassed: map['durationPassed'] != null ? Duration(seconds: map['durationPassed']) : null,
+      durationEstimated: map['durationEstimated'] != null ? Duration(seconds: map['durationEstimated']) : null,
     );
   }
 

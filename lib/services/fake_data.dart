@@ -5,21 +5,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/dormitory.dart';
 import '../models/machine.dart';
+import '../models/global_state.dart';
 
 class FakeData {
-  static final authenticated = StreamController<bool>.broadcast();
-
-  static Future init() async {
-    // onListen就要馬上廣播登入狀態，否則會視為未登入
-    authenticated.onListen = () async {
-      final sharedPreferences = await SharedPreferences.getInstance();
-      authenticated.add(true);
-    };
-  }
-
-  /// 驗證是否為登入狀態
-  static Stream<bool> isAuthenticated() {
-    return authenticated.stream;
+  static Future<GlobalState> loadGlobalState() async {
+    var state = GlobalState();
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final config = sharedPreferences.getString('config');
+    if (config != null) state.fromJson(config);
+    state.addListener(() {
+      sharedPreferences.setString('config', state.toJson());
+    });
+    return state;
   }
 
   static WashingMachine washingMachine = WashingMachine(

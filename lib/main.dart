@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
 import 'models/global_state.dart';
-import 'services/api.dart';
-import 'services/fake_data.dart';
 import 'theme/theme.dart';
 import 'utils/config.dart';
 import 'views/route.dart';
@@ -24,7 +22,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   AppConfig config = AppConfig();
-  GlobalState globalState = GlobalState();
 
   @override
   void initState() {
@@ -54,15 +51,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      stream: API.isAuthenticated(),
-      builder: (context, AsyncSnapshot<bool> isAuthenticated) {
-        final auth = isAuthenticated.hasData ? (isAuthenticated.data ?? false) : false;
-        return ChangeNotifierProvider(
-          create: (context) => globalState,
-          child: app(context),
-        );
-      },
+    return FutureBuilder<GlobalState>(
+      future: GlobalState.init(),
+      builder: (context, snapshot) => snapshot.connectionState == ConnectionState.done
+          ? ChangeNotifierProvider(
+              create: (context) => snapshot.data,
+              child: app(context),
+            )
+          : Container(color: ThemeColors.backgroundColor),
     );
   }
 
