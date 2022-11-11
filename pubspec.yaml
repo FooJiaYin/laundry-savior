@@ -42,6 +42,7 @@ dependencies:
   mime: ^1.0.2
   flutter_svg: ^1.1.6
   provider: ^6.0.4
+  flutter_native_splash: ^2.2.9
 
 dev_dependencies:
   flutter_test:
@@ -83,11 +84,23 @@ flutter_intl:
   # main_locale: zh_Hant_TW
   enabled: true
 
+# After changing config below, place run `flutter pub run flutter_launcher_icons:main`
 flutter_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
-  image_path: "assets/icons/icon.png"
+  image_path: "assets/images/icon.png"
+  adaptive_icon_background: "#F2F4F7"
   remove_alpha_ios: true
+
+# After changing config below, please run `flutter pub run flutter_native_splash:create`
+flutter_native_splash:
+  background_image: "assets/images/splash.png"
+  color: "#F2F4F7"
+  android_12:
+    image: "assets/images/android_splash_icon.png"
+    branding: "assets/images/android_splash_branding.png"
+    color: "#F2F4F7"
+    icon_background_color: "#F2F4F7"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
