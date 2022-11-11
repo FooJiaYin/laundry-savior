@@ -12,6 +12,7 @@ import '../components/neumorphic_container.dart';
 import '../components/payment_dialog.dart';
 import '../widgets/scaffold_page.dart';
 import '../widgets/shape.dart';
+import 'price_button.dart';
 
 export '../../models/machine.dart';
 
@@ -26,6 +27,14 @@ class MachinePage extends StatefulWidget {
 
 class _MachinePageState extends State<MachinePage> {
   Machine get data => widget.data;
+  GlobalState state = GlobalState();
+  int _selectedPrice = 10;
+
+  selectPrice(price) {
+    setState(() {
+      _selectedPrice = price;
+    });
+  }
 
   goToNextStep({required MachineStatus machineStatus, Status? status}) {
     var state = GlobalState.of(context, listen: false);
@@ -40,9 +49,25 @@ class _MachinePageState extends State<MachinePage> {
     );
   }
 
+  wash(String mode) {
+    goToNextStep(
+      machineStatus: const MachineStatus(
+        code: StatusCode.in_use,
+        durationEstimated: Duration(minutes: 40),
+        durationPassed: Duration.zero,
+      ),
+      status: Status.using,
+    );
+    Future.delayed(const Duration(seconds: 10), () {
+      state.currentMachine!.status = MachineStatus(code: StatusCode.overdue);
+      state.update();
+    });
+  }
+
   Widget _machinePicture() => NeumorphicContainer(
         width: null,
         padding: const EdgeInsets.all(32),
+        shadows: [...ThemeDecoration.neumorphicShadow, ...ThemeDecoration.neumorphicShadow],
         borderRadius: 43.0,
         child: Circle(
           shadows: ThemeDecoration.circleShadow,
@@ -52,32 +77,26 @@ class _MachinePageState extends State<MachinePage> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalState state = GlobalState.of(context);
+    state = GlobalState.of(context);
     // TODO: refactor this
     // TODO: Message for dryer machine
     // TODO: i18n strings
-
-    wash(String mode) {
-      goToNextStep(
-        machineStatus: const MachineStatus(
-          code: StatusCode.in_use,
-          durationEstimated: Duration(minutes: 40),
-          durationPassed: Duration.zero,
-        ),
-        status: Status.using,
-      );
-      Future.delayed(const Duration(seconds: 10), () {
-        state.currentMachine!.status = MachineStatus(code: StatusCode.overdue);
-        state.update();
-      });
-    }
 
     var contents = {
       StatusCode.available: <Widget>[
         Container(
           alignment: Alignment.bottomCenter,
-          height: 76,
-          child: Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
+          height: 96,
+          child: data.type == DryerMachine
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    PriceButton(price: 10, name: "25 min", onPressed: selectPrice, isSelected: _selectedPrice == 10),
+                    PriceButton(price: 20, name: "50 min", onPressed: selectPrice, isSelected: _selectedPrice == 20),
+                    PriceButton(price: 30, name: "70 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
+                  ],
+                )
+              : Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
         ),
         const SizedBox(height: 24),
         if (state.defaultPaymentMethod != null)
@@ -90,7 +109,7 @@ class _MachinePageState extends State<MachinePage> {
         NeumorphicButton(
           gradient: state.defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
           text: "Select a payment method",
-          onPressed: () => showDialog(context: context, builder: (context) => PaymentDialog(data)),
+          onPressed: () => showDialog(context: context, builder: (context) => PaymentDialog(data, price: _selectedPrice)),
         ),
         const SizedBox(height: 24),
         const Text("or Insert Coin into the machine")
@@ -98,22 +117,22 @@ class _MachinePageState extends State<MachinePage> {
       Status.mode: <Widget>[
         Container(
           alignment: Alignment.bottomCenter,
-          height: 76,
+          height: 96,
           child: Text(
-            "Washing Mode",
+            data.type == WashingMachine ? "Washing Mode" : "Drying Mode",
             style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
             textAlign: TextAlign.center,
           ),
         ),
         const SizedBox(height: 24),
-        NeumorphicButton(text: "Delicate Wash", onPressed: () => wash("Delicate")),
+        NeumorphicButton(text: "Normal", onPressed: () => wash("Normal")),
         const SizedBox(height: 24),
-        NeumorphicButton(text: "Normal Wash", onPressed: () => wash("Normal")),
+        NeumorphicButton(text: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature", onPressed: () => wash("Delicate"),),
       ],
       StatusCode.in_use: <Widget>[
         Container(
           alignment: Alignment.bottomCenter,
-          height: 76,
+          height: 96,
           child: Text.rich(
             textAlign: TextAlign.center,
             TextSpan(
@@ -137,7 +156,7 @@ class _MachinePageState extends State<MachinePage> {
       StatusCode.overdue: <Widget>[
         Container(
           alignment: Alignment.bottomCenter,
-          height: 76,
+          height: 96,
           child: Text(
             "Launry is done!",
             style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
@@ -178,7 +197,7 @@ class _MachinePageState extends State<MachinePage> {
           _machinePicture(),
           const SizedBox(height: 48),
           SizedBox(
-            height: 220,
+            height: 240,
             child: Column(
               children: contents[state.status] ?? contents[data.status.code] ?? [],
             ),

@@ -10,10 +10,12 @@ import 'select_dialog.dart';
 class PaymentDialog extends StatefulWidget {
   const PaymentDialog(
     this.data, {
+    this.price = 10,
     Key? key,
   }) : super(key: key);
 
   final Machine data;
+  final int price;
 
   @override
   State<PaymentDialog> createState() => _PaymentDialogState();
@@ -41,11 +43,11 @@ class _PaymentDialogState extends State<PaymentDialog> {
               child: Text.rich(
                 textAlign: TextAlign.center,
                 TextSpan(
-                  text: "NTD ",
+                  text: "NT ",
                   style: ThemeFont.header(fontSize: 24, color: ThemeColors.darkGrey),
-                  children: const [
+                  children: [
                     TextSpan(
-                      text: "10",
+                      text: widget.price.toString(),
                       style: TextStyle(fontSize: 48),
                     ),
                   ],

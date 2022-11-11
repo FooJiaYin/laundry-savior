@@ -81,7 +81,12 @@ class StatusCard extends StatelessWidget {
                                       showDialog(context: context, builder: (context) => MachinePage(state.currentMachine!));
                                       Future.delayed(const Duration(seconds: 3), () {
                                         state.currentMachine!.status = MachineStatus(code: StatusCode.available);
-                                        state.update();
+                                        if (state.currentMachine!.type == WashingMachine) {
+                                          state.currentMachine = FakeData.dryerMachine;
+                                        } else {
+                                          state.currentMachine = FakeData.washingMachine;
+                                        }
+                                        state.update(status: Status.idle);
                                       });
                                     },
                                   )
