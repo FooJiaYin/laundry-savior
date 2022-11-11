@@ -10,12 +10,14 @@ class NeumorphicButton extends StatelessWidget {
     required this.text,
     this.textColor,
     this.gradient,
+    this.width = double.infinity,
     this.onPressed,
   }) : super(key: key);
 
   final String text;
   final Color? textColor;
   final Gradient? gradient;
+  final double? width;
   final dynamic onPressed;
 
   @override
@@ -33,7 +35,7 @@ class NeumorphicButton extends StatelessWidget {
         textStyle: TextStyle(
           color: textColor ?? (gradient != null ? Colors.white : ThemeColors.darkGrey),
         ),
-        width: double.infinity,
+        width: width,
         onPressed: onPressed,
       ),
     );

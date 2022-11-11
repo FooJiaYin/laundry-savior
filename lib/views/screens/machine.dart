@@ -7,6 +7,7 @@ import '../../models/machine.dart';
 import '../../services/payment.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
+import '../components/exit_alert_dialog.dart';
 import '../components/neumorphic_button.dart';
 import '../components/neumorphic_container.dart';
 import '../components/payment_dialog.dart';
@@ -180,7 +181,7 @@ class _MachinePageState extends State<MachinePage> {
     };
 
     // TODO: Alarm pages
-    return ScaffoldPage(
+    Widget _machinePage = ScaffoldPage(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(48),
       child: Column(
@@ -204,6 +205,15 @@ class _MachinePageState extends State<MachinePage> {
           ),
         ],
       ),
+    );
+
+    return WillPopScope(
+      onWillPop: () async {
+        return state.status != Status.mode;
+        final willPop = await showDialog<bool>(context: context, builder: (context) => ExitAlertDialog());
+        return willPop!;
+      },
+      child: _machinePage,
     );
   }
 }
