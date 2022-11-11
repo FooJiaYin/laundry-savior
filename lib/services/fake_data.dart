@@ -1,11 +1,11 @@
-/// Global service, MUST call `init()` when app first launched!
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/dormitory.dart';
-import '../models/machine.dart';
 import '../models/global_state.dart';
+import '../views/screens/machine.dart';
 
 class FakeData {
   static Future<GlobalState> loadGlobalState() async {
@@ -88,5 +88,26 @@ class FakeData {
       ...List<Dormitory>.generate(10, (i) => dorm1),
       ...List<Dormitory>.generate(10, (i) => dorm2),
     ];
+  }
+
+  static setReminder(context) async {
+    var state = GlobalState.of(context);
+    if (state.status == Status.waitingAll || state.status == Status.waitingFloor)
+    Future.delayed(const Duration(seconds: 10), () {
+      state.update(currentMachine: FakeData.washingMachine);
+    });
+  }
+
+  static wash() {}
+
+  static pay(context, {required String paymentMethod, required Machine machine}) {
+    // TODO: Payment
+    GlobalState.set(context, currentMachine: machine, status: Status.mode);
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (context) => MachinePage(machine),
+      ),
+    );
   }
 }

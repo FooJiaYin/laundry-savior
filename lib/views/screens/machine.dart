@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../generated/l10n.dart';
 import '../../models/global_state.dart';
 import '../../models/machine.dart';
-import '../../services/payment.dart';
+import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
 import '../components/exit_alert_dialog.dart';
@@ -104,7 +104,7 @@ class _MachinePageState extends State<MachinePage> {
           NeumorphicButton(
             gradient: ThemeColors.blueRingGradient,
             text: "Use ${state.defaultPaymentMethod}",
-            onPressed: () => Payment.pay(context, paymentMethod: state.defaultPaymentMethod!, machine: data),
+            onPressed: () => FakeData.pay(context, paymentMethod: state.defaultPaymentMethod!, machine: data),
           ),
         if (state.defaultPaymentMethod != null) const SizedBox(height: 12),
         NeumorphicButton(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/global_state.dart';
-import '../../services/payment.dart';
+import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
 import '../screens/machine.dart';
 import 'payment_method.dart';
@@ -30,7 +30,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
       if (setAsDefault) {
         GlobalState.set(context, defaultPaymentMethod: name);
       }
-      Payment.pay(context, machine: widget.data, paymentMethod: name);
+      FakeData.pay(context, machine: widget.data, paymentMethod: name);
     }
 
     return SelectDialog(
