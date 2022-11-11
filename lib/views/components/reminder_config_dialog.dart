@@ -63,7 +63,7 @@ class _ReminderConfigDialogState extends State<ReminderConfigDialog> {
             textColor: ThemeColors.primaryColor,
             onPressed: () => {
               widget.config.update(context, config: _config),
-              GlobalState.of(context, listen: false).update(),
+              GlobalState.set(context),
               Navigator.of(context).pop(),
             },
           ),

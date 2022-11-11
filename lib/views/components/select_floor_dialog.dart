@@ -48,7 +48,7 @@ class FloorItem extends StatelessWidget {
       verticalMargin: 4,
       onTap: () => {
         // TODO: Set dorm & floor in shared preference
-        GlobalState.of(context, listen: false).update(floor: id),
+        GlobalState.set(context, floor: id),
         Navigator.pop(context),
         Navigator.pop(context)
       },

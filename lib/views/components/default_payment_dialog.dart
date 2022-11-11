@@ -12,7 +12,7 @@ class DefaultPaymentDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     selectMode(String? name) {
-      GlobalState.of(context, listen: false).update(defaultPaymentMethod: name);
+      GlobalState.set(context, defaultPaymentMethod: name);
       Navigator.pop(context);
     }
 

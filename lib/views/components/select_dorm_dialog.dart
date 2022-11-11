@@ -55,7 +55,7 @@ class DormitoryItem extends StatelessWidget {
   final Dormitory data;
 
   onDormSelected(context) {
-    GlobalState.of(context, listen: false).update(dormitory: data);
+    GlobalState.set(context, dormitory: data);
     showDialog(context: context, builder: (context) => SelectFloorDialog(data.floors));
   }
 

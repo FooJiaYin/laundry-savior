@@ -54,6 +54,26 @@ class GlobalState with ChangeNotifier {
   }
 
   static GlobalState of(context, {bool listen = true}) => Provider.of<GlobalState>(context, listen: listen);
+  static set(
+    context, {
+    dormitory = "",
+    floor = "",
+    currentMachine = "",
+    status,
+    defaultPaymentMethod = "",
+    machineAvailable,
+    laundryDone,
+  }) {
+    Provider.of<GlobalState>(context, listen: false).update(
+      dormitory: dormitory,
+      floor: floor,
+      currentMachine: currentMachine,
+      status: status,
+      defaultPaymentMethod: defaultPaymentMethod,
+      machineAvailable: machineAvailable,
+      laundryDone: laundryDone,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

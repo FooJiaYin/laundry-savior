@@ -26,7 +26,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
   Widget build(BuildContext context) {
     selectMode(String name) {
       if (setAsDefault) {
-        GlobalState.of(context, listen: false).update(defaultPaymentMethod: name);
+        GlobalState.set(context, defaultPaymentMethod: name);
       }
       Payment.pay(context, machine: widget.data, paymentMethod: name);
     }
