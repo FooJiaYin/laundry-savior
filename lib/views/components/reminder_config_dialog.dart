@@ -49,7 +49,7 @@ class _ReminderConfigDialogState extends State<ReminderConfigDialog> {
             onChanged: (id) => _config.remindMethod = methodOptions[id],
           ),
           const SizedBox(height: 48),
-          Text("Remind Me Before", style: ThemeFont.header()),
+          Text("Notify Me Before", style: ThemeFont.header()),
           const SizedBox(height: 16),
           NeumorphicNumberInput(
             initialValue: _config.remindBefore,

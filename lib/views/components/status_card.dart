@@ -58,7 +58,7 @@ class StatusCard extends StatelessWidget {
     return _statusCard(
       title: "Washing machines on ${state.floor}F are busy.",
       description: 'Remind when any washing machine available on ${state.floor!}F?',
-      actionWidget: const ActionText('Remind me', color: ThemeColors.royalBlue),
+      actionWidget: const ActionText('Notify me', color: ThemeColors.royalBlue),
       onTap: () {
         state.update(status: Status.waitingFloor, waitingMachine: WashingMachine);
         // FakeData.setReminder(context);
