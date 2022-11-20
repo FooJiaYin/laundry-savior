@@ -61,7 +61,12 @@ class StatusCard extends StatelessWidget {
       actionWidget: const ActionText('Remind me', color: ThemeColors.royalBlue),
       onTap: () {
         state.update(status: Status.waitingFloor, waitingMachine: WashingMachine);
-        FakeData.setReminder(context);
+        // FakeData.setReminder(context);
+        if (state.status == Status.waitingAll || state.status == Status.waitingFloor) {
+          Future.delayed(const Duration(seconds: 10), () {
+            GlobalState.set(context, currentMachine: FakeData.washingMachine);
+          });
+        }
       },
     );
   }

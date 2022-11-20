@@ -12,6 +12,7 @@ import '../../utils/string.dart';
 import '../components/machine_status_card.dart';
 import '../components/neumorphic_toggle.dart';
 import '../components/status_card.dart';
+import '../components/waiting_switch.dart';
 import '../widgets/button.dart';
 import '../widgets/scaffold_page.dart';
 
@@ -59,7 +60,6 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 40),
           _floorSelector(state.dormitory, state.floor),
           const SizedBox(height: 24),
-          // TODO: Waiting switch
           ..._machineSection(
             iconName: "drop_filled",
             title: S.of(context).washing_machine,
@@ -124,9 +124,11 @@ class _HomePageState extends State<HomePage> {
             SvgPicture.asset("assets/icons/$iconName.svg", width: 20, height: 20),
             const SizedBox(width: 8),
             Text(title.capitalizeEach, style: ThemeFont.header()),
+            Expanded(child: Container()),
+            WaitingSwitch(machineType: type),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 2),
         GridView.count(
           clipBehavior: Clip.none,
           crossAxisCount: 3,
