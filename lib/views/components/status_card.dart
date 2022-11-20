@@ -73,12 +73,12 @@ class StatusCard extends StatelessWidget {
 
   Widget statusCard_waitingFloor(GlobalState state, BuildContext context) {
     return _statusCard(
-      title: "Waiting for a ${state.waitingMachine == WashingMachine ? 'washing' : 'dryer'} machine",
-      description: 'We’ll send you ${state.machineAvailable.remindMethod.toLowerCase()} when any machine available on ${state.floor}F!',
-      actionWidget: const ActionText('Check Other Floors', color: ThemeColors.royalBlue),
-      // TODO: Check other floor
-      onTap: () => state.update(status: Status.waitingAll),
-    );
+        title: "Waiting for a ${state.waitingMachine == WashingMachine ? 'washing' : 'dryer'} machine",
+        description: 'We’ll send you ${state.machineAvailable.remindMethod.toLowerCase()} when any machine available on ${state.floor}F!',
+        actionWidget: const ActionText('Check Other Floors', color: ThemeColors.royalBlue),
+        onTap: () {
+          state.update(status: Status.waitingAll, viewIndex: 1);
+        });
   }
 
   Widget statusCard_waitingAll(GlobalState state, BuildContext context) {

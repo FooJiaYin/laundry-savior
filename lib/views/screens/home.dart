@@ -29,7 +29,6 @@ class _HomePageState extends State<HomePage> {
   late Dormitory dorm;
   List<Machine> washingMachines = [];
   List<Machine> dryerMachines = [];
-  int _selectedIndex = 0;
 
   loadItems() async {
     dorm = await FakeData.getDormitory();
@@ -47,6 +46,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     GlobalState state = GlobalState.of(context);
+    var floorFilter = (machine) => state.viewIndex==0? machine.floor == state.floor : machine.status.code == StatusCode.available;
     return ScaffoldPage(
       appBar: AppBar(
         title: Padding(
@@ -56,20 +56,22 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Column(
         children: <Widget>[
-          StatusCard(),
+          const StatusCard(),
           const SizedBox(height: 40),
           _floorSelector(state.dormitory, state.floor),
           const SizedBox(height: 24),
           ..._machineSection(
             iconName: "drop_filled",
             title: S.of(context).washing_machine,
-            machines: washingMachines,
+            machines: washingMachines.where(floorFilter).toList(),
+            type: WashingMachine,
           ),
           const SizedBox(height: 32),
           ..._machineSection(
             iconName: "wind",
             title: S.of(context).dryer_machine,
-            machines: dryerMachines,
+            machines: dryerMachines.where(floorFilter).toList(),
+            type: DryerMachine,
           ),
           const SizedBox(height: 40),
         ],
@@ -97,25 +99,24 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 3,
             child: NeumorphicToggle(
-              // selectedIndex: _selectedIndex,
+              selectedIndex: GlobalState.of(context).viewIndex,
               radius: 100,
               height: 36,
               optionWidgets: [
                 Text("${floor != null ? floor.ordinal : 'Your'} Floor", textAlign: TextAlign.center),
                 const Text("All Floors", textAlign: TextAlign.center),
               ],
-              onChanged: (value) => setState(() {
-                _selectedIndex = value;
-              }),
+              onChanged: (value) => GlobalState.set(context, viewIndex: value)
             ),
           ),
         ],
       );
 
-  // TODO: Update when floor switched
   List<Widget> _machineSection({
     required String iconName,
     required String title,
+    required Type type,
+    int filter = 0,
     List<Machine> machines = const [],
   }) =>
       [

@@ -8,12 +8,15 @@ import 'dormitory.dart';
 import 'machine.dart';
 import 'reminder_config.dart';
 
+export 'package:provider/provider.dart';
+
 enum Status { idle, waitingFloor, waitingAll, pay, mode, using }
 
 class GlobalState with ChangeNotifier {
   Dormitory? dormitory;
   Machine? currentMachine;
   int? floor;
+  int viewIndex = 0; // 0 -> floor only, 1 -> All floors
   Status status = Status.idle;
   Type? waitingMachine = WashingMachine;
   String? defaultPaymentMethod;
@@ -36,6 +39,7 @@ class GlobalState with ChangeNotifier {
     dormitory = "",
     floor = "",
     status,
+    viewIndex,
     currentMachine = "",
     waitingMachine,
     defaultPaymentMethod = "",
@@ -45,6 +49,7 @@ class GlobalState with ChangeNotifier {
     this.dormitory = dormitory != "" ? dormitory : this.dormitory;
     this.floor = floor != "" ? floor : this.floor;
     this.status = status ?? this.status;
+    this.viewIndex = viewIndex ?? this.viewIndex;
     this.currentMachine = currentMachine != "" ? currentMachine : this.currentMachine;
     this.waitingMachine = waitingMachine ?? this.waitingMachine;
     this.defaultPaymentMethod = defaultPaymentMethod != "" ? defaultPaymentMethod : this.defaultPaymentMethod;
@@ -59,6 +64,7 @@ class GlobalState with ChangeNotifier {
     dormitory = "",
     floor = "",
     currentMachine = "",
+    viewIndex,
     status,
     defaultPaymentMethod = "",
     machineAvailable,
@@ -69,6 +75,7 @@ class GlobalState with ChangeNotifier {
       floor: floor,
       currentMachine: currentMachine,
       status: status,
+      viewIndex: viewIndex,
       defaultPaymentMethod: defaultPaymentMethod,
       machineAvailable: machineAvailable,
       laundryDone: laundryDone,

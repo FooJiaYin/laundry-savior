@@ -8,6 +8,7 @@ class NeumorphicToggle extends StatefulWidget {
   const NeumorphicToggle({
     Key? key,
     this.initialIndex = 0,
+    this.selectedIndex,
     this.height = 48,
     this.radius,
     this.gradient,
@@ -17,6 +18,7 @@ class NeumorphicToggle extends StatefulWidget {
 
   final double height;
   final int initialIndex;
+  final int? selectedIndex;
   final double? radius;
   final Gradient? gradient;
   final List<Widget> optionWidgets;
@@ -27,13 +29,14 @@ class NeumorphicToggle extends StatefulWidget {
 }
 
 class _NeumorphicToggleState extends State<NeumorphicToggle> {
-  int selectedIndex = 0;
+  int _selectedIndex = 0;
   Duration animationDuration = const Duration(milliseconds: 200);
+  int get selectedIndex => widget.selectedIndex ?? _selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    selectedIndex = widget.initialIndex;
+    _selectedIndex = widget.selectedIndex ?? widget.initialIndex;
   }
 
   Alignment _alignment(int idx) {
@@ -47,9 +50,9 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedIndex = (selectedIndex + 1) % widget.optionWidgets.length;
+          _selectedIndex = (_selectedIndex + 1) % widget.optionWidgets.length;
         });
-        widget.onChanged?.call(selectedIndex);
+        widget.onChanged?.call(_selectedIndex);
       },
       child: FractionallySizedBox(
         widthFactor: 1.0,
