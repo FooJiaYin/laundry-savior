@@ -29,11 +29,15 @@ class _HomePageState extends State<HomePage> {
   late Dormitory dorm;
   List<Machine> washingMachines = [];
   List<Machine> dryerMachines = [];
+  List<int> floors = [];
+  Set<int> subscribedFloors = {};
+  List<bool> selectFloors = [false, false];
 
   loadItems() async {
     dorm = await FakeData.getDormitory();
     washingMachines = await FakeData.getWashingMachines(dorm);
     dryerMachines = await FakeData.getDryerMachines(dorm);
+    floors = context.read<GlobalState>().dormitory?.floors ?? [];
     setState(() {});
   }
 
@@ -55,6 +59,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const StatusCard(),
           const SizedBox(height: 40),
@@ -143,9 +148,53 @@ class _HomePageState extends State<HomePage> {
             SvgPicture.asset("assets/icons/$iconName.svg", width: 20, height: 20),
             const SizedBox(width: 8),
             Text(title.capitalizeEach, style: ThemeFont.header()),
-            Expanded(child: Container()),
-            WaitingSwitch(machineType: type),
+            // Expanded(child: Container()),
+            const SizedBox(width: 8),
+            Expanded(
+              child: InkWell(
+                onTap: () => setState(() {
+                  selectFloors[0] = !selectFloors[0];
+                }),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        subscribedFloors.isEmpty ? "Select Floors" : "${(subscribedFloors.toList()..sort((a, b) => (a - b))).join(',')}F",
+                        style: ThemeFont.small,
+                        // overflow: TextOverflow,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 12,
+                      child: Icon(selectFloors[0] ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded, size: 16),
+                    ),
+                    WaitingSwitch(machineType: type),
+                  ],
+                ),
+              ),
+            ),
           ],
+        ),
+        InkWell(
+          onTap: () => setState(() {
+            selectFloors = [false, false];
+          }),
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 100),
+            height: selectFloors[0] ? null : 0,
+            // clipBehavior: Clip.hardEdge,
+            child: Wrap(clipBehavior: Clip.hardEdge, spacing: 4, crossAxisAlignment: WrapCrossAlignment.center,
+                // runSpacing: 4,
+                // alignment: WrapAlignment.spaceBetween,
+                // children: subscribedFloors.toList()
+                children: [
+                  _notificationChip(null),
+                  ...floors.map(_notificationChip).toList(),
+                  // Icon(Icons.keyboard_arrow_up_rounded)
+                  // Text("Close", style: ThemeFont.small)
+                ]),
+          ),
         ),
         const SizedBox(height: 2),
         GridView.count(
@@ -160,4 +209,42 @@ class _HomePageState extends State<HomePage> {
           children: machines.map((machine) => MachineStatusCard(machine)).toList(),
         )
       ];
+
+  Widget _notificationChip(int? floor) => FilterChip(
+        label: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Icon(Icons.notifications_outlined, size: 12),
+            if (subscribedFloors.length < floors.length || floor != null) 
+            SvgPicture.asset(
+              "assets/icons/bell_outlined.svg", width: 16, height: 16,
+              // SvgPicture.asset("assets/icons/bell_${subscribedFloors.contains(floor)? 'filled': 'outlined'}.svg", width: 16, height: 16,
+              color: subscribedFloors.contains(floor) ? Colors.white : ThemeColors.textColor,
+              // colorBlendMode: BlendMode.,
+            ),
+            Text(floor != null ? " ${floor}F" : subscribedFloors.length >= floors.length? " Clear" : " All"),
+          ],
+        ),
+        labelStyle: TextStyle(
+          color: subscribedFloors.contains(floor) ? Colors.white : ThemeColors.textColor,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+        backgroundColor: ThemeColors.lightGrey,
+        selectedColor: ThemeColors.primaryColor,
+        selected: subscribedFloors.contains(floor),
+        showCheckmark: false,
+        onSelected: (bool isSelected) {
+          setState(() {
+            if (floor == null) {
+             subscribedFloors = subscribedFloors.length < floors.length ? floors.toSet() : {};
+            }
+            else if (isSelected) {
+              subscribedFloors.add(floor);
+            } else {
+              subscribedFloors.remove(floor);
+            }
+          });
+        },
+      );
 }
