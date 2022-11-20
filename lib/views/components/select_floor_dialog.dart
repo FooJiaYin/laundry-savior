@@ -25,7 +25,7 @@ class SelectFloorDialog extends StatelessWidget {
         shrinkWrap: true,
         // Wrap with ListTile to prevent clipping shadow
         itemBuilder: (context, id) => ListTile(
-          title: FloorItem(id: floors[id]),
+          title: FloorItem(id: floors[floors.length - id - 1]),
         ),
       ),
     );
@@ -47,7 +47,6 @@ class FloorItem extends StatelessWidget {
       padding: const EdgeInsets.only(top: 16, bottom: 16, left: 14, right: 8),
       verticalMargin: 4,
       onTap: () => {
-        // TODO: Set dorm & floor in shared preference
         GlobalState.set(context, floor: id),
         Navigator.pop(context),
         Navigator.pop(context)
