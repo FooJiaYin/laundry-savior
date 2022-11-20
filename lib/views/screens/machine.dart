@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,9 +11,9 @@ import '../components/exit_alert_dialog.dart';
 import '../components/neumorphic_button.dart';
 import '../components/neumorphic_container.dart';
 import '../components/payment_dialog.dart';
+import '../components/price_button.dart';
 import '../widgets/scaffold_page.dart';
 import '../widgets/shape.dart';
-import 'price_button.dart';
 
 export '../../models/machine.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
-import '../components/neumorphic_container.dart';
+import 'neumorphic_container.dart';
 
 class PriceButton extends StatelessWidget {
   const PriceButton({
