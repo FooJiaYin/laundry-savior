@@ -151,7 +151,7 @@ class StatusCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: ThemeFont.title()),
-                Text(description, style: ThemeFont.style(fontSize: 12)),
+                Text(description, style: ThemeFont.small),
                 const Expanded(child: SizedBox(height: 2)),
                 if (actionWidget != null) actionWidget,
               ],

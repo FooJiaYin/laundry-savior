@@ -31,7 +31,7 @@ class MachineStatusCard extends StatelessWidget {
         children: [
           Text(
             data.locationString,
-            style: ThemeFont.style(fontSize: 12),
+            style: ThemeFont.small,
           ),
           const SizedBox(height: 4),
           if (data.status.code == StatusCode.in_use)

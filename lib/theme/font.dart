@@ -12,7 +12,7 @@ class ThemeFont {
   static const h3TextSize = 20.0;
   static const h4TextSize = 18.0;
   static const h5TextSize = 16.0;
-  static const smallTextSize = 10.0;
+  static const smallTextSize = 12.0;
   static const buttonTextSize = 16.0;
   static TextTheme get textTheme => TextTheme(
         // displayLarge,
