@@ -34,23 +34,19 @@ class FakeData {
     durationPassed: Duration(minutes: 5),
   );
 
-  static Future<List<Machine>> getWashingMachines(Dormitory dorm) async {
-    return [
+  static Future<List<Machine>> getMachines(Dormitory dorm, Type? type) async {
+    var machines = [
       washingMachine,
       washingMachine.copyWith(status: inUse),
       washingMachine.copyWith(floor: 7),
       washingMachine.copyWith(floor: 4),
       washingMachine.copyWith(status: overdue),
       washingMachine.copyWith(status: overdue),
-    ];
-  }
-
-  static Future<List<Machine>> getDryerMachines(Dormitory dorm) async {
-    return [
       dryerMachine,
       dryerMachine.copyWith(status: inUse),
       dryerMachine.copyWith(status: overdue),
     ];
+    return type == null? machines : machines.where((machine) => machine.type == type).toList();
   }
 
   static const dorm1 = Dormitory(
