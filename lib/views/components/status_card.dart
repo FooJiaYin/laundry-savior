@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -6,6 +5,7 @@ import '../../models/global_state.dart';
 import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
 import '../screens/machine.dart';
+import '../widgets/progress_ring.dart';
 import 'neumorphic_container.dart';
 import 'select_dorm_dialog.dart';
 
@@ -87,12 +87,21 @@ class StatusCard extends StatelessWidget {
   }
 
   Widget statusCard_using(GlobalState state, BuildContext context) {
+    var machineStatus = state.currentMachine!.status;
+    var inUseProgress = ProgressRing(
+      value: 40,
+      strokeWidth: 8,
+      strokeGradient: ThemeColors.blueRingGradient,
+      child: SvgPicture.asset(
+        "assets/icons/emoticon_angry.svg",
+        width: 72,
+      ),
+    );
     return _statusCard(
       title: "${state.currentMachine!.type == WashingMachine ? 'Washing' : 'Drying'} in progress",
       description: 'On ${state.currentMachine!.locationString}, ${state.dormitory!.name}',
       // TODO: Time left calculation
-      // TODO: Display progress when in use
-      leading: SvgPicture.asset("assets/images/stats_in_use.svg"),
+      leading: inUseProgress,
       actionWidget: ActionText(
         '${state.currentMachine?.status.durationEstimated!.inMinutes} min left',
         color: ThemeColors.royalBlue,

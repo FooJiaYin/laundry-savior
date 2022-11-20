@@ -6,6 +6,7 @@ import '../../models/global_state.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
 import '../screens/machine.dart';
+import '../widgets/progress_ring.dart';
 import 'neumorphic_container.dart';
 import 'select_dorm_dialog.dart';
 
@@ -19,7 +20,7 @@ class MachineStatusCard extends StatelessWidget {
     return NeumorphicContainer(
       padding: const EdgeInsets.all(16),
       onTap: () => GlobalState.of(context, listen: false).anonymous
-          ? showDialog(context: context, builder: (context) => SelectDormDialog())
+          ? showDialog(context: context, builder: (context) => const SelectDormDialog())
           : Navigator.push(
               context,
               MaterialPageRoute<void>(
@@ -33,8 +34,17 @@ class MachineStatusCard extends StatelessWidget {
             style: ThemeFont.style(fontSize: 12),
           ),
           const SizedBox(height: 4),
-          // TODO: Display progress when in use
-          SvgPicture.asset('assets/images/home_${data.status.code.name}.svg'),
+          if (data.status.code == StatusCode.in_use)
+            Expanded(
+              child: ProgressRing(
+                value: 0.25,
+                strokeWidth: 5.5,
+                strokeGradient: ThemeColors.blueRingGradient,
+                child: Text("40m"),
+              ),
+            )
+          else
+            SvgPicture.asset('assets/images/home_${data.status.code.name}.svg'),
           const SizedBox(height: 6),
           Text(
             data.status.code.name.splitUnderScore.capitalizeEach,

@@ -45,4 +45,12 @@ class ThemeDecoration {
       spreadRadius: -1,
     ),
   ];
+  static List<BoxShadow> ringShadow = [
+    BoxShadow(
+      color: ThemeColors.grey.withOpacity(0.38),
+      offset: const Offset(0,0),
+      blurRadius: 4,
+      spreadRadius: 1,
+    ),
+  ];
 }

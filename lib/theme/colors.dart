@@ -16,7 +16,7 @@ class ThemeColors {
   static const coral = Color(0xFFED7474);
   static const grey = Color(0xFF949FBB);
   static const grey30 = Color(0x60949FBB);
-  static const lightGrey = Color(0xFFD6DCEC);
+  static const lightGrey = Color(0xFFE6E8EE);
   static const darkGrey = Color(0xFF6B7897);
   static const primaryGradient = blueLinearGradient;
   static const blueLinearGradient = LinearGradient(
