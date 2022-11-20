@@ -2,19 +2,35 @@
 import 'dart:convert';
 
 enum StatusCode {
-  available, in_use, overdue;
+  available,
+  in_use,
+  overdue;
+
   static StatusCode parse(String name) => StatusCode.values.byName(name);
 }
 
 class MachineStatus {
   final StatusCode code;
-  final Duration? durationPassed;
-  final Duration? durationEstimated;
+  final Duration durationPassed;
+  final Duration durationEstimated;
   const MachineStatus({
     required this.code,
-    this.durationPassed,
-    this.durationEstimated,
+    this.durationPassed = Duration.zero,
+    this.durationEstimated = const Duration(minutes: 30),
   });
+
+  int get minutesLeft => durationEstimated.inMinutes - durationPassed.inMinutes;
+
+  updateStatus(int minutes) {
+    var newDurationPassed = durationPassed + Duration(minutes: minutes);
+    if (code == StatusCode.in_use && newDurationPassed >= durationEstimated) {
+      return copyWith(
+        code: StatusCode.overdue,
+        durationPassed: newDurationPassed - durationEstimated,
+      );
+    }
+    return copyWith(durationPassed: durationPassed + Duration(minutes: minutes));
+  }
 
   MachineStatus copyWith({
     StatusCode? code,
@@ -31,16 +47,16 @@ class MachineStatus {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'code': code.name,
-      'durationPassed': durationPassed?.inSeconds,
-      'durationEstimated': durationEstimated?.inSeconds,
+      'durationPassed': durationPassed.inSeconds,
+      'durationEstimated': durationEstimated.inSeconds,
     };
   }
 
   factory MachineStatus.fromMap(Map<String, dynamic> map) {
     return MachineStatus(
       code: map['code'] != null ? StatusCode.parse(map['code']) : StatusCode.available,
-      durationPassed: map['durationPassed'] != null ? Duration(seconds: map['durationPassed']) : null,
-      durationEstimated: map['durationEstimated'] != null ? Duration(seconds: map['durationEstimated']) : null,
+      durationPassed: map['durationPassed'] != null ? Duration(seconds: map['durationPassed']) : Duration.zero,
+      durationEstimated: map['durationEstimated'] != null ? Duration(seconds: map['durationEstimated']) : const Duration(minutes: 30),
     );
   }
 
@@ -54,11 +70,8 @@ class MachineStatus {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is MachineStatus &&
-      other.code == code &&
-      other.durationPassed == durationPassed &&
-      other.durationEstimated == durationEstimated;
+
+    return other is MachineStatus && other.code == code && other.durationPassed == durationPassed && other.durationEstimated == durationEstimated;
   }
 
   @override

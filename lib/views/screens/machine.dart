@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -28,8 +30,8 @@ class MachinePage extends StatefulWidget {
 
 class _MachinePageState extends State<MachinePage> {
   Machine get data => widget.data;
-  GlobalState state = GlobalState();
   int _selectedPrice = 10;
+  int get _selectedDuration => (_selectedPrice * 0.25).toInt();
 
   selectPrice(price) {
     setState(() {
@@ -37,10 +39,8 @@ class _MachinePageState extends State<MachinePage> {
     });
   }
 
-  goToNextStep({required MachineStatus machineStatus, Status? status}) {
-    var state = GlobalState.of(context, listen: false);
-    state.currentMachine!.status = machineStatus;
-    state.update(status: status ?? state.status);
+  wash(state, {String mode = "Normal"}) {
+    FakeData.wash(state);
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute<void>(
@@ -48,21 +48,6 @@ class _MachinePageState extends State<MachinePage> {
       ),
       (route) => route.isFirst,
     );
-  }
-
-  wash(String mode) {
-    goToNextStep(
-      machineStatus: const MachineStatus(
-        code: StatusCode.in_use,
-        durationEstimated: Duration(minutes: 40),
-        durationPassed: Duration.zero,
-      ),
-      status: Status.using,
-    );
-    Future.delayed(const Duration(seconds: 10), () {
-      state.currentMachine!.status = MachineStatus(code: StatusCode.overdue);
-      state.update();
-    });
   }
 
   Widget _machinePicture() => NeumorphicContainer(
@@ -78,7 +63,7 @@ class _MachinePageState extends State<MachinePage> {
 
   @override
   Widget build(BuildContext context) {
-    state = GlobalState.of(context);
+    var state = GlobalState.of(context);
     // TODO: refactor this
     // TODO: Message for dryer machine
     // TODO: i18n strings
@@ -94,7 +79,7 @@ class _MachinePageState extends State<MachinePage> {
                   children: [
                     PriceButton(price: 10, name: "25 min", onPressed: selectPrice, isSelected: _selectedPrice == 10),
                     PriceButton(price: 20, name: "50 min", onPressed: selectPrice, isSelected: _selectedPrice == 20),
-                    PriceButton(price: 30, name: "70 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
+                    PriceButton(price: 30, name: "75 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
                   ],
                 )
               : Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
@@ -126,9 +111,12 @@ class _MachinePageState extends State<MachinePage> {
           ),
         ),
         const SizedBox(height: 24),
-        NeumorphicButton(text: "Normal", onPressed: () => wash("Normal")),
+        NeumorphicButton(text: "Normal", onPressed: () => wash(state, mode: "Normal")),
         const SizedBox(height: 24),
-        NeumorphicButton(text: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature", onPressed: () => wash("Delicate"),),
+        NeumorphicButton(
+          text: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature",
+          onPressed: () => wash(state, mode: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature"),
+        ),
       ],
       StatusCode.in_use: <Widget>[
         Container(
@@ -137,7 +125,7 @@ class _MachinePageState extends State<MachinePage> {
           child: Text.rich(
             textAlign: TextAlign.center,
             TextSpan(
-              text: "40",
+              text: data.status.minutesLeft.toString(),
               style: ThemeFont.header(fontSize: 48, color: ThemeColors.darkGrey),
               children: const [
                 TextSpan(

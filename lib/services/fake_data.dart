@@ -8,29 +8,18 @@ import '../models/global_state.dart';
 import '../views/screens/machine.dart';
 
 class FakeData {
-  static Future<GlobalState> loadGlobalState() async {
-    var state = GlobalState();
-    final sharedPreferences = await SharedPreferences.getInstance();
-    final config = sharedPreferences.getString('config');
-    if (config != null) state.fromJson(config);
-    state.addListener(() {
-      sharedPreferences.setString('config', state.toJson());
-    });
-    return state;
-  }
-
   static WashingMachine washingMachine = WashingMachine(
     id: 0,
     floor: 8,
     // section: 'A',
-    status: MachineStatus(code: StatusCode.available),
+    status: const MachineStatus(code: StatusCode.available),
   );
 
   static DryerMachine dryerMachine = DryerMachine(
     id: 0,
     floor: 8,
     section: 'A',
-    status: MachineStatus(code: StatusCode.available),
+    status: const MachineStatus(code: StatusCode.available),
   );
 
   static const inUse = MachineStatus(
@@ -42,14 +31,15 @@ class FakeData {
   static const overdue = MachineStatus(
     code: StatusCode.overdue,
     durationEstimated: Duration(minutes: 40),
-    durationPassed: Duration(minutes: 10),
+    durationPassed: Duration(minutes: 5),
   );
 
   static Future<List<Machine>> getWashingMachines(Dormitory dorm) async {
     return [
       washingMachine,
       washingMachine.copyWith(status: inUse),
-      washingMachine.copyWith(status: inUse),
+      washingMachine.copyWith(floor: 7),
+      washingMachine.copyWith(floor: 4),
       washingMachine.copyWith(status: overdue),
       washingMachine.copyWith(status: overdue),
     ];
@@ -91,14 +81,36 @@ class FakeData {
   }
 
   static setReminder(context) async {
-    var state = GlobalState.of(context);
-    if (state.status == Status.waitingAll || state.status == Status.waitingFloor)
-    Future.delayed(const Duration(seconds: 10), () {
-      state.update(currentMachine: FakeData.washingMachine);
-    });
+    // var state = GlobalState.of(context);
+    if (GlobalState.of(context).status == Status.waitingAll || GlobalState.of(context).status == Status.waitingFloor) {
+      Future.delayed(const Duration(seconds: 10), () {
+        GlobalState.set(context, currentMachine: FakeData.washingMachine);
+      });
+    }
   }
 
-  static wash() {}
+  static wash(GlobalState state) {
+    // var state = context.watch<GlobalState>();
+    state.currentMachine!.status = const MachineStatus(
+      code: StatusCode.in_use,
+      durationEstimated: Duration(minutes: 40),
+      durationPassed: Duration.zero,
+    );
+    state.update(status: Status.using);
+    Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) => {
+        if (state.currentMachine!.status.code == StatusCode.available)
+          {timer.cancel()}
+        else
+          {
+            state.currentMachine!.status = state.currentMachine!.status.updateStatus(5),
+            state.update()
+            // GlobalState.set(context),
+          }
+      },
+    );
+  }
 
   static pay(context, {required String paymentMethod, required Machine machine}) {
     // TODO: Payment

@@ -89,7 +89,7 @@ class StatusCard extends StatelessWidget {
   Widget statusCard_using(GlobalState state, BuildContext context) {
     var machineStatus = state.currentMachine!.status;
     var inUseProgress = ProgressRing(
-      value: 40,
+      value: machineStatus.durationPassed.inMinutes / machineStatus.durationEstimated.inMinutes,
       strokeWidth: 8,
       strokeGradient: ThemeColors.blueRingGradient,
       child: SvgPicture.asset(
@@ -103,7 +103,7 @@ class StatusCard extends StatelessWidget {
       // TODO: Time left calculation
       leading: inUseProgress,
       actionWidget: ActionText(
-        '${state.currentMachine?.status.durationEstimated!.inMinutes} min left',
+        '${state.currentMachine?.status.minutesLeft} min left',
         color: ThemeColors.royalBlue,
         icon: null,
       ),

@@ -37,10 +37,10 @@ class MachineStatusCard extends StatelessWidget {
           if (data.status.code == StatusCode.in_use)
             Expanded(
               child: ProgressRing(
-                value: 0.25,
+                value: data.status.durationPassed.inMinutes / data.status.durationEstimated.inMinutes,
                 strokeWidth: 5.5,
                 strokeGradient: ThemeColors.blueRingGradient,
-                child: Text("40m"),
+                child: Text("${data.status.minutesLeft}m"),
               ),
             )
           else
