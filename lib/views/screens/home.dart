@@ -46,8 +46,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     GlobalState state = GlobalState.of(context);
-    var floorFilter = (machine) => state.viewIndex==0? machine.floor == state.floor : machine.status.code == StatusCode.available;
-    return ScaffoldPage(
+    var floorFilter = (machine) => state.viewIndex == 0 ? machine.floor == state.floor : machine.status.code == StatusCode.available;
+    var homePage = ScaffoldPage(
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.only(left: Dimensions.containerPadding, bottom: 8),
@@ -77,6 +77,25 @@ class _HomePageState extends State<HomePage> {
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+
+    if (state.anonymous) {
+      return Stack(
+        children: [
+          homePage,
+          const ModalBarrier(dismissible: false, color: Colors.black45),
+          Scaffold(
+            appBar: AppBar(backgroundColor: Colors.transparent),
+            backgroundColor: Colors.transparent,
+            body: Container(
+              padding: const EdgeInsets.all(Dimensions.screenPadding).copyWith(top: 8),
+              child: const StatusCard(),
+            ),
+          ),
+        ],
+      );
+    } else {
+      return homePage;
+    }
   }
 
   Widget _titleRow() => Row(
@@ -94,20 +113,19 @@ class _HomePageState extends State<HomePage> {
         children: [
           Expanded(
             flex: 2,
-            child: Text("${dorm?.name ?? 'Your'} Dorm", style: ThemeFont.title(fontSize: 12)),
+            child: Text(dorm?.name ?? "Dormitory not selected", style: ThemeFont.title(fontSize: 12)),
           ),
           Expanded(
             flex: 3,
             child: NeumorphicToggle(
-              selectedIndex: GlobalState.of(context).viewIndex,
-              radius: 100,
-              height: 36,
-              optionWidgets: [
-                Text("${floor != null ? floor.ordinal : 'Your'} Floor", textAlign: TextAlign.center),
-                const Text("All Floors", textAlign: TextAlign.center),
-              ],
-              onChanged: (value) => GlobalState.set(context, viewIndex: value)
-            ),
+                selectedIndex: GlobalState.of(context).viewIndex,
+                radius: 100,
+                height: 36,
+                optionWidgets: [
+                  Text("${floor != null ? floor.ordinal : '--'} Floor", textAlign: TextAlign.center),
+                  const Text("All Floors", textAlign: TextAlign.center),
+                ],
+                onChanged: (value) => GlobalState.set(context, viewIndex: value)),
           ),
         ],
       );
