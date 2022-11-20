@@ -24,15 +24,13 @@ class StatusCard extends StatelessWidget {
             ? statusCard_available(state, context)
             : state.status == Status.idle
                 ? statusCard_busy(state, context)
-                : state.status == Status.waitingFloor
-                    ? statusCard_waitingFloor(state, context)
-                    : state.status == Status.waitingAll
-                        ? statusCard_waitingAll(state, context)
-                        : state.status == Status.using
-                            ? state.currentMachine?.status.code == StatusCode.in_use
-                                ? statusCard_using(state, context)
-                                : statusCard_overdue(state, context)
-                            : const SizedBox(height: 0);
+                : state.status == Status.waiting
+                    ? statusCard_waiting(state, context)
+                    : state.status == Status.using
+                        ? state.currentMachine?.status.code == StatusCode.in_use
+                            ? statusCard_using(state, context)
+                            : statusCard_overdue(state, context)
+                        : const SizedBox(height: 0);
   }
 
   Widget statusCard_anonymous(BuildContext context) {
@@ -57,12 +55,13 @@ class StatusCard extends StatelessWidget {
   Widget statusCard_busy(GlobalState state, BuildContext context) {
     return _statusCard(
       title: "Washing machines on ${state.floor}F are busy.",
-      description: 'Remind when any washing machine available on ${state.floor!}F?',
+      description: 'Remind when any washing machine available on ${state.subscribedFloorsString ?? "${state.floor}F"}?',
       actionWidget: const ActionText('Notify me', color: ThemeColors.royalBlue),
       onTap: () {
-        state.update(status: Status.waitingFloor, waitingMachine: WashingMachine);
+        if (state.subscribedFloors.isEmpty) state.subscribedFloors.add(state.floor!);
+        state.update(status: Status.waiting, waitingMachine: WashingMachine);
         // FakeData.setReminder(context);
-        if (state.status == Status.waitingAll || state.status == Status.waitingFloor) {
+        if (state.status == Status.waiting) {
           Future.delayed(const Duration(seconds: 10), () {
             GlobalState.set(context, currentMachine: FakeData.washingMachine);
           });
@@ -71,23 +70,18 @@ class StatusCard extends StatelessWidget {
     );
   }
 
-  Widget statusCard_waitingFloor(GlobalState state, BuildContext context) {
-    return _statusCard(
-        title: "Waiting for a ${state.waitingMachine == WashingMachine ? 'washing' : 'dryer'} machine",
-        description: 'We’ll send you ${state.machineAvailable.remindMethod.toLowerCase()} when any machine available on ${state.floor}F!',
-        actionWidget: const ActionText('Check Other Floors', color: ThemeColors.royalBlue),
-        onTap: () {
-          state.update(status: Status.waitingAll, viewIndex: 1);
-        });
-  }
-
-  Widget statusCard_waitingAll(GlobalState state, BuildContext context) {
+  Widget statusCard_waiting(GlobalState state, BuildContext context) {
     return _statusCard(
       title: "Waiting for a ${state.waitingMachine == WashingMachine ? 'washing' : 'dryer'} machine",
-      description:
-          'We’ll send you ${state.machineAvailable.remindMethod.toLowerCase()} when any machine available on ${state.floor! - 1 < state.dormitory!.floors[0] ? state.floor : state.floor! - 1}~${state.floor! + 1}F',
-      actionWidget: const ActionText('Cancel Waiting', icon: null),
-      onTap: () => state.update(status: Status.idle),
+      description: 'We’ll send you ${state.machineAvailable.remindMethod.toLowerCase()} when any machine available on ${state.subscribedFloorsString!}!',
+      actionWidget: state.viewIndex == 0 ? const ActionText('Check Other Floors', color: ThemeColors.royalBlue) : const ActionText('Cancel Waiting', icon: null),
+      onTap: () {
+        if (state.viewIndex == 0) {
+          state.update(viewIndex: 1);
+        } else {
+          state.update(status: Status.idle);
+        }
+      },
     );
   }
 

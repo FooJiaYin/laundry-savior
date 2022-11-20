@@ -78,7 +78,7 @@ class FakeData {
 
   static setReminder(context) async {
     // var state = GlobalState.of(context);
-    if (GlobalState.of(context).status == Status.waitingAll || GlobalState.of(context).status == Status.waitingFloor) {
+    if (GlobalState.of(context).status == Status.waiting) {
       Future.delayed(const Duration(seconds: 10), () {
         GlobalState.set(context, currentMachine: FakeData.washingMachine);
       });

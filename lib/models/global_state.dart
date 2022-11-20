@@ -10,7 +10,7 @@ import 'reminder_config.dart';
 
 export 'package:provider/provider.dart';
 
-enum Status { idle, waitingFloor, waitingAll, pay, mode, using }
+enum Status { idle, waiting, pay, mode, using }
 
 class GlobalState with ChangeNotifier {
   Dormitory? dormitory;
@@ -19,10 +19,12 @@ class GlobalState with ChangeNotifier {
   int viewIndex = 0; // 0 -> floor only, 1 -> All floors
   Status status = Status.idle;
   Type? waitingMachine = WashingMachine;
+  Set<int> subscribedFloors = {};
   String? defaultPaymentMethod;
   ReminderConfig machineAvailable = ReminderConfig.defaultConfig;
   ReminderConfig laundryDone = ReminderConfig.defaultConfig;
   bool get anonymous => dormitory == null || floor == null;
+  String? get subscribedFloorsString => subscribedFloors.isEmpty ? null : "${(subscribedFloors.toList()..sort((a, b) => (a - b))).join(',')}F";
   static get init => LocalData.loadGlobalState;
 
   reset() {
@@ -31,6 +33,7 @@ class GlobalState with ChangeNotifier {
     status = Status.idle;
     currentMachine = null;
     waitingMachine = WashingMachine;
+    subscribedFloors = {};
     defaultPaymentMethod = null;
     notifyListeners();
   }
@@ -42,6 +45,7 @@ class GlobalState with ChangeNotifier {
     viewIndex,
     currentMachine = "",
     waitingMachine,
+    subscribedFloors,
     defaultPaymentMethod = "",
     machineAvailable,
     laundryDone,
@@ -52,6 +56,7 @@ class GlobalState with ChangeNotifier {
     this.viewIndex = viewIndex ?? this.viewIndex;
     this.currentMachine = currentMachine != "" ? currentMachine : this.currentMachine;
     this.waitingMachine = waitingMachine ?? this.waitingMachine;
+    this.subscribedFloors = subscribedFloors ?? this.subscribedFloors;
     this.defaultPaymentMethod = defaultPaymentMethod != "" ? defaultPaymentMethod : this.defaultPaymentMethod;
     this.machineAvailable = machineAvailable ?? this.machineAvailable;
     this.laundryDone = laundryDone ?? this.laundryDone;
@@ -64,6 +69,7 @@ class GlobalState with ChangeNotifier {
     dormitory = "",
     floor = "",
     currentMachine = "",
+    subscribedFloors,
     viewIndex,
     status,
     defaultPaymentMethod = "",
@@ -74,6 +80,7 @@ class GlobalState with ChangeNotifier {
       dormitory: dormitory,
       floor: floor,
       currentMachine: currentMachine,
+      subscribedFloors: subscribedFloors,
       status: status,
       viewIndex: viewIndex,
       defaultPaymentMethod: defaultPaymentMethod,
@@ -89,6 +96,7 @@ class GlobalState with ChangeNotifier {
       'floor': floor,
       'status': status.name,
       'waitingMachine': waitingMachine?.toString(),
+      'subscribedFloors': subscribedFloors.toList(),
       'defaultPaymentMethod': defaultPaymentMethod,
       'machineAvailable': machineAvailable.toMap(),
       'laundryDone': laundryDone.toMap(),
@@ -102,6 +110,7 @@ class GlobalState with ChangeNotifier {
       floor: map['floor'] != null ? map['floor'] as int : null,
       status: Status.values.byName(map['status'] as String),
       waitingMachine: map['waitingMachine'] != null && map['waitingMachine'] == "DryerMachine" ? DryerMachine : WashingMachine,
+      subscribedFloors: map['subscribedFloors'] != null ? List<int>.from(map['subscribedFloors'].cast<int>()).toSet() : {},
       defaultPaymentMethod: map['defaultPaymentMethod'] != null ? map['defaultPaymentMethod'] as String : null,
       machineAvailable: ReminderConfig.fromMap(map['machineAvailable'] as Map<String,dynamic>),
       laundryDone: ReminderConfig.fromMap(map['laundryDone'] as Map<String,dynamic>),

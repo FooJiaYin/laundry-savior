@@ -25,11 +25,11 @@ class MachineList extends StatefulWidget {
 
 class _MachineListState extends State<MachineList> {
   List<Machine> machines = [];
-  Set<int> subscribedFloors = {};
   bool selectFloors = false;
   GlobalState? state;
 
   List<int> get floors => state?.dormitory?.floors ?? [];
+  Set<int> get subscribedFloors => state?.subscribedFloors ?? {};
   Type get type => widget.type;
   String get iconName => type == WashingMachine ? "drop_filled" : "wind";
   String get title => type == WashingMachine ? "Washing Machine" : "Dryer Machine";
@@ -59,11 +59,11 @@ class _MachineListState extends State<MachineList> {
             const SizedBox(width: 8),
             Text(title.capitalizeEach, style: ThemeFont.header()),
             const SizedBox(width: 8),
-            _waitingButton(),
+            state?.currentMachine == null ? _waitingButton() : const SizedBox(height: 48),
           ],
         ),
-        _floorChipsPanel(),
-        const SizedBox(height: 2),
+        if (state?.currentMachine == null) _floorChipsPanel(),
+        const SizedBox(height: 8),
         GridView.count(
           clipBehavior: Clip.none,
           crossAxisCount: 3,
@@ -89,7 +89,7 @@ class _MachineListState extends State<MachineList> {
             children: [
               Flexible(
                 child: Text(
-                  subscribedFloors.isEmpty ? "Select Floors" : "${(subscribedFloors.toList()..sort((a, b) => (a - b))).join(',')}F",
+                  state?.status != Status.waiting || subscribedFloors.isEmpty ? "Select Floors" : state!.subscribedFloorsString!,
                   style: ThemeFont.small,
                   // overflow: TextOverflow.ellipsis,
                 ),
@@ -117,7 +117,7 @@ class _MachineListState extends State<MachineList> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               /// Select All or Clear
-              subscribedFloors.length >= floors.length? _clearAllButton : _selectAllButton,
+              subscribedFloors.length >= floors.length ? _clearAllButton : _selectAllButton,
 
               /// Floor chips
               ...floors.map(floorChip).toList(),
@@ -129,30 +129,32 @@ class _MachineListState extends State<MachineList> {
       );
 
   Widget get _selectAllButton => SelectChip(
-      label: " All",
-      icon: "bell_outlined",
-      onSelected: (_) => setState(() {
-        subscribedFloors = floors.toSet();
-      }),
-    );
+        label: " All",
+        icon: "bell_outlined",
+        onSelected: (_) => setState(() {
+          GlobalState.set(context, subscribedFloors: floors.toSet(), status: Status.waiting);
+        }),
+      );
 
   Widget get _clearAllButton => SelectChip(
-      label: " Clear",
-      onSelected: (_) => setState(() {
-        subscribedFloors = {};
-      }),
-    );
+        label: " Clear",
+        onSelected: (_) => setState(() {
+          GlobalState.set(context, subscribedFloors: <int>{}, status: Status.idle);
+        }),
+      );
 
   SelectChip floorChip(int floor) => SelectChip(
-      label: " ${floor}F",
-      icon: "bell_outlined",
-      isSelected: subscribedFloors.contains(floor),
-      onSelected: (isSelected) => setState(() {
-        if (isSelected) {
-          subscribedFloors.add(floor);
-        } else {
-          subscribedFloors.remove(floor);
-        }
-      }),
-    );
+        label: " ${floor}F",
+        icon: "bell_outlined",
+        isSelected: state?.status == Status.waiting && subscribedFloors.contains(floor),
+        onSelected: (isSelected) => setState(() {
+          if (isSelected) {
+            subscribedFloors.add(floor);
+            GlobalState.set(context, status: Status.waiting);
+          } else {
+            subscribedFloors.remove(floor);
+            GlobalState.set(context, status: subscribedFloors.isEmpty ? Status.idle : null);
+          }
+        }),
+      );
 }
