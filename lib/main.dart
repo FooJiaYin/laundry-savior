@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'generated/l10n.dart';
 import 'models/global_state.dart';
 import 'services/fake_data.dart';
+import 'services/notification.dart';
 import 'theme/theme.dart';
 import 'utils/config.dart';
 import 'views/route.dart';
@@ -31,6 +32,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     FakeData.init();
+    NotificationService.init();
   }
 
   Widget app(BuildContext context) {
