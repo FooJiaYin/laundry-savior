@@ -2,12 +2,13 @@
 
 import 'package:flutter/material.dart';
 
-import 'screens/bottom_nav.dart';
 import 'screens/home.dart';
 import 'screens/settings.dart';
 
 export 'screens/bottom_nav.dart';
 export 'screens/home.dart';
+export 'screens/machine.dart';
+export 'screens/payment.dart';
 export 'screens/settings.dart';
 export 'screens/welcome.dart';
 

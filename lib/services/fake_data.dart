@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/dormitory.dart';
 import '../models/global_state.dart';
 import '../utils/string.dart';
-import '../views/screens/machine.dart';
+import '../views/route.dart';
 
 class FakeData {
   static WashingMachine washingMachine = WashingMachine(
@@ -107,12 +106,11 @@ class FakeData {
   }
 
   static pay(context, {required String paymentMethod, required Machine machine}) {
-    // TODO: Payment
     GlobalState.set(context, currentMachine: machine, status: Status.mode);
     Navigator.push(
       context,
       MaterialPageRoute<void>(
-        builder: (context) => MachinePage(machine),
+        builder: (context) => PaymentPage(machine: machine),
       ),
     );
   }
