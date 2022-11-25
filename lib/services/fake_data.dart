@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/dormitory.dart';
 import '../models/global_state.dart';
+import '../utils/string.dart';
 import '../views/screens/machine.dart';
 
 class FakeData {
@@ -49,40 +50,37 @@ class FakeData {
     return type == null? machines : machines.where((machine) => machine.type == type).toList();
   }
 
-  static const dorm1 = Dormitory(
-    id: 'ntu_male_1',
-    name: "Male 1",
-    imageUrl: "assets/images/dorm.png",
-    university: "ntu",
-    floors: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-  );
-
-  static const dorm2 = Dormitory(
-    id: 'ntu_male_2',
-    name: "Male 2",
-    imageUrl: "assets/images/dorm.png",
-    university: "ntu",
-    floors: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-  );
-
-  static Future<Dormitory> getDormitory() async {
-    return dorm1;
-  }
+  static Dormitory getDormitoryById(String id) => Dormitory(
+        id: id,
+        name: id.replaceAll("_", " ").capitalizeEach,
+        imageUrl: "assets/images/ntu_$id.png",
+        university: "ntu",
+        floors: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      );
 
   static Future<List<Dormitory>> getDormitories(String university) async {
     return [
-      ...List<Dormitory>.generate(10, (i) => dorm1),
-      ...List<Dormitory>.generate(10, (i) => dorm2),
-    ];
-  }
-
-  static setReminder(context) async {
-    // var state = GlobalState.of(context);
-    if (GlobalState.of(context).status == Status.waiting) {
-      Future.delayed(const Duration(seconds: 10), () {
-        GlobalState.set(context, currentMachine: FakeData.washingMachine);
-      });
-    }
+      "female_1",
+      "female_2",
+      "female_3",
+      "female_4",
+      "female_5",
+      "female_6",
+      "female_7",
+      "female_8",
+      "male_1",
+      "male_2",
+      "male_3",
+      "male_4",
+      "male_5",
+      "male_6",
+      "male_7",
+      "male_8",
+      "freshman_female",
+      "graduate_male_1",
+      "graduate_female_1",
+      "guo_ching",
+    ].map(getDormitoryById).toList();
   }
 
   static wash(GlobalState state) {
