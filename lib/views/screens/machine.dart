@@ -31,6 +31,19 @@ class _MachinePageState extends State<MachinePage> {
   int _selectedPrice = 10;
   int get _selectedDuration => (_selectedPrice * 0.25).toInt();
 
+  @override
+  void initState() {
+    super.initState();
+    collectClothes();
+  }
+
+  collectClothes() {
+    var state = GlobalState.instance;
+    if (data == state.currentMachine && data.status.code == StatusCode.overdue) {
+      Future.delayed(const Duration(seconds: 1), () => FakeData.takeOutClothes(state));
+    }
+  }
+
   selectPrice(price) {
     setState(() {
       _selectedPrice = price;
@@ -69,36 +82,50 @@ class _MachinePageState extends State<MachinePage> {
     // TODO: i18n strings
 
     var contents = {
+      // TODO: Use multiple machines
       StatusCode.available: <Widget>[
-        Container(
-          alignment: Alignment.bottomCenter,
-          height: 96,
-          child: data.type == DryerMachine
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    PriceButton(price: 10, name: "25 min", onPressed: selectPrice, isSelected: _selectedPrice == 10),
-                    PriceButton(price: 20, name: "50 min", onPressed: selectPrice, isSelected: _selectedPrice == 20),
-                    PriceButton(price: 30, name: "75 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
-                  ],
-                )
-              : Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
-        ),
-        const SizedBox(height: 24),
-        if (defaultPaymentMethod != null)
-          NeumorphicButton(
-            gradient: ThemeColors.blueRingGradient,
-            text: "Use $defaultPaymentMethod",
-            onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, machine: data),
+        if (status == Status.using) ...[
+          Container(
+            alignment: Alignment.bottomCenter,
+            height: 96,
+            child: Text(
+              "Machine Available!",
+              style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
+            ),
           ),
-        if (defaultPaymentMethod != null) const SizedBox(height: 12),
-        NeumorphicButton(
-          gradient: defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
-          text: "Select a payment method",
-          onPressed: () => showDialog(context: context, builder: (context) => PaymentDialog(data, price: _selectedPrice)),
-        ),
-        const SizedBox(height: 24),
-        const Text("or Insert Coin into the machine")
+          const SizedBox(height: 24),
+          const Text("You are using another machine", textAlign: TextAlign.center),
+        ] else ...[
+          Container(
+            alignment: Alignment.bottomCenter,
+            height: 96,
+            child: data.type == DryerMachine
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PriceButton(price: 10, name: "25 min", onPressed: selectPrice, isSelected: _selectedPrice == 10),
+                      PriceButton(price: 20, name: "50 min", onPressed: selectPrice, isSelected: _selectedPrice == 20),
+                      PriceButton(price: 30, name: "75 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
+                    ],
+                  )
+                : Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
+          ),
+          const SizedBox(height: 24),
+          if (defaultPaymentMethod != null)
+            NeumorphicButton(
+              gradient: ThemeColors.blueRingGradient,
+              text: "Use $defaultPaymentMethod",
+              onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, machine: data),
+            ),
+          if (defaultPaymentMethod != null) const SizedBox(height: 12),
+          NeumorphicButton(
+            gradient: defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
+            text: "Select a payment method",
+            onPressed: () => showDialog(context: context, builder: (context) => PaymentDialog(data, price: _selectedPrice)),
+          ),
+          const SizedBox(height: 24),
+          const Text("or Insert Coin into the machine")
+        ]
       ],
       Status.mode: <Widget>[
         Container(
