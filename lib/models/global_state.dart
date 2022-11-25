@@ -13,6 +13,8 @@ export 'package:provider/provider.dart';
 enum Status { idle, waiting, pay, mode, using }
 
 class GlobalState with ChangeNotifier {
+  static GlobalState instance = GlobalState();
+
   Dormitory? dormitory;
   Machine? currentMachine;
   int? floor;

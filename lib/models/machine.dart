@@ -123,3 +123,17 @@ class DryerMachine extends Machine {
     section: section,
   );
 }
+
+extension query on List<Machine> {
+  List<Machine> sortByNearestFloor(int floor) {
+    return this..sort((a, b) => (a.floor - floor).abs() - (b.floor - floor).abs());
+  }
+
+  Machine? nearestAvailable(state) {
+    try {
+      return where((machine) => state.subscribedFloors.contains(machine.floor) && machine.status.code == StatusCode.available).toList().sortByNearestFloor(state.floor!).first;
+    } catch (e) {
+      return null;
+    }
+  }
+}

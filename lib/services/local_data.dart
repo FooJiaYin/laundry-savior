@@ -7,7 +7,7 @@ import '../models/global_state.dart';
 
 class LocalData {
   static Future<GlobalState> loadGlobalState() async {
-    var state = GlobalState();
+    var state = GlobalState.instance;
     final sharedPreferences = await SharedPreferences.getInstance();
     final config = sharedPreferences.getString('config');
     if (config != null) state.fromJson(config);

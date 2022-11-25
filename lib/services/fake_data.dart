@@ -51,15 +51,41 @@ class FakeData {
   static int timer = 0;
 
   static void init() {
+    var state = GlobalState.instance;
     Timer.periodic(const Duration(seconds: 2), (Timer t) {
       timer = (timer + 1) % 12;
       for (var machine in washingMachines) {
-        washingMachineSimulator(machine).updateStatus(timer);
+        if (machine != state.currentMachine || state.status == Status.waiting || state.status == Status.idle) washingMachineSimulator(machine).updateStatus(timer);
       }
       for (var machine in dryerMachines) {
-        dryerMachineSimulator(machine).updateStatus(timer);
+        if (machine != state.currentMachine || state.status == Status.waiting || state.status == Status.idle) dryerMachineSimulator(machine).updateStatus(timer);
       }
+      updateCurrentMachine(GlobalState.instance);
+      GlobalState.instance.notifyListeners();
     });
+  }
+
+  static void updateCurrentMachine(GlobalState state) {
+    if (state.status == Status.idle || state.status == Status.waiting) {
+      if (state.currentMachine != null && state.currentMachine!.status.code != StatusCode.available) {
+        state.currentMachine = null;
+      }
+      if (state.currentMachine == null || state.currentMachine!.floor != state.floor) {
+        Machine? availableMachine;
+        if (state.waitingMachine == WashingMachine) {
+          availableMachine = washingMachines.nearestAvailable(state);
+        } else {
+          availableMachine = dryerMachines.nearestAvailable(state);
+        }
+
+        /// Update if no currentMachine or availableMachine is nearer
+        if (availableMachine != null && (state.currentMachine == null || (availableMachine.floor - state.floor!).abs() < (state.currentMachine!.floor - state.floor!).abs())) {
+          state.currentMachine = availableMachine;
+        }
+      }
+    } else if (state.status == Status.using) {
+      state.currentMachine!.status = state.currentMachine!.status.updateStatus(5);
+    }
   }
 
   static var washingMachines = List<WashingMachine>.generate(
@@ -125,22 +151,8 @@ class FakeData {
     state.currentMachine!.status = const MachineStatus(
       code: StatusCode.in_use,
       durationEstimated: Duration(minutes: 40),
-      durationPassed: Duration.zero,
     );
     state.update(status: Status.using);
-    Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) => {
-        if (state.currentMachine!.status.code == StatusCode.available)
-          {timer.cancel()}
-        else
-          {
-            state.currentMachine!.status = state.currentMachine!.status.updateStatus(5),
-            state.update()
-            // GlobalState.set(context),
-          }
-      },
-    );
   }
 
   static pay(context, {required String paymentMethod, required Machine machine}) {
