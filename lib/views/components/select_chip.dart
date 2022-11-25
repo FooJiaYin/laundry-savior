@@ -45,7 +45,7 @@ class SelectChip extends StatelessWidget {
         fontWeight: FontWeight.bold,
       ),
       backgroundColor: ThemeColors.lightGrey,
-      selectedColor: ThemeColors.primaryColor,
+      selectedColor: ThemeColors.royalBlue,
       selected: isSelected,
       showCheckmark: false,
       onSelected: onSelected,

@@ -84,6 +84,11 @@ class CustomTheme with ChangeNotifier {
       textColor: ThemeColors.textColor,
       iconColor: ThemeColors.textColor,
     ),
+    chipTheme: ChipThemeData(
+      side: BorderSide.none,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.buttonRadius)),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6)
+    ),
   );
 
   static ThemeData darkTheme = ThemeData.dark();
