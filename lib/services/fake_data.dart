@@ -8,45 +8,29 @@ import '../utils/string.dart';
 import '../views/route.dart';
 
 class FakeData {
-  static WashingMachine washingMachine = WashingMachine(
-    id: 0,
-    floor: 8,
-    // section: 'A',
-    status: const MachineStatus(code: StatusCode.available),
+  static var washingMachines = List<WashingMachine>.generate(
+    33,
+    (i) => WashingMachine(
+      id: i,
+      floor: ((i + 1) / 3).ceil(),
+      // section: 'A',
+      status: const MachineStatus(code: StatusCode.available),
+    ),
   );
 
-  static DryerMachine dryerMachine = DryerMachine(
-    id: 0,
-    floor: 8,
-    section: 'A',
-    status: const MachineStatus(code: StatusCode.available),
+  static var dryerMachines = List<DryerMachine>.generate(
+    22,
+    (i) => DryerMachine(
+      id: i,
+      floor: ((i + 1) / 2).ceil(),
+      status: const MachineStatus(code: StatusCode.available),
+    ),
   );
 
-  static const inUse = MachineStatus(
-    code: StatusCode.in_use,
-    durationEstimated: Duration(minutes: 40),
-    durationPassed: Duration(minutes: 13),
-  );
-
-  static const overdue = MachineStatus(
-    code: StatusCode.overdue,
-    durationEstimated: Duration(minutes: 40),
-    durationPassed: Duration(minutes: 5),
-  );
+  static get machines => <Machine>[...washingMachines, ...dryerMachines];
 
   static Future<List<Machine>> getMachines(Dormitory dorm, Type? type) async {
-    var machines = [
-      washingMachine,
-      washingMachine.copyWith(status: inUse),
-      washingMachine.copyWith(floor: 7),
-      washingMachine.copyWith(floor: 4),
-      washingMachine.copyWith(status: overdue),
-      washingMachine.copyWith(status: overdue),
-      dryerMachine,
-      dryerMachine.copyWith(status: inUse),
-      dryerMachine.copyWith(status: overdue),
-    ];
-    return type == null? machines : machines.where((machine) => machine.type == type).toList();
+    return type == null ? machines : machines.where((machine) => machine.type == type).toList();
   }
 
   static Dormitory getDormitoryById(String id) => Dormitory(

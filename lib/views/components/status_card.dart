@@ -63,7 +63,7 @@ class StatusCard extends StatelessWidget {
         // FakeData.setReminder(context);
         if (state.status == Status.waiting) {
           Future.delayed(const Duration(seconds: 10), () {
-            GlobalState.set(context, currentMachine: FakeData.washingMachine);
+            // GlobalState.set(context, currentMachine: FakeData.washingMachine);
           });
         }
       },
@@ -119,12 +119,12 @@ class StatusCard extends StatelessWidget {
       onTap: () {
         showDialog(context: context, builder: (context) => MachinePage(state.currentMachine!));
         Future.delayed(const Duration(seconds: 3), () {
-          state.currentMachine!.status = MachineStatus(code: StatusCode.available);
-          if (state.currentMachine!.type == WashingMachine) {
-            state.currentMachine = FakeData.dryerMachine;
-          } else {
-            state.currentMachine = FakeData.washingMachine;
-          }
+          // state.currentMachine!.status = MachineStatus(code: StatusCode.available);
+          // if (state.currentMachine!.type == WashingMachine) {
+          //   state.currentMachine = FakeData.dryerMachine;
+          // } else {
+          //   state.currentMachine = FakeData.washingMachine;
+          // }
           state.update(status: Status.idle);
         });
       },
