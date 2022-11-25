@@ -202,7 +202,7 @@ class _MachinePageState extends State<MachinePage> {
       child: Column(
         children: [
           Text(
-            (data.type == WashingMachine ? S.of(context).washing_machine : S.of(context).dryer_machine).capitalizeEach,
+            data.type.name.capitalizeEach,
             style: ThemeFont.header(fontSize: 24),
           ),
           const SizedBox(height: 14),

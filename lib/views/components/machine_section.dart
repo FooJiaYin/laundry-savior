@@ -31,7 +31,6 @@ class _MachineSectionState extends State<MachineSection> {
   Set<int> get subscribedFloors => state?.subscribedFloors ?? {};
   Type get type => widget.type;
   String get iconName => type == WashingMachine ? "drop_filled" : "wind";
-  String get title => type == WashingMachine ? "Washing Machine" : "Dryer Machine";
 
   loadItems() async {
     machines = await FakeData.getMachines(state!.dormitory!, type);
@@ -57,7 +56,7 @@ class _MachineSectionState extends State<MachineSection> {
           children: [
             SvgPicture.asset("assets/icons/$iconName.svg", width: 20, height: 20),
             const SizedBox(width: 8),
-            Text(title.capitalizeEach, style: ThemeFont.header()),
+            Text(type.name.capitalizeEach, style: ThemeFont.header()),
             const SizedBox(width: 8),
             if (state?.status != Status.using) _waitingButton(),
           ],

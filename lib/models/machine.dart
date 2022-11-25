@@ -123,6 +123,10 @@ class DryerMachine extends Machine {
   );
 }
 
+extension MachineTypeName on Type {
+  String get name => this == WashingMachine? "washing machine" : "dryer machine";
+}
+
 extension query on List<Machine> {
   List<Machine> sortByNearestFloor(int floor) {
     return this..sort((a, b) => (a.floor - floor).abs() - (b.floor - floor).abs());

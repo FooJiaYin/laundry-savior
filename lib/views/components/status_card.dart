@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../models/global_state.dart';
-import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
+import '../../utils/string.dart';
 import '../screens/machine.dart';
 import '../widgets/progress_ring.dart';
 import 'neumorphic_container.dart';
@@ -46,7 +46,7 @@ class StatusCard extends StatelessWidget {
   Widget statusCard_available(BuildContext context) {
     var currentMachine = context.currentMachine;
     return _statusCard(
-      title: "${currentMachine!.type == WashingMachine ? 'Washing' : 'Dryer'} machine available on ${currentMachine.locationString}!",
+      title: "${currentMachine!.type.name.capitalizeFirst} available on ${currentMachine.locationString}!",
       description: 'Hurry up before it used by other!',
       leading: SvgPicture.asset("assets/images/stats_available.svg"),
       actionWidget: const ActionText('Use it now', color: ThemeColors.cyan),
@@ -55,10 +55,10 @@ class StatusCard extends StatelessWidget {
   }
 
   Widget statusCard_busy(BuildContext context) {
-    var waitingMachine = context.waitingMachine;
+    var waitingMachine = context.waitingMachine!;
     return _statusCard(
-      title: "${waitingMachine == WashingMachine ? 'Washing' : 'Dryer'} machines on ${context.floor}F are busy.",
-      description: 'Remind when any ${waitingMachine == WashingMachine ? 'washing' : 'dryer'} machine available on ${context.subscribedFloorsString ?? "${context.floor}F"}?',
+      title: "${waitingMachine.name.capitalizeFirst}s on ${context.floor}F are busy.",
+      description: 'Remind when any ${waitingMachine.name} available on ${context.subscribedFloorsString ?? "${context.floor}F"}?',
       actionWidget: const ActionText('Notify me', color: ThemeColors.royalBlue),
       onTap: () {
         // if (state.subscribedFloors.isEmpty) state.subscribedFloors.add(state.config.floor!);
@@ -70,8 +70,8 @@ class StatusCard extends StatelessWidget {
   Widget statusCard_waiting(BuildContext context) {
     var viewIndex = context.viewIndex;
     return _statusCard(
-      title: "Waiting for a ${context.waitingMachine == WashingMachine ? 'washing' : 'dryer'} machine",
-      description: 'We’ll send you ${context.machineAvailable.remindMethod.toLowerCase()} when any machine available on ${context.subscribedFloorsString!}!',
+      title: "Waiting for a ${context.waitingMachine!.name}",
+      description: 'We’ll send you ${context.machineAvailable.remindMethod.toLowerCase()} when any ${context.waitingMachine!.name} available on ${context.subscribedFloorsString!}!',
       actionWidget: viewIndex == 0 ? const ActionText('Check Other Floors', color: ThemeColors.royalBlue) : const ActionText('Cancel Waiting', icon: null),
       onTap: () {
         if (viewIndex == 0) {

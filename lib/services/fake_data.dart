@@ -72,7 +72,7 @@ class FakeData {
         if (state.status == Status.waiting) {
           NotificationService.showNotification(
             title: "You just missed it!",
-            body: "${state.currentMachine!.type} on ${state.currentMachine!.floor}F is being used by other",
+            body: "${state.currentMachine!.type.name.capitalizeFirst} on ${state.currentMachine!.floor}F is being used by other",
             details: NotificationService.machineAvailableNotificationDetails,
           );
         }
@@ -91,7 +91,7 @@ class FakeData {
           state.currentMachine = availableMachine;
           if (state.status == Status.waiting) {
             NotificationService.showNotification(
-              title: "${state.currentMachine!.type} available",
+              title: "${state.currentMachine!.type.name.capitalizeFirst} available",
               body: "Hurry up before it's used by other!",
               payload: "current machine",
               details: NotificationService.machineAvailableNotificationDetails,
