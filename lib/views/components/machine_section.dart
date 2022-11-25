@@ -59,10 +59,10 @@ class _MachineSectionState extends State<MachineSection> {
             const SizedBox(width: 8),
             Text(title.capitalizeEach, style: ThemeFont.header()),
             const SizedBox(width: 8),
-            state?.currentMachine == null ? _waitingButton() : const SizedBox(height: 48),
+            if (state?.status != Status.using) _waitingButton(),
           ],
         ),
-        if (state?.currentMachine == null) _floorChipsPanel(),
+        if (state?.status != Status.using) _floorChipsPanel(),
         const SizedBox(height: 8),
         ProxyProvider<GlobalState, List<Machine>>(
           update: (_, state, __) => state.floor != null ? machines.where(floorFilter).toList() : [],
