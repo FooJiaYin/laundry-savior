@@ -7,7 +7,61 @@ import '../models/global_state.dart';
 import '../utils/string.dart';
 import '../views/route.dart';
 
+extension washingMachineSimulator on WashingMachine {
+  int get phaseOffset => (12 - (id % 3) * 4 - floor + 1) % 12;
+  MachineStatus updateStatus(int timePassed) {
+    int time = (timePassed + phaseOffset) % 12;
+    status = MachineStatus(
+      code: time < 2
+          ? StatusCode.available
+          : time < 10
+              ? StatusCode.in_use
+              : StatusCode.overdue,
+      durationEstimated: const Duration(minutes: 40),
+      durationPassed: Duration(minutes: (time - 2) * 5),
+    );
+    return status;
+  }
+}
+
+extension dryerMachineSimulator on DryerMachine {
+  int get phaseOffset => (22 - (id % 2) * 4 + (floor - 1) * 7) % 22;
+  MachineStatus updateStatus(int timePassed) {
+    int time = (timePassed + phaseOffset) % 22;
+    status = MachineStatus(
+      code: time < 2
+          ? StatusCode.available
+          : time < 7
+              ? StatusCode.in_use
+              : time < 9
+                  ? StatusCode.overdue
+                  : time < 11
+                      ? StatusCode.available
+                      : time < 21
+                          ? StatusCode.in_use
+                          : StatusCode.overdue,
+      durationEstimated: Duration(minutes: time < 11 ? 25 : 50),
+      durationPassed: Duration(minutes: (time >= 11 ? time - 11 : time - 2) * 5),
+    );
+    return status;
+  }
+}
+
 class FakeData {
+  static int timer = 0;
+
+  static void init() {
+    Timer.periodic(const Duration(seconds: 2), (Timer t) {
+      timer = (timer + 1) % 12;
+      for (var machine in washingMachines) {
+        washingMachineSimulator(machine).updateStatus(timer);
+      }
+      for (var machine in dryerMachines) {
+        dryerMachineSimulator(machine).updateStatus(timer);
+      }
+    });
+  }
+
   static var washingMachines = List<WashingMachine>.generate(
     33,
     (i) => WashingMachine(
@@ -15,7 +69,7 @@ class FakeData {
       floor: ((i + 1) / 3).ceil(),
       // section: 'A',
       status: const MachineStatus(code: StatusCode.available),
-    ),
+    )..updateStatus(0),
   );
 
   static var dryerMachines = List<DryerMachine>.generate(
@@ -24,7 +78,7 @@ class FakeData {
       id: i,
       floor: ((i + 1) / 2).ceil(),
       status: const MachineStatus(code: StatusCode.available),
-    ),
+    )..updateStatus(0),
   );
 
   static get machines => <Machine>[...washingMachines, ...dryerMachines];

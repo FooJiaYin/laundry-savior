@@ -11,8 +11,8 @@ import 'machine_status_card.dart';
 import 'select_chip.dart';
 import 'waiting_switch.dart';
 
-class MachineList extends StatefulWidget {
-  const MachineList({
+class MachineSection extends StatefulWidget {
+  const MachineSection({
     Key? key,
     required this.type,
   }) : super(key: key);
@@ -20,10 +20,10 @@ class MachineList extends StatefulWidget {
   final Type type;
 
   @override
-  State<MachineList> createState() => _MachineListState();
+  State<MachineSection> createState() => _MachineSectionState();
 }
 
-class _MachineListState extends State<MachineList> {
+class _MachineSectionState extends State<MachineSection> {
   List<Machine> machines = [];
   bool selectFloors = false;
   GlobalState? state;
@@ -64,17 +64,10 @@ class _MachineListState extends State<MachineList> {
         ),
         if (state?.currentMachine == null) _floorChipsPanel(),
         const SizedBox(height: 8),
-        GridView.count(
-          clipBehavior: Clip.none,
-          crossAxisCount: 3,
-          crossAxisSpacing: 24,
-          mainAxisSpacing: 24,
-          childAspectRatio: 0.65,
-          primary: true,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: machines.where(floorFilter).map((machine) => MachineStatusCard(machine)).toList(),
-        )
+        ProxyProvider<GlobalState, List<Machine>>(
+          update: (_, state, __) => state.floor != null ? machines.where(floorFilter).toList() : [],
+          child: const MachineList(),
+        ),
       ],
     );
   }
@@ -157,4 +150,23 @@ class _MachineListState extends State<MachineList> {
           }
         }),
       );
+}
+
+class MachineList extends StatelessWidget {
+  const MachineList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      clipBehavior: Clip.none,
+      crossAxisCount: 3,
+      crossAxisSpacing: 24,
+      mainAxisSpacing: 24,
+      childAspectRatio: 0.65,
+      primary: true,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: context.watch<List<Machine>>().map((machine) => MachineStatusCard(machine)).toList(),
+    );
+  }
 }
