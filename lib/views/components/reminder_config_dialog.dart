@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../models/global_state.dart';
 import '../../models/reminder_config.dart';
 import '../../theme/theme.dart';
 import 'neumorphic_button.dart';
@@ -13,10 +12,12 @@ class ReminderConfigDialog extends StatefulWidget {
     Key? key,
     required this.config,
     required this.title,
+    this.onChanged,
   }) : super(key: key);
 
   final ReminderConfig config;
   final String title;
+  final onChanged;
 
   @override
   State<ReminderConfigDialog> createState() => _ReminderConfigDialogState();
@@ -62,8 +63,7 @@ class _ReminderConfigDialogState extends State<ReminderConfigDialog> {
             text: "Confirm",
             textColor: ThemeColors.primaryColor,
             onPressed: () => {
-              widget.config.update(context, config: _config),
-              GlobalState.set(context),
+              widget.onChanged(_config),
               Navigator.of(context).pop(),
             },
           ),

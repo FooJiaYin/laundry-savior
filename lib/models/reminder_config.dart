@@ -1,9 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
-
-import 'global_state.dart';
+import 'package:flutter/material.dart';
 
 class ReminderConfig {
   late int remindBefore;
@@ -17,12 +14,6 @@ class ReminderConfig {
 
   static ReminderConfig get defaultConfig => ReminderConfig(remindBefore: 2, remindMethod: "Alarm");
   static const methodOptions = ["Notification", "Alarm"];
-
-  update(context, {remindBefore, remindMethod, config}) {
-    this.remindBefore = remindBefore ?? config.remindBefore ?? this.remindBefore;
-    this.remindMethod = remindMethod ?? config.remindMethod ?? this.remindMethod;
-    print("update");
-  }
 
   ReminderConfig copyWith({
     int? remindBefore,

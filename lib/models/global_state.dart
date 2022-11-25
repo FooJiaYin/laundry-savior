@@ -123,3 +123,24 @@ class GlobalState with ChangeNotifier {
 
   fromJson(String source) => fromMap(json.decode(source) as Map<String, dynamic>);
 }
+
+extension GetState on BuildContext {
+  state({bool listen = true}) {
+    Provider.of<GlobalState>(this, listen: listen);
+  }
+
+  Dormitory? get dormitory => select<GlobalState, Dormitory?>((state) => state.dormitory);
+  Machine? get currentMachine => select<GlobalState, Machine?>((state) => state.currentMachine);
+  int? get floor => select<GlobalState, int?>((state) => state.floor);
+  int get viewIndex => select<GlobalState, int>((state) => state.viewIndex);
+  Status get status => select<GlobalState, Status>((state) => state.status);
+  Type? get waitingMachine => select<GlobalState, Type?>((state) => state.waitingMachine);
+  Set<int> get subscribedFloors => select<GlobalState, Set<int>>((state) => state.subscribedFloors);
+  String? get defaultPaymentMethod => select<GlobalState, String?>((state) => state.defaultPaymentMethod);
+  ReminderConfig get machineAvailable => select<GlobalState, ReminderConfig>((state) => state.machineAvailable);
+  ReminderConfig get laundryDone => select<GlobalState, ReminderConfig>((state) => state.laundryDone);
+  bool get anonymous => select<GlobalState, bool>((state) => state.anonymous);
+  String? get subscribedFloorsString => select<GlobalState, String?>((state) => state.subscribedFloorsString);
+
+  get update => Provider.of<GlobalState>(this, listen: false).update;
+}

@@ -22,16 +22,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Machine> washingMachines = [];
-  List<Machine> dryerMachines = [];
-  List<int> floors = [];
-  Set<int> subscribedFloors = {};
-  List<bool> selectFloors = [false, false];
-
   @override
   Widget build(BuildContext context) {
-    GlobalState state = GlobalState.of(context);
-    var floorFilter = (machine) => state.viewIndex == 0 ? machine.floor == state.floor : machine.status.code == StatusCode.available;
     var homePage = ScaffoldPage(
       appBar: AppBar(
         title: Padding(
@@ -53,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
 
-    if (state.anonymous) {
+    if (context.anonymous) {
       return Stack(
         children: [
           homePage,
@@ -93,14 +85,14 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 3,
             child: NeumorphicToggle(
-              selectedIndex: GlobalState.of(context).viewIndex,
+              selectedIndex: context.viewIndex,
               radius: 100,
               height: 36,
               optionWidgets: [
                 Text("${floor != null ? floor.ordinal : '--'} Floor", textAlign: TextAlign.center),
                 const Text("All Floors", textAlign: TextAlign.center),
               ],
-              onChanged: (value) => GlobalState.set(context, viewIndex: value),
+              onChanged: (value) => context.update(viewIndex: value),
             ),
           ),
         ],

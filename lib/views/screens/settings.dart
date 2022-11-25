@@ -20,7 +20,6 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
-    var state = GlobalState.of(context);
     return ScaffoldPage(
       appBar: AppBar(
         title: CenterAppBar(title: S.of(context).settings),
@@ -34,14 +33,14 @@ class _SettingPageState extends State<SettingPage> {
           SettingItem(
             iconName: "home_outlined",
             title: "My Dormitory",
-            value: (state.dormitory?.name ?? 'Unset') + (state.floor != null ? ", ${state.floor}F" : ""),
+            value: (context.dormitory?.name ?? 'Unset') + (context.floor != null ? ", ${context.floor}F" : ""),
             onTap: () => showDialog(context: context, builder: (context) => const SelectDormDialog()),
           ),
           // Default Payment Method
           SettingItem(
             iconName: "money",
             title: "Default Payment Method",
-            value: state.defaultPaymentMethod ?? "Not Set",
+            value: context.defaultPaymentMethod ?? "Not Set",
             onTap: () => showDialog(context: context, builder: (context) => const DefaultPaymentDialog()),
           ),
           // TODO: Change Language
@@ -52,24 +51,26 @@ class _SettingPageState extends State<SettingPage> {
           SettingItem(
             iconName: "bell_outlined",
             title: "Machine available",
-            value: state.machineAvailable.summary,
+            value: context.machineAvailable.summary,
             onTap: () => showDialog(
               context: context,
               builder: (context) => ReminderConfigDialog(
                 title: "Machine Available",
-                config: state.machineAvailable,
+                config: context.machineAvailable,
+                onChanged: (value) => context.update(machineAvailable: value),
               ),
             ),
           ),
           SettingItem(
             iconName: "bell_outlined",
             title: "Laundry done",
-            value: state.laundryDone.summary,
+            value: context.laundryDone.summary,
             onTap: () => showDialog(
               context: context,
               builder: (context) => ReminderConfigDialog(
                 title: "Laundry Done",
-                config: state.laundryDone,
+                config: context.laundryDone,
+                onChanged: (value) => context.update(laundryDone: value),
               ),
             ),
           ),

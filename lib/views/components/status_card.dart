@@ -18,18 +18,19 @@ class StatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: Refactor Instruction Card
     var state = GlobalState.of(context);
+    var currentMachine = state.currentMachine;
     return state.anonymous
         ? statusCard_anonymous(context)
         : state.currentMachine != null && state.currentMachine!.status.code == StatusCode.available
-            ? statusCard_available(state, context)
+            ? statusCard_available(context)
             : state.status == Status.idle
-                ? statusCard_busy(state, context)
+                ? statusCard_busy(context)
                 : state.status == Status.waiting
-                    ? statusCard_waiting(state, context)
+                    ? statusCard_waiting(context)
                     : state.status == Status.using
                         ? state.currentMachine?.status.code == StatusCode.in_use
-                            ? statusCard_using(state, context)
-                            : statusCard_overdue(state, context)
+                            ? statusCard_using(context)
+                            : statusCard_overdue(context)
                         : const SizedBox(height: 0);
   }
 
@@ -42,53 +43,51 @@ class StatusCard extends StatelessWidget {
     );
   }
 
-  Widget statusCard_available(GlobalState state, BuildContext context) {
+  Widget statusCard_available(BuildContext context) {
+    var currentMachine = context.currentMachine;
     return _statusCard(
-      title: "${state.currentMachine!.type == WashingMachine ? 'Washing' : 'Dryer'} machine available on ${state.currentMachine!.locationString}!",
+      title: "${currentMachine!.type == WashingMachine ? 'Washing' : 'Dryer'} machine available on ${currentMachine.locationString}!",
       description: 'Hurry up before it used by other!',
       leading: SvgPicture.asset("assets/images/stats_available.svg"),
       actionWidget: const ActionText('Use it now', color: ThemeColors.cyan),
-      onTap: () => showDialog(context: context, builder: (context) => MachinePage(state.currentMachine!)),
+      onTap: () => showDialog(context: context, builder: (context) => MachinePage(currentMachine)),
     );
   }
 
-  Widget statusCard_busy(GlobalState state, BuildContext context) {
+  Widget statusCard_busy(BuildContext context) {
+    var waitingMachine = context.waitingMachine;
     return _statusCard(
-      title: "Washing machines on ${state.floor}F are busy.",
-      description: 'Remind when any washing machine available on ${state.subscribedFloorsString ?? "${state.floor}F"}?',
+      title: "${waitingMachine == WashingMachine ? 'Washing' : 'Dryer'} machines on ${context.floor}F are busy.",
+      description: 'Remind when any ${waitingMachine == WashingMachine ? 'washing' : 'dryer'} machine available on ${context.subscribedFloorsString ?? "${context.floor}F"}?',
       actionWidget: const ActionText('Notify me', color: ThemeColors.royalBlue),
       onTap: () {
-        if (state.subscribedFloors.isEmpty) state.subscribedFloors.add(state.floor!);
-        state.update(status: Status.waiting, waitingMachine: WashingMachine);
-        // FakeData.setReminder(context);
-        if (state.status == Status.waiting) {
-          Future.delayed(const Duration(seconds: 10), () {
-            // GlobalState.set(context, currentMachine: FakeData.washingMachine);
-          });
-        }
+        // if (state.subscribedFloors.isEmpty) state.subscribedFloors.add(state.config.floor!);
+        context.update(status: Status.waiting);
       },
     );
   }
 
-  Widget statusCard_waiting(GlobalState state, BuildContext context) {
+  Widget statusCard_waiting(BuildContext context) {
+    var viewIndex = context.viewIndex;
     return _statusCard(
-      title: "Waiting for a ${state.waitingMachine == WashingMachine ? 'washing' : 'dryer'} machine",
-      description: 'We’ll send you ${state.machineAvailable.remindMethod.toLowerCase()} when any machine available on ${state.subscribedFloorsString!}!',
-      actionWidget: state.viewIndex == 0 ? const ActionText('Check Other Floors', color: ThemeColors.royalBlue) : const ActionText('Cancel Waiting', icon: null),
+      title: "Waiting for a ${context.waitingMachine == WashingMachine ? 'washing' : 'dryer'} machine",
+      description: 'We’ll send you ${context.machineAvailable.remindMethod.toLowerCase()} when any machine available on ${context.subscribedFloorsString!}!',
+      actionWidget: viewIndex == 0 ? const ActionText('Check Other Floors', color: ThemeColors.royalBlue) : const ActionText('Cancel Waiting', icon: null),
       onTap: () {
-        if (state.viewIndex == 0) {
-          state.update(viewIndex: 1);
+        if (viewIndex == 0) {
+          context.update(viewIndex: 1);
         } else {
-          state.update(status: Status.idle);
+          context.update(status: Status.idle);
         }
       },
     );
   }
 
-  Widget statusCard_using(GlobalState state, BuildContext context) {
-    var machineStatus = state.currentMachine!.status;
+  Widget statusCard_using(BuildContext context) {
+    var currentMachine = context.currentMachine;
+    var machineStatus = currentMachine?.status;
     var inUseProgress = ProgressRing(
-      value: machineStatus.durationPassed.inMinutes / machineStatus.durationEstimated.inMinutes,
+      value: machineStatus!.durationPassed.inMinutes / machineStatus.durationEstimated.inMinutes,
       strokeWidth: 8,
       strokeGradient: ThemeColors.blueRingGradient,
       child: SvgPicture.asset(
@@ -97,36 +96,27 @@ class StatusCard extends StatelessWidget {
       ),
     );
     return _statusCard(
-      title: "${state.currentMachine!.type == WashingMachine ? 'Washing' : 'Drying'} in progress",
-      description: 'On ${state.currentMachine!.locationString}, ${state.dormitory!.name}',
-      // TODO: Time left calculation
+      title: "${currentMachine!.type == WashingMachine ? 'Washing' : 'Drying'} in progress",
+      description: 'On ${currentMachine.locationString}, ${context.dormitory!.name}',
       leading: inUseProgress,
       actionWidget: ActionText(
-        '${state.currentMachine?.status.minutesLeft} min left',
+        '${machineStatus.minutesLeft} min left',
         color: ThemeColors.royalBlue,
         icon: null,
       ),
-      onTap: () => showDialog(context: context, builder: (context) => MachinePage(state.currentMachine!)),
+      onTap: () => showDialog(context: context, builder: (context) => MachinePage(currentMachine)),
     );
   }
 
-  Widget statusCard_overdue(GlobalState state, BuildContext context) {
+  Widget statusCard_overdue(BuildContext context) {
+    var currentMachine = context.currentMachine;
     return _statusCard(
       title: "Laundry is done!",
-      description: 'Please collect your laundry ASAP at ${state.currentMachine!.locationString}, ${state.dormitory!.name}',
+      description: 'Please collect your laundry ASAP at ${currentMachine!.locationString}, ${context.dormitory!.name}',
       leading: SvgPicture.asset("assets/images/stats_overdue.svg"),
       actionWidget: const ActionText('Collect', color: ThemeColors.pink),
       onTap: () {
-        showDialog(context: context, builder: (context) => MachinePage(state.currentMachine!));
-        Future.delayed(const Duration(seconds: 3), () {
-          // state.currentMachine!.status = MachineStatus(code: StatusCode.available);
-          // if (state.currentMachine!.type == WashingMachine) {
-          //   state.currentMachine = FakeData.dryerMachine;
-          // } else {
-          //   state.currentMachine = FakeData.washingMachine;
-          // }
-          state.update(status: Status.idle);
-        });
+        showDialog(context: context, builder: (context) => MachinePage(currentMachine));
       },
     );
   }

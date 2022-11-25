@@ -17,7 +17,7 @@ class SelectFloorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SelectDialog(
-      title: "${GlobalState.of(context).dormitory!.name} Dorm",
+      title: "${context.dormitory!.name} Dorm",
       padding: const EdgeInsets.only(top: 36, bottom: 24, left: 8, right: 8),
       // Use ListView to enable scroll
       child: ListView.builder(
@@ -42,7 +42,7 @@ class FloorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDefault = id == GlobalState.of(context).floor;
+    bool isDefault = id == context.floor;
     return OptionItem(
       padding: const EdgeInsets.only(top: 16, bottom: 16, left: 14, right: 8),
       verticalMargin: 4,

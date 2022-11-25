@@ -37,8 +37,8 @@ class _MachinePageState extends State<MachinePage> {
     });
   }
 
-  wash(state, {String mode = "Normal"}) {
-    FakeData.wash(state);
+  wash({String mode = "Normal"}) {
+    FakeData.wash(GlobalState.of(context, listen: false));
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute<void>(
@@ -61,7 +61,9 @@ class _MachinePageState extends State<MachinePage> {
 
   @override
   Widget build(BuildContext context) {
-    var state = GlobalState.of(context);
+    var defaultPaymentMethod = context.defaultPaymentMethod;
+    var currentMachine = context.currentMachine;
+    var status = context.status;
     // TODO: refactor this
     // TODO: Message for dryer machine
     // TODO: i18n strings
@@ -83,15 +85,15 @@ class _MachinePageState extends State<MachinePage> {
               : Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
         ),
         const SizedBox(height: 24),
-        if (state.defaultPaymentMethod != null)
+        if (defaultPaymentMethod != null)
           NeumorphicButton(
             gradient: ThemeColors.blueRingGradient,
-            text: "Use ${state.defaultPaymentMethod}",
-            onPressed: () => FakeData.pay(context, paymentMethod: state.defaultPaymentMethod!, machine: data),
+            text: "Use $defaultPaymentMethod",
+            onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, machine: data),
           ),
-        if (state.defaultPaymentMethod != null) const SizedBox(height: 12),
+        if (defaultPaymentMethod != null) const SizedBox(height: 12),
         NeumorphicButton(
-          gradient: state.defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
+          gradient: defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
           text: "Select a payment method",
           onPressed: () => showDialog(context: context, builder: (context) => PaymentDialog(data, price: _selectedPrice)),
         ),
@@ -109,11 +111,11 @@ class _MachinePageState extends State<MachinePage> {
           ),
         ),
         const SizedBox(height: 24),
-        NeumorphicButton(text: "Normal", onPressed: () => wash(state, mode: "Normal")),
+        NeumorphicButton(text: "Normal", onPressed: () => wash(mode: "Normal")),
         const SizedBox(height: 24),
         NeumorphicButton(
           text: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature",
-          onPressed: () => wash(state, mode: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature"),
+          onPressed: () => wash(mode: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature"),
         ),
       ],
       StatusCode.in_use: <Widget>[
@@ -152,12 +154,12 @@ class _MachinePageState extends State<MachinePage> {
         ),
         const SizedBox(height: 24),
         Text(
-          data == state.currentMachine ? "Please collect your laundry ASAP!" : "Seem like someone haven’t take their laundry.",
+          data == currentMachine ? "Please collect your laundry ASAP!" : "Seem like someone haven’t take their laundry.",
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
         // TODO: Notification
-        if (data != state.currentMachine)
+        if (data != currentMachine)
           NeumorphicButton(
             text: "Ping",
             gradient: ThemeColors.pinkRingGradient,
@@ -186,7 +188,7 @@ class _MachinePageState extends State<MachinePage> {
           SizedBox(
             height: 240,
             child: Column(
-              children: contents[state.status] ?? contents[data.status.code] ?? [],
+              children: contents[status] ?? contents[data.status.code] ?? [],
             ),
           ),
         ],
@@ -195,7 +197,7 @@ class _MachinePageState extends State<MachinePage> {
 
     return WillPopScope(
       onWillPop: () async {
-        return state.status != Status.mode;
+        return status != Status.mode;
         final willPop = await showDialog<bool>(context: context, builder: (context) => ExitAlertDialog());
         return willPop!;
       },
