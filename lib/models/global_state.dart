@@ -94,10 +94,10 @@ class GlobalState with ChangeNotifier {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'dormitory': dormitory?.toMap(),
-      'currentMachine': currentMachine?.toMap(),
+      // 'currentMachine': currentMachine?.toMap(),
       'floor': floor,
-      'status': status.name,
-      'waitingMachine': waitingMachine?.toString(),
+      // 'status': status.name,
+      // 'waitingMachine': waitingMachine?.toString(),
       'subscribedFloors': subscribedFloors.toList(),
       'defaultPaymentMethod': defaultPaymentMethod,
       'machineAvailable': machineAvailable.toMap(),
@@ -110,7 +110,7 @@ class GlobalState with ChangeNotifier {
       dormitory: map['dormitory'] != null ? Dormitory.fromMap(map['dormitory'] as Map<String,dynamic>) : null,
       currentMachine: map['currentMachine'] != null ? Machine.fromMap(map['currentMachine'] as Map<String,dynamic>) : null,
       floor: map['floor'] != null ? map['floor'] as int : null,
-      status: Status.values.byName(map['status'] as String),
+      status: map['status'] != null ? Status.values.byName(map['status'] as String) : null,
       waitingMachine: map['waitingMachine'] != null && map['waitingMachine'] == "DryerMachine" ? DryerMachine : WashingMachine,
       subscribedFloors: map['subscribedFloors'] != null ? List<int>.from(map['subscribedFloors'].cast<int>()).toSet() : {},
       defaultPaymentMethod: map['defaultPaymentMethod'] != null ? map['defaultPaymentMethod'] as String : null,
