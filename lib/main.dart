@@ -32,13 +32,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     FakeData.init();
-    NotificationService.init();
   }
 
   Widget app(BuildContext context) {
     return MaterialApp(
       title: AppConfig.title,
-      home: const HomePage(),
+      home: App(),
       routes: AppRoute.route(context),
       themeMode: ThemeMode.light,
       theme: CustomTheme.defaultTheme,
@@ -79,5 +78,29 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+}
+
+class App extends StatefulWidget {
+  App({Key? key}) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  init() async {
+    await NotificationService.init(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const HomePage();
   }
 }

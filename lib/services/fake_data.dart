@@ -93,6 +93,7 @@ class FakeData {
             NotificationService.showNotification(
               title: "${state.currentMachine!.type} available",
               body: "Hurry up before it's used by other!",
+              payload: "current machine",
               details: NotificationService.machineAvailableNotificationDetails,
             );
           }
@@ -100,10 +101,11 @@ class FakeData {
       }
     } else if (state.status == Status.using) {
       state.currentMachine!.status = state.currentMachine!.status.updateStatus(5);
-      if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < const Duration(minutes: 10)) {
+      if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < Duration(minutes: 10)) {
         NotificationService.showNotification(
           title: "Laundry is done!",
           body: "on ${state.currentMachine!.locationString}, ${state.dormitory!.name}",
+          payload: "current machine",
           details: NotificationService.laundryDoneNotificationDetails,
         );
       }
@@ -185,5 +187,16 @@ class FakeData {
         builder: (context) => PaymentPage(machine: machine),
       ),
     );
+  }
+
+  static takeOutClothes(GlobalState state) {
+    state.currentMachine!.status = const MachineStatus(code: StatusCode.available);
+    if (state.currentMachine?.type == DryerMachine) {
+      state.waitingMachine = WashingMachine;
+    } else {
+      state.waitingMachine = DryerMachine;
+    }
+    state.update(status: Status.idle, currentMachine: null);
+    updateCurrentMachine(state);
   }
 }

@@ -14,10 +14,12 @@ class NotificationService {
   static Future<void> init(context) async {
     void onDidReceiveNotificationResponse(NotificationResponse notificationResponse) async {
       final String? payload = notificationResponse.payload;
-      // await Navigator.push(
-      //   context,
-      //   MaterialPageRoute<void>(builder: (context) => MachinePage(GlobalState.instance.currentMachine!)),
-      // );
+      if (notificationResponse.payload == "current machine" && GlobalState.instance.currentMachine != null) {
+        await Navigator.push(
+          context,
+          MaterialPageRoute<void>(builder: (context) => MachinePage(GlobalState.instance.currentMachine!)),
+        );
+      }
     }
 
     void onDidReceiveLocalNotification(int id, String? title, String? body, String? payload) {
