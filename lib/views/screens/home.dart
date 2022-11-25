@@ -35,11 +35,11 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           const StatusCard(),
           const SizedBox(height: 40),
-          _floorSelector(state.dormitory, state.floor),
+          _floorSelector(context.dormitory, "${context.floor ?? '--'} Floor", context.subscribedFloors != {context.floor}? context.subscribedFloorsString : null),
           const SizedBox(height: 24),
-          MachineSection(type: WashingMachine),
+          const MachineSection(type: WashingMachine),
           const SizedBox(height: 32),
-          MachineSection(type: DryerMachine),
+          const MachineSection(type: DryerMachine),
           const SizedBox(height: 40),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
         ],
       );
 
-  Widget _floorSelector(Dormitory? dorm, int? floor) => Row(
+  Widget _floorSelector(Dormitory? dorm, String floorString, String? subscribeFloors) => Row(
         children: [
           Expanded(
             flex: 2,
@@ -89,7 +89,8 @@ class _HomePageState extends State<HomePage> {
               radius: 100,
               height: 36,
               optionWidgets: [
-                Text("${floor != null ? floor.ordinal : '--'} Floor", textAlign: TextAlign.center),
+                Text(floorString, textAlign: TextAlign.center),
+                // if (subscribeFloors != null) Text(subscribeFloors, textAlign: TextAlign.center),
                 const Text("All Floors", textAlign: TextAlign.center),
               ],
               onChanged: (value) => context.update(viewIndex: value),

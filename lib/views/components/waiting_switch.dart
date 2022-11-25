@@ -27,7 +27,7 @@ class WaitingSwitch extends StatelessWidget {
           value: state.waitingMachine == machineType && (state.status == Status.waiting),
           onChanged: (value) {
             if (state.waitingMachine != machineType || state.status != Status.waiting) {
-              if (state.subscribedFloors.isEmpty) state.subscribedFloors.add(state.floor!);
+              // if (state.config.subscribedFloors.isEmpty) state.config.subscribedFloors.add(state.config.floor!);
               state.update(status: Status.waiting, waitingMachine: machineType);
             } else {
               state.update(status: Status.idle);

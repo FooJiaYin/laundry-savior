@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -48,6 +47,7 @@ class _MachineSectionState extends State<MachineSection> {
 
   @override
   Widget build(BuildContext context) {
+    state = GlobalState.of(context);
     var floorFilter = (machine) => state?.viewIndex == 0 ? machine.floor == state?.floor : machine.status.code == StatusCode.available;
 
     return Column(
@@ -82,7 +82,7 @@ class _MachineSectionState extends State<MachineSection> {
             children: [
               Flexible(
                 child: Text(
-                  state?.status != Status.waiting || subscribedFloors.isEmpty ? "Select Floors" : state!.subscribedFloorsString!,
+                  state?.status != Status.waiting ? "Select Floors" : state!.subscribedFloorsString!,
                   style: ThemeFont.small,
                   // overflow: TextOverflow.ellipsis,
                 ),
@@ -110,7 +110,7 @@ class _MachineSectionState extends State<MachineSection> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               /// Select All or Clear
-              subscribedFloors.length >= floors.length ? _clearAllButton : _selectAllButton,
+              state!.subscribedFloors.length >= floors.length ? _clearAllButton : _selectAllButton,
 
               /// Floor chips
               ...floors.map(floorChip).toList(),
@@ -132,7 +132,7 @@ class _MachineSectionState extends State<MachineSection> {
   Widget get _clearAllButton => SelectChip(
         label: " Clear",
         onSelected: (_) => setState(() {
-          GlobalState.set(context, subscribedFloors: <int>{}, status: Status.idle);
+          GlobalState.set(context, subscribedFloors: <int>{state!.floor!}, status: Status.idle);
         }),
       );
 
@@ -142,11 +142,19 @@ class _MachineSectionState extends State<MachineSection> {
         isSelected: state?.status == Status.waiting && subscribedFloors.contains(floor),
         onSelected: (isSelected) => setState(() {
           if (isSelected) {
-            subscribedFloors.add(floor);
+            if (state?.status == Status.waiting) {
+              subscribedFloors.add(floor);
+            } else {
+              state?.subscribedFloors = {floor};
+            }
             GlobalState.set(context, status: Status.waiting);
           } else {
             subscribedFloors.remove(floor);
-            GlobalState.set(context, status: subscribedFloors.isEmpty ? Status.idle : null);
+            GlobalState.set(
+              context,
+              status: subscribedFloors.isEmpty ? Status.idle : null,
+              subscribedFloors: subscribedFloors.isEmpty ? {state!.floor} : subscribedFloors,
+            );
           }
         }),
       );

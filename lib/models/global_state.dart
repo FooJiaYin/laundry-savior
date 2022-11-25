@@ -26,7 +26,7 @@ class GlobalState with ChangeNotifier {
   ReminderConfig machineAvailable = ReminderConfig.defaultConfig;
   ReminderConfig laundryDone = ReminderConfig.defaultConfig;
   bool get anonymous => dormitory == null || floor == null;
-  String? get subscribedFloorsString => subscribedFloors.isEmpty ? null : "${(subscribedFloors.toList()..sort((a, b) => (a - b))).join(',')}F";
+  String? get subscribedFloorsString => "${(subscribedFloors.toList()..sort((a, b) => (a - b))).join(',')}F";
   static get init => LocalData.loadGlobalState;
 
   reset() {
@@ -58,7 +58,7 @@ class GlobalState with ChangeNotifier {
     this.viewIndex = viewIndex ?? this.viewIndex;
     this.currentMachine = currentMachine != "" ? currentMachine : this.currentMachine;
     this.waitingMachine = waitingMachine ?? this.waitingMachine;
-    this.subscribedFloors = subscribedFloors ?? this.subscribedFloors;
+    this.subscribedFloors = subscribedFloors ?? (floor != "" ? <int>{floor} : this.subscribedFloors);
     this.defaultPaymentMethod = defaultPaymentMethod != "" ? defaultPaymentMethod : this.defaultPaymentMethod;
     this.machineAvailable = machineAvailable ?? this.machineAvailable;
     this.laundryDone = laundryDone ?? this.laundryDone;
