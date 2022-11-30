@@ -10,8 +10,8 @@ import 'machine_status_card.dart';
 import 'select_chip.dart';
 import 'waiting_switch.dart';
 
-class MachineSection extends StatefulWidget {
-  const MachineSection({
+class MachineList extends StatefulWidget {
+  const MachineList({
     Key? key,
     required this.type,
   }) : super(key: key);
@@ -19,10 +19,10 @@ class MachineSection extends StatefulWidget {
   final Type type;
 
   @override
-  State<MachineSection> createState() => _MachineSectionState();
+  State<MachineList> createState() => _MachineListState();
 }
 
-class _MachineSectionState extends State<MachineSection> {
+class _MachineListState extends State<MachineList> {
   List<Machine> machines = [];
   bool selectFloors = false;
   GlobalState? state;
@@ -65,7 +65,19 @@ class _MachineSectionState extends State<MachineSection> {
         const SizedBox(height: 8),
         ProxyProvider<GlobalState, List<Machine>>(
           update: (_, state, __) => state.floor != null ? machines.where(floorFilter).toList() : [],
-          child: const MachineList(),
+          child: Builder(
+            builder: (context) => GridView.count(
+              clipBehavior: Clip.none,
+              crossAxisCount: 3,
+              crossAxisSpacing: 24,
+              mainAxisSpacing: 24,
+              childAspectRatio: 0.65,
+              primary: true,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: context.watch<List<Machine>>().map((machine) => MachineStatusCard(machine)).toList(),
+            ),
+          ),
         ),
       ],
     );
@@ -131,7 +143,7 @@ class _MachineSectionState extends State<MachineSection> {
   Widget get _clearAllButton => SelectChip(
         label: " Clear",
         onSelected: (_) => setState(() {
-          GlobalState.set(context, subscribedFloors: <int>{state!.floor!}, status: Status.idle);
+          GlobalState.set(context, subscribedFloors: {state!.floor!}, status: Status.idle);
         }),
       );
 
@@ -152,28 +164,9 @@ class _MachineSectionState extends State<MachineSection> {
             GlobalState.set(
               context,
               status: subscribedFloors.isEmpty ? Status.idle : null,
-              subscribedFloors: subscribedFloors.isEmpty ? {state!.floor} : subscribedFloors,
+              subscribedFloors: subscribedFloors.isEmpty ? {state!.floor!} : subscribedFloors,
             );
           }
         }),
       );
-}
-
-class MachineList extends StatelessWidget {
-  const MachineList({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.count(
-      clipBehavior: Clip.none,
-      crossAxisCount: 3,
-      crossAxisSpacing: 24,
-      mainAxisSpacing: 24,
-      childAspectRatio: 0.65,
-      primary: true,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: context.watch<List<Machine>>().map((machine) => MachineStatusCard(machine)).toList(),
-    );
-  }
 }

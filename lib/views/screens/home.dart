@@ -6,7 +6,7 @@ import '../../models/global_state.dart';
 import '../../models/machine.dart';
 import '../../theme/theme.dart';
 import '../../utils/config.dart';
-import '../components/machine_section.dart';
+import '../components/machine_list.dart';
 import '../components/neumorphic_toggle.dart';
 import '../components/status_card.dart';
 import '../widgets/button.dart';
@@ -37,9 +37,9 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 40),
           _floorSelector(context.dormitory, "${context.floor ?? '--'} Floor", context.subscribedFloors != {context.floor}? context.subscribedFloorsString : null),
           const SizedBox(height: 24),
-          const MachineSection(type: WashingMachine),
+          const MachineList(type: WashingMachine),
           const SizedBox(height: 32),
-          const MachineSection(type: DryerMachine),
+          const MachineList(type: DryerMachine),
           const SizedBox(height: 40),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
