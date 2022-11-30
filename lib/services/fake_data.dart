@@ -11,16 +11,17 @@ import 'notification.dart';
 extension washingMachineSimulator on WashingMachine {
   int get phaseOffset => (12 - (id % 3) * 4 - floor + 1) % 12;
   MachineStatus updateStatus(int timePassed) {
-    int time = (timePassed + phaseOffset) % 12;
+    int time = (timePassed + phaseOffset * 5) % (12 * 5);
     status = MachineStatus(
-      code: time < 2
+      code: time < 2 * 5
           ? StatusCode.available
-          : time < 10
+          : time < 10 * 5
               ? StatusCode.in_use
               : StatusCode.overdue,
       durationEstimated: const Duration(minutes: 40),
-      durationPassed: Duration(minutes: (time - 2) * 5),
+      durationPassed: Duration(minutes: time - 2 * 5),
     );
+    notifyListeners();
     return status;
   }
 }
@@ -28,22 +29,23 @@ extension washingMachineSimulator on WashingMachine {
 extension dryerMachineSimulator on DryerMachine {
   int get phaseOffset => (22 - (id % 2) * 4 + (floor - 1) * 7) % 22;
   MachineStatus updateStatus(int timePassed) {
-    int time = (timePassed + phaseOffset) % 22;
+    int time = (timePassed + phaseOffset * 5) % (22 * 5);
     status = MachineStatus(
-      code: time < 2
+      code: time < 2 * 5
           ? StatusCode.available
-          : time < 7
+          : time < 7 * 5
               ? StatusCode.in_use
-              : time < 9
+              : time < 9 * 5
                   ? StatusCode.overdue
-                  : time < 11
+                  : time < 11 * 5
                       ? StatusCode.available
-                      : time < 21
+                      : time < 21 * 5
                           ? StatusCode.in_use
                           : StatusCode.overdue,
-      durationEstimated: Duration(minutes: time < 11 ? 25 : 50),
-      durationPassed: Duration(minutes: (time >= 11 ? time - 11 : time - 2) * 5),
+      durationEstimated: Duration(minutes: time < 11 * 5 ? 25 : 50),
+      durationPassed: Duration(minutes: (time >= 11 * 5 ? time - 11 * 5 : time - 2 * 5)),
     );
+    notifyListeners();
     return status;
   }
 }
@@ -53,8 +55,8 @@ class FakeData {
 
   static void init() {
     var state = GlobalState.instance;
-    Timer.periodic(const Duration(seconds: 2), (Timer t) {
-      timer = (timer + 1) % 12;
+    Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      timer = (timer + 1) % (132 * 5);
       for (var machine in washingMachines) {
         if (machine != state.currentMachine || state.status == Status.waiting || state.status == Status.idle) washingMachineSimulator(machine).updateStatus(timer);
       }
