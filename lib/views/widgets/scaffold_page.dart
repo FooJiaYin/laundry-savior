@@ -7,12 +7,13 @@ class ScaffoldPage extends StatelessWidget {
     Key? key,
     this.child,
     this.appBar,
-    this.padding,
-    this.height,
     this.backgroundColor,
     this.backgroundGradient,
     this.backgroundImage,
+    this.padding,
     this.alignment = Alignment.topCenter,
+    this.height,
+    this.extendBodyBehindAppBar = false,
   }) : super(key: key);
 
   final Widget? child;
@@ -23,6 +24,7 @@ class ScaffoldPage extends StatelessWidget {
   final EdgeInsets? padding;
   final Alignment alignment;
   final double? height;
+  final bool extendBodyBehindAppBar;
 
 
   @override
@@ -32,6 +34,7 @@ class ScaffoldPage extends StatelessWidget {
       Scaffold(
         appBar: appBar,
         backgroundColor: backgroundColor,
+        extendBodyBehindAppBar: extendBodyBehindAppBar,
         body: Container(
           alignment: alignment,
           decoration: BoxDecoration(

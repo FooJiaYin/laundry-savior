@@ -7,6 +7,7 @@ import '../../models/machine.dart';
 import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
+import '../components/app_bar.dart';
 import '../components/exit_alert_dialog.dart';
 import '../components/neumorphic_button.dart';
 import '../components/neumorphic_container.dart';
@@ -197,10 +198,17 @@ class _MachinePageState extends State<MachinePage> {
 
     // TODO: Alarm pages
     Widget _machinePage = ScaffoldPage(
+      appBar: AppBar(
+        title: const CenterAppBar(),
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+      ),
       alignment: Alignment.center,
-      padding: const EdgeInsets.all(48),
+      extendBodyBehindAppBar: true,
+      padding: const EdgeInsets.symmetric(horizontal: 48),
       child: Column(
         children: [
+          const SizedBox(height: 20),
           Text(
             data.type.name.capitalizeEach,
             style: ThemeFont.header(fontSize: 24),
