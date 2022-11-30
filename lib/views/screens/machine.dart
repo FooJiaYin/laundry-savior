@@ -21,14 +21,14 @@ export '../../models/machine.dart';
 class MachinePage extends StatefulWidget {
   const MachinePage(this.data, {Key? key}) : super(key: key);
 
-  final Machine data;
+  final Machine? data;
 
   @override
   State<MachinePage> createState() => _MachinePageState();
 }
 
 class _MachinePageState extends State<MachinePage> {
-  Machine get data => widget.data;
+  Machine get data => widget.data ?? GlobalState.instance.currentMachine!;
   int _selectedPrice = 10;
   int get _selectedDuration => (_selectedPrice * 0.25).toInt();
 
@@ -233,7 +233,7 @@ class _MachinePageState extends State<MachinePage> {
     return WillPopScope(
       onWillPop: () async {
         return status != Status.mode;
-        final willPop = await showDialog<bool>(context: context, builder: (context) => ExitAlertDialog());
+        final willPop = await showDialog<bool>(context: context, builder: (context) => const ExitAlertDialog());
         return willPop!;
       },
       child: _machinePage,

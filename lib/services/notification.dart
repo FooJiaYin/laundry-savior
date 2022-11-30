@@ -14,11 +14,8 @@ class NotificationService {
   static Future<void> init(context) async {
     void onDidReceiveNotificationResponse(NotificationResponse notificationResponse) async {
       final String? payload = notificationResponse.payload;
-      if (notificationResponse.payload == "current machine" && GlobalState.instance.currentMachine != null) {
-        await Navigator.push(
-          context,
-          MaterialPageRoute<void>(builder: (context) => MachinePage(GlobalState.instance.currentMachine!)),
-        );
+      if (notificationResponse.payload == "current_machine" && GlobalState.instance.currentMachine != null) {
+        await Navigator.pushNamed(context, '/current_machine');
       }
     }
 

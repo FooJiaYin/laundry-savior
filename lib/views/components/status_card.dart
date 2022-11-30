@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../models/global_state.dart';
+import '../../models/machine.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
-import '../screens/machine.dart';
 import '../widgets/progress_ring.dart';
 import 'neumorphic_container.dart';
 import 'select_dorm_dialog.dart';
@@ -50,7 +50,7 @@ class StatusCard extends StatelessWidget {
       description: 'Hurry up before it used by other!',
       leading: SvgPicture.asset("assets/images/stats_available.svg"),
       actionWidget: const ActionText('Use it now', color: ThemeColors.cyan),
-      onTap: () => showDialog(context: context, builder: (context) => MachinePage(currentMachine)),
+      onTap: () => Navigator.pushNamed(context, "/current_machine"),
     );
   }
 
@@ -104,7 +104,7 @@ class StatusCard extends StatelessWidget {
         color: ThemeColors.royalBlue,
         icon: null,
       ),
-      onTap: () => showDialog(context: context, builder: (context) => MachinePage(currentMachine)),
+      onTap: () => Navigator.pushNamed(context, "/current_machine"),
     );
   }
 
@@ -115,9 +115,7 @@ class StatusCard extends StatelessWidget {
       description: 'Please collect your laundry ASAP at ${currentMachine!.locationString}, ${context.dormitory!.name}',
       leading: SvgPicture.asset("assets/images/stats_overdue.svg"),
       actionWidget: const ActionText('Collect', color: ThemeColors.pink),
-      onTap: () {
-        showDialog(context: context, builder: (context) => MachinePage(currentMachine));
-      },
+      onTap: () => Navigator.pushNamed(context, "/current_machine"),
     );
   }
 

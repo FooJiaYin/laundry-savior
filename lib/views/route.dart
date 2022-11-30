@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 
+import '../models/global_state.dart';
 import 'screens/home.dart';
+import 'screens/machine.dart';
+import 'screens/payment.dart';
 import 'screens/settings.dart';
 
 export 'screens/bottom_nav.dart';
@@ -16,6 +19,8 @@ class AppRoute {
   static route(BuildContext context) => <String, WidgetBuilder>{
         "/home": (context) => HomePage(),
         "/settings": (context) => SettingPage(),
+        "/pay": (context) => PaymentPage(),
+        "/current_machine": (context) => MachinePage(GlobalState.instance.currentMachine),
       };
 }
 

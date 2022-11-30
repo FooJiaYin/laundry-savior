@@ -95,7 +95,7 @@ class FakeData {
             NotificationService.showNotification(
               title: "${state.currentMachine!.type.name.capitalizeFirst} available",
               body: "Hurry up before it's used by other!",
-              payload: "current machine",
+              payload: "current_machine",
               details: NotificationService.machineAvailableNotificationDetails,
             );
           }
@@ -107,7 +107,7 @@ class FakeData {
         NotificationService.showNotification(
           title: "Laundry is done!",
           body: "on ${state.currentMachine!.locationString}, ${state.dormitory!.name}",
-          payload: "current machine",
+          payload: "current_machine",
           details: NotificationService.laundryDoneNotificationDetails,
         );
       }
@@ -182,13 +182,7 @@ class FakeData {
   }
 
   static pay(context, {required String paymentMethod, required Machine machine}) {
-    GlobalState.set(context, currentMachine: machine, status: Status.mode);
-    Navigator.push(
-      context,
-      MaterialPageRoute<void>(
-        builder: (context) => PaymentPage(machine: machine),
-      ),
-    );
+    Navigator.pushNamed(context, "/pay");
   }
 
   static takeOutClothes(GlobalState state) {
