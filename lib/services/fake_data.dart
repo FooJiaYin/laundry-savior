@@ -102,8 +102,8 @@ class FakeData {
         }
       }
     } else if (state.status == Status.using) {
-      state.currentMachine!.status = state.currentMachine!.status.updateStatus(5);
-      if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < Duration(minutes: 10)) {
+      state.currentMachine!.status = state.currentMachine!.status.updateStatus(1);
+      if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < Duration(minutes: 2)) {
         NotificationService.showNotification(
           title: "Laundry is done!",
           body: "on ${state.currentMachine!.locationString}, ${state.dormitory!.name}",
