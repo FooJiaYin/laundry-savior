@@ -180,6 +180,7 @@ class FakeData {
     var state = GlobalState.of(context, listen: false);
     state.currentMachine!.use();
     state.update(status: Status.using);
+    Navigator.pushNamedAndRemoveUntil(context, '/current_machine', (route) => route.isFirst);
   }
 
   static pay(context, {required String paymentMethod, required Machine machine}) {

@@ -51,17 +51,6 @@ class _MachinePageState extends State<MachinePage> {
     });
   }
 
-  wash({String mode = "Normal"}) {
-    FakeData.wash(GlobalState.of(context, listen: false));
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute<void>(
-        builder: (context) => MachinePage(data),
-      ),
-      (route) => route.isFirst,
-    );
-  }
-
   Widget _machinePicture() => NeumorphicContainer(
         width: null,
         padding: const EdgeInsets.all(32),
@@ -139,11 +128,11 @@ class _MachinePageState extends State<MachinePage> {
           ),
         ),
         const SizedBox(height: 24),
-        NeumorphicButton(text: "Normal", onPressed: () => wash(mode: "Normal")),
+        NeumorphicButton(text: "Normal", onPressed: () => FakeData.wash(context, mode: "Normal")),
         const SizedBox(height: 24),
         NeumorphicButton(
           text: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature",
-          onPressed: () => wash(mode: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature"),
+          onPressed: () => FakeData.wash(context, mode: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature"),
         ),
       ],
       StatusCode.in_use: <Widget>[
