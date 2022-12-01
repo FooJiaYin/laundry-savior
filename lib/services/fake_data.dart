@@ -183,7 +183,9 @@ class FakeData {
     Navigator.pushNamedAndRemoveUntil(context, '/current_machine', (route) => route.isFirst);
   }
 
-  static pay(context, {required String paymentMethod, required Machine machine}) {
+  static pay(context, {required String paymentMethod, int minutes = 40, required Machine machine}) {
+    machine.status = machine.status.copyWith(durationEstimated: Duration(minutes: minutes));
+    GlobalState.set(context, status: Status.pay, currentMachine: machine);
     Navigator.pushNamed(context, "/pay");
   }
 

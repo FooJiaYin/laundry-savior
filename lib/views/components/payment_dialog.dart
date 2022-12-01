@@ -11,11 +11,13 @@ class PaymentDialog extends StatefulWidget {
   const PaymentDialog(
     this.data, {
     this.price = 10,
+    this.minutes = 40,
     Key? key,
   }) : super(key: key);
 
   final Machine data;
   final int price;
+  final int minutes;
 
   @override
   State<PaymentDialog> createState() => _PaymentDialogState();
@@ -30,7 +32,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
       if (setAsDefault) {
         GlobalState.set(context, defaultPaymentMethod: name);
       }
-      FakeData.pay(context, machine: widget.data, paymentMethod: name);
+      FakeData.pay(context, machine: widget.data, minutes: widget.minutes, paymentMethod: name);
     }
 
     return SelectDialog(

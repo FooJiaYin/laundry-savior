@@ -30,7 +30,7 @@ class MachinePage extends StatefulWidget {
 class _MachinePageState extends State<MachinePage> {
   Machine get data => widget.data ?? GlobalState.instance.currentMachine!;
   int _selectedPrice = 10;
-  int get _selectedDuration => (_selectedPrice * 0.25).toInt();
+  int get _selectedDuration => data.type == WashingMachine ? 40 : (_selectedPrice * 2.5).toInt();
 
   @override
   void initState() {
@@ -105,13 +105,20 @@ class _MachinePageState extends State<MachinePage> {
             NeumorphicButton(
               gradient: ThemeColors.blueRingGradient,
               text: "Use $defaultPaymentMethod",
-              onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, machine: data),
+              onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, minutes: _selectedDuration, machine: data),
             ),
           if (defaultPaymentMethod != null) const SizedBox(height: 12),
           NeumorphicButton(
             gradient: defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
             text: "Select a payment method",
-            onPressed: () => showDialog(context: context, builder: (context) => PaymentDialog(data, price: _selectedPrice)),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => PaymentDialog(
+                data,
+                price: _selectedPrice,
+                minutes: _selectedDuration,
+              ),
+            ),
           ),
           const SizedBox(height: 24),
           const Text("or Insert Coin into the machine")
