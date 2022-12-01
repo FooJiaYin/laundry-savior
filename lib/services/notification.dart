@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../models/dormitory.dart';
 import '../models/global_state.dart';
 import '../theme/theme.dart';
+import '../utils/string.dart';
 import '../views/route.dart';
 
 class NotificationService {
@@ -109,6 +111,32 @@ class NotificationService {
       body,
       notificationDetails,
       payload: payload,
+    );
+  }
+
+  static void machineMissed(Machine machine) {
+    showNotification(
+      title: "You just missed it!",
+      body: "${machine.type.name.capitalizeFirst} on ${machine.floor}F is being used by other",
+      details: NotificationService.machineAvailableNotificationDetails,
+    );
+  }
+
+  static void machineAvailable(Machine machine) {
+    showNotification(
+      title: "${machine.type.name.capitalizeFirst} available",
+      body: "Hurry up before it's used by other!",
+      payload: "current_machine",
+      details: NotificationService.machineAvailableNotificationDetails,
+    );
+  }
+
+  static void laundryDone(Machine machine, Dormitory dorm) {
+    showNotification(
+      title: "Laundry is done!",
+      body: "on ${machine.locationString}, ${dorm.name}",
+      payload: "current_machine",
+      details: NotificationService.laundryDoneNotificationDetails,
     );
   }
 

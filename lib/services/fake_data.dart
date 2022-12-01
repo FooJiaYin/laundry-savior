@@ -71,13 +71,7 @@ class FakeData {
   static void updateCurrentMachine(GlobalState state) {
     if (state.status == Status.idle || state.status == Status.waiting) {
       if (state.currentMachine != null && state.currentMachine!.status.code != StatusCode.available) {
-        if (state.status == Status.waiting) {
-          NotificationService.showNotification(
-            title: "You just missed it!",
-            body: "${state.currentMachine!.type.name.capitalizeFirst} on ${state.currentMachine!.floor}F is being used by other",
-            details: NotificationService.machineAvailableNotificationDetails,
-          );
-        }
+        if (state.status == Status.waiting) NotificationService.machineMissed(state.currentMachine!);
         state.currentMachine = null;
       }
       if (state.currentMachine == null || state.currentMachine!.floor != state.floor) {
@@ -91,25 +85,13 @@ class FakeData {
         /// Update if no currentMachine or availableMachine is nearer
         if (availableMachine != null && (state.currentMachine == null || (availableMachine.floor - state.floor!).abs() < (state.currentMachine!.floor - state.floor!).abs())) {
           state.currentMachine = availableMachine;
-          if (state.status == Status.waiting) {
-            NotificationService.showNotification(
-              title: "${state.currentMachine!.type.name.capitalizeFirst} available",
-              body: "Hurry up before it's used by other!",
-              payload: "current_machine",
-              details: NotificationService.machineAvailableNotificationDetails,
-            );
-          }
+          if (state.status == Status.waiting) NotificationService.machineAvailable(state.currentMachine!);
         }
       }
     } else if (state.status == Status.using) {
       state.currentMachine!.status = state.currentMachine!.status.updateStatus(1);
       if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < Duration(minutes: 2)) {
-        NotificationService.showNotification(
-          title: "Laundry is done!",
-          body: "on ${state.currentMachine!.locationString}, ${state.dormitory!.name}",
-          payload: "current_machine",
-          details: NotificationService.laundryDoneNotificationDetails,
-        );
+        NotificationService.laundryDone(state.currentMachine!, state.dormitory!);
       }
     }
   }
