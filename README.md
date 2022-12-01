@@ -84,11 +84,11 @@ Please visit our [website](https://yenyu-tung.github.io/HCI_LaundrySavior_websit
 ### Wizard of Oz techniques
 - The machine status is simulated. 
   - It’s computed with the state transition here: [Machine state simulation](https://docs.google.com/spreadsheets/d/14EIiU92QqoXvclLo23Ljwa_yDAViEl51zwrhPJVn4J4/edit?usp=sharing)
-  - For demonstration, the time in the app is speeded by 300x (1 second = 5 minutes).
+  - For demonstration, the time in the app is speeded by 60x (1 second = 1 minutes).
 - The e-payment does not direct the users to a 3-rd party payment app
   - Reason: we do not register with 3-rd party payment services to receive payment. 
 
-Hard-coded features
+### Hard-coded features
 The data of all dormitories and floors are hard-coded. 
 
 # Development
