@@ -13,7 +13,6 @@ export 'screens/home.dart';
 export 'screens/machine.dart';
 export 'screens/payment.dart';
 export 'screens/settings.dart';
-export 'screens/welcome.dart';
 
 class AppRoute {
   static route(BuildContext context) => <String, WidgetBuilder>{
