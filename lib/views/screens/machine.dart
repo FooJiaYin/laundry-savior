@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../generated/l10n.dart';
 import '../../models/global_state.dart';
 import '../../models/machine.dart';
 import '../../services/fake_data.dart';
@@ -71,126 +70,130 @@ class _MachinePageState extends State<MachinePage> {
     // TODO: Message for dryer machine
     // TODO: i18n strings
 
-    var contents = {
-      // TODO: Use multiple machines
-      StatusCode.available: <Widget>[
-        if (status == Status.using) ...[
+    List<Widget> getContents(data) {
+      var contents = {
+        // TODO: Use multiple machines
+        StatusCode.available: <Widget>[
+          if (status == Status.using) ...[
+            Container(
+              alignment: Alignment.bottomCenter,
+              height: 96,
+              child: Text(
+                "Machine Available!",
+                style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Text("You are using another machine", textAlign: TextAlign.center),
+          ] else ...[
+            Container(
+              alignment: Alignment.bottomCenter,
+              height: 96,
+              child: data.type == DryerMachine
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PriceButton(price: 10, name: "25 min", onPressed: selectPrice, isSelected: _selectedPrice == 10),
+                        PriceButton(price: 20, name: "50 min", onPressed: selectPrice, isSelected: _selectedPrice == 20),
+                        PriceButton(price: 30, name: "75 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
+                      ],
+                    )
+                  : Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
+            ),
+            const SizedBox(height: 24),
+            if (defaultPaymentMethod != null)
+              NeumorphicButton(
+                gradient: ThemeColors.blueRingGradient,
+                text: "Use $defaultPaymentMethod",
+                onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, minutes: _selectedDuration, machine: data),
+              ),
+            if (defaultPaymentMethod != null) const SizedBox(height: 12),
+            NeumorphicButton(
+              gradient: defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
+              text: "Select a payment method",
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => PaymentDialog(
+                  data,
+                  price: _selectedPrice,
+                  minutes: _selectedDuration,
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Text("or Insert Coin into the machine")
+          ]
+        ],
+        Status.mode: <Widget>[
           Container(
             alignment: Alignment.bottomCenter,
             height: 96,
             child: Text(
-              "Machine Available!",
+              data.type == WashingMachine ? "Washing Mode" : "Drying Mode",
               style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
+              textAlign: TextAlign.center,
             ),
           ),
           const SizedBox(height: 24),
-          const Text("You are using another machine", textAlign: TextAlign.center),
-        ] else ...[
+          NeumorphicButton(text: "Normal", onPressed: () => FakeData.wash(context, mode: "Normal")),
+          const SizedBox(height: 24),
+          NeumorphicButton(
+            text: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature",
+            onPressed: () => FakeData.wash(context, mode: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature"),
+          ),
+        ],
+        StatusCode.in_use: <Widget>[
           Container(
             alignment: Alignment.bottomCenter,
             height: 96,
-            child: data.type == DryerMachine
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PriceButton(price: 10, name: "25 min", onPressed: selectPrice, isSelected: _selectedPrice == 10),
-                      PriceButton(price: 20, name: "50 min", onPressed: selectPrice, isSelected: _selectedPrice == 20),
-                      PriceButton(price: 30, name: "75 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
-                    ],
-                  )
-                : Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
-          ),
-          const SizedBox(height: 24),
-          if (defaultPaymentMethod != null)
-            NeumorphicButton(
-              gradient: ThemeColors.blueRingGradient,
-              text: "Use $defaultPaymentMethod",
-              onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, minutes: _selectedDuration, machine: data),
-            ),
-          if (defaultPaymentMethod != null) const SizedBox(height: 12),
-          NeumorphicButton(
-            gradient: defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
-            text: "Select a payment method",
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => PaymentDialog(
-                data,
-                price: _selectedPrice,
-                minutes: _selectedDuration,
+            child: Text.rich(
+              textAlign: TextAlign.center,
+              TextSpan(
+                text: data.status.minutesLeft.toString(),
+                style: ThemeFont.header(fontSize: 48, color: ThemeColors.darkGrey),
+                children: const [
+                  TextSpan(
+                    text: " min left",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
               ),
             ),
           ),
           const SizedBox(height: 24),
-          const Text("or Insert Coin into the machine")
-        ]
-      ],
-      Status.mode: <Widget>[
-        Container(
-          alignment: Alignment.bottomCenter,
-          height: 96,
-          child: Text(
-            data.type == WashingMachine ? "Washing Mode" : "Drying Mode",
-            style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
+          const Text(
+            "You’ll be reminded when the laundry is done.",
             textAlign: TextAlign.center,
           ),
-        ),
-        const SizedBox(height: 24),
-        NeumorphicButton(text: "Normal", onPressed: () => FakeData.wash(context, mode: "Normal")),
-        const SizedBox(height: 24),
-        NeumorphicButton(
-          text: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature",
-          onPressed: () => FakeData.wash(context, mode: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature"),
-        ),
-      ],
-      StatusCode.in_use: <Widget>[
-        Container(
-          alignment: Alignment.bottomCenter,
-          height: 96,
-          child: Text.rich(
-            textAlign: TextAlign.center,
-            TextSpan(
-              text: data.status.minutesLeft.toString(),
-              style: ThemeFont.header(fontSize: 48, color: ThemeColors.darkGrey),
-              children: const [
-                TextSpan(
-                  text: " min left",
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
+        ],
+        StatusCode.overdue: <Widget>[
+          Container(
+            alignment: Alignment.bottomCenter,
+            height: 96,
+            child: Text(
+              "Launry is done!",
+              style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
+              textAlign: TextAlign.center,
             ),
           ),
-        ),
-        const SizedBox(height: 24),
-        const Text(
-          "You’ll be reminded when the laundry is done.",
-          textAlign: TextAlign.center,
-        ),
-      ],
-      StatusCode.overdue: <Widget>[
-        Container(
-          alignment: Alignment.bottomCenter,
-          height: 96,
-          child: Text(
-            "Launry is done!",
-            style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
+          const SizedBox(height: 24),
+          Text(
+            data == currentMachine ? "Please collect your laundry ASAP!" : "Seem like someone haven’t take their laundry.",
             textAlign: TextAlign.center,
           ),
-        ),
-        const SizedBox(height: 24),
-        Text(
-          data == currentMachine ? "Please collect your laundry ASAP!" : "Seem like someone haven’t take their laundry.",
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 24),
-        // TODO: Notification
-        if (data != currentMachine)
-          NeumorphicButton(
-            text: "Ping",
-            gradient: ThemeColors.pinkRingGradient,
-            onPressed: () => {},
-          ),
-      ],
-    };
+          const SizedBox(height: 24),
+          // TODO: Notification
+          if (data != currentMachine)
+            NeumorphicButton(
+              text: "Ping",
+              gradient: ThemeColors.pinkRingGradient,
+              onPressed: () => {},
+            ),
+        ],
+      };
+
+      return contents[status] ?? contents[data.status.code] ?? [];
+    }
 
     // TODO: Alarm pages
     Widget _machinePage = ScaffoldPage(
@@ -202,27 +205,36 @@ class _MachinePageState extends State<MachinePage> {
       alignment: Alignment.center,
       extendBodyBehindAppBar: true,
       padding: const EdgeInsets.symmetric(horizontal: 48),
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          Text(
-            data.type.name.capitalizeEach,
-            style: ThemeFont.header(fontSize: 24),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            "${data.floor} Floor" + (data.section != null ? ", Area ${data.section}" : ""),
-          ),
-          const SizedBox(height: 40),
-          _machinePicture(),
-          const SizedBox(height: 48),
-          SizedBox(
-            height: 240,
-            child: Column(
-              children: contents[status] ?? contents[data.status.code] ?? [],
-            ),
-          ),
-        ],
+      child: ChangeNotifierProvider<Machine>.value(
+        value: FakeData.machines.firstWhere((machine) => machine.id == data.id),
+        child: Builder(
+          builder: (context) {
+            var machine = context.watch<Machine>();
+
+            return Column(
+              children: [
+                const SizedBox(height: 20),
+                Text(
+                  data.type.name.capitalizeEach,
+                  style: ThemeFont.header(fontSize: 24),
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  "${data.floor} Floor" + (machine.section != null ? ", Area ${data.section}" : ""),
+                ),
+                const SizedBox(height: 40),
+                _machinePicture(),
+                const SizedBox(height: 48),
+                SizedBox(
+                  height: 240,
+                  child: Column(
+                    children: getContents(machine),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
 

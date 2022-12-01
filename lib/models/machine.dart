@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import 'machine_status.dart';
 
 export 'machine_status.dart';
 
-class Machine {
+class Machine with ChangeNotifier {
   final int id;
   final int floor;
   final String? section;

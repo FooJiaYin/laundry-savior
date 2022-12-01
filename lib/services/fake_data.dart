@@ -132,7 +132,7 @@ class FakeData {
 
     /// Update current machine status
     else if (state.status == Status.using) {
-      state.currentMachine!.updateStatus();
+      state.currentMachine!..updateStatus()..notifyListeners();
       if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < Duration(minutes: 2)) {
         NotificationService.laundryDone(state.currentMachine!, state.dormitory!);
       }
