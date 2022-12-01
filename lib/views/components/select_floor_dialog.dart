@@ -42,7 +42,7 @@ class FloorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDefault = id == context.floor;
+    var isDefault = id == context.floor;
     return OptionItem(
       padding: const EdgeInsets.only(top: 16, bottom: 16, left: 14, right: 8),
       verticalMargin: 4,

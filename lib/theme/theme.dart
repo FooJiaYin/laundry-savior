@@ -14,7 +14,7 @@ class CustomTheme with ChangeNotifier {
 
   static ThemeData defaultTheme = ThemeData(
     useMaterial3: true,
-    fontFamily: ThemeFont.fontFamilly,
+    fontFamily: ThemeFont.fontFamily,
 
     /// Colors
     primaryColor: ThemeColors.primaryColor,
@@ -87,7 +87,7 @@ class CustomTheme with ChangeNotifier {
     chipTheme: ChipThemeData(
       side: BorderSide.none,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.buttonRadius)),
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6)
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
     ),
   );
 

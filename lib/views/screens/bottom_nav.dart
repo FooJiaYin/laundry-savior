@@ -3,12 +3,12 @@ import '../route.dart';
 import '../widgets/nav_bar.dart';
 
 class BottomTabNavigationPage extends StatefulWidget {
-  BottomTabNavigationPage({
+  const BottomTabNavigationPage({
     this.tab = TabItem.home,
     Key? key,
   }) : super(key: key);
 
-  TabItem tab;
+  final TabItem tab;
 
   @override
   State<BottomTabNavigationPage> createState() => _BottomTabNavigationPageState();

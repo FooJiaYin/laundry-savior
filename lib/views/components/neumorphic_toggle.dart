@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
@@ -41,8 +40,8 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
 
   Alignment _alignment(int idx) {
     var percentX = selectedIndex / (widget.optionWidgets.length - 1);
-    var aligmentX = -1.0 + (2.0 * percentX);
-    return Alignment(aligmentX, 0.0);
+    var alignmentX = -1.0 + (2.0 * percentX);
+    return Alignment(alignmentX, 0.0);
   }
 
   @override

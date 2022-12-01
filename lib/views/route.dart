@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
 import '../models/global_state.dart';
@@ -16,9 +14,9 @@ export 'screens/settings.dart';
 
 class AppRoute {
   static route(BuildContext context) => <String, WidgetBuilder>{
-        "/home": (context) => HomePage(),
-        "/settings": (context) => SettingPage(),
-        "/pay": (context) => PaymentPage(),
+        "/home": (context) => const HomePage(),
+        "/settings": (context) => const SettingPage(),
+        "/pay": (context) => const PaymentPage(),
         "/current_machine": (context) => MachinePage(GlobalState.instance.currentMachine),
       };
 }

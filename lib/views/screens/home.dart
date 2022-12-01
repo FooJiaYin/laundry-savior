@@ -15,13 +15,13 @@ import '../widgets/scaffold_page.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  final String title = AppConfig.title;
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final String title = AppConfig.title;
+
   @override
   Widget build(BuildContext context) {
     var homePage = ScaffoldPage(
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
   Widget _titleRow() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(widget.title),
+          Text(title),
           RoundIconButton(
             SvgPicture.asset("assets/icons/settings.svg"),
             onTap: () => Navigator.pushNamed(context, "/settings"),

@@ -18,7 +18,6 @@ class StatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: Refactor Instruction Card
     var state = GlobalState.of(context);
-    var currentMachine = state.currentMachine;
     return state.anonymous
         ? statusCard_anonymous(context)
         : state.currentMachine != null && state.currentMachine!.status.code == StatusCode.available
@@ -119,7 +118,7 @@ class StatusCard extends StatelessWidget {
     );
   }
 
-  Widget _statusCard({required String title, required String description, Widget? leading, Widget? actionWidget, dynamic onTap}) {
+  Widget _statusCard({required String title, required String description, Widget? leading, Widget? actionWidget, onTap}) {
     return NeumorphicContainer(
       height: 124.0,
       padding: const EdgeInsets.only(top: 16, left: 22, bottom: 16, right: 12),

@@ -48,10 +48,9 @@ class _NeumorphicNumberInputState extends State<NeumorphicNumberInput> {
             : const SizedBox(width: Dimensions.iconSize + 20),
         Expanded(
           child: NeumorphicContainer(
-            margin: EdgeInsets.symmetric(horizontal: 12),
+            margin: const EdgeInsets.symmetric(horizontal: 12),
             pressed: true,
-            padding: EdgeInsets.all(16.0),
-            shadowRotation: 0,
+            padding: const EdgeInsets.all(16.0),
             gradient: const LinearGradient(
               transform: GradientRotation(1.4),
               stops: [0.3, 0.5, 0.7],
@@ -65,11 +64,13 @@ class _NeumorphicNumberInputState extends State<NeumorphicNumberInput> {
           ),
         ),
         widget.min == null || value > widget.min!
-            ? RoundIconButton(Text("—", textAlign: TextAlign.center),
+            ? RoundIconButton(
+                const Text("—", textAlign: TextAlign.center),
                 onTap: () => setState(() {
-                      value--;
-                      widget.onChanged(value);
-                    }))
+                  value--;
+                  widget.onChanged(value);
+                }),
+              )
             : const SizedBox(width: Dimensions.iconSize + 20),
       ],
     );

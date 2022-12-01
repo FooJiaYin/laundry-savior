@@ -35,7 +35,7 @@ linter:
     literal_only_boolean_expressions: true
     omit_local_variable_types: true
     # prefer_expression_function_bodies: true
-    prefer_if_elements_to_conditional_expressions: true
+    prefer_if_elements_to_conditional_expressions: false
     prefer_null_aware_method_calls: true
     prefer_relative_imports: true
     require_trailing_commas: true

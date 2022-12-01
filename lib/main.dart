@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
 import 'models/global_state.dart';
@@ -37,7 +36,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget app(BuildContext context) {
     return MaterialApp(
       title: AppConfig.title,
-      home: App(),
+      home: const App(),
       routes: AppRoute.route(context),
       themeMode: ThemeMode.light,
       theme: CustomTheme.defaultTheme,
@@ -82,7 +81,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 }
 
 class App extends StatefulWidget {
-  App({Key? key}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   State<App> createState() => _AppState();

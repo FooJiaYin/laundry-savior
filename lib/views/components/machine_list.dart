@@ -47,7 +47,7 @@ class _MachineListState extends State<MachineList> {
   @override
   Widget build(BuildContext context) {
     state = GlobalState.of(context);
-    var floorFilter = (machine) => state?.viewIndex == 0 ? machine.floor == state?.floor : machine.status.code == StatusCode.available;
+    floorFilter(machine) => state?.viewIndex == 0 ? machine.floor == state?.floor : machine.status.code == StatusCode.available;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 class ThemeFont {
-  static const fontFamilly = "Lexend";
+  static const fontFamily = "Lexend";
   static const color = ThemeColors.textColor;
   static const headerColor = ThemeColors.grey;
   static const titleColor = ThemeColors.darkGrey;
@@ -68,7 +68,7 @@ class ThemeFont {
     double? fontSize,
   }) =>
       TextStyle(
-        fontFamily: fontFamilly,
+        fontFamily: fontFamily,
         color: color ?? ThemeFont.color,
         fontWeight: fontWeight,
         fontSize: fontSize ?? textSize,

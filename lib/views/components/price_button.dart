@@ -40,7 +40,7 @@ class PriceButton extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         if (name != null) Text(name!, style: ThemeFont.small)
       ],
     );

@@ -1,11 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../theme/theme.dart';
 
 class SelectChip extends StatelessWidget {
-  SelectChip({
+  const SelectChip({
     Key? key,
     required this.label,
     this.icon,
@@ -14,7 +13,7 @@ class SelectChip extends StatelessWidget {
   }) : super(key: key);
   final String label;
   final icon;
-  bool isSelected;
+  final bool isSelected;
   final onSelected;
 
   @override
@@ -34,7 +33,7 @@ class SelectChip extends StatelessWidget {
             Icon(
               icon,
               size: 16,
-              color: isSelected ? Colors.white : ThemeColors.textColor
+              color: isSelected ? Colors.white : ThemeColors.textColor,
             ),
           Text(label)
         ],

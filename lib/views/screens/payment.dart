@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../../models/global_state.dart';
@@ -17,7 +16,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final willPop = await showDialog<bool>(context: context, builder: (context) => ExitAlertDialog(title: "Payment not completed", description: "Are you sure to exit?"));
+        final willPop = await showDialog<bool>(context: context, builder: (context) => const ExitAlertDialog(title: "Payment not completed", description: "Are you sure to exit?"));
         return willPop!;
       },
       child: GestureDetector(

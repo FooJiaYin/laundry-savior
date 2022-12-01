@@ -35,8 +35,8 @@ class ListItemText extends StatelessWidget {
 
 class CopyText extends StatelessWidget {
   final String text;
-  String? label;
-  String? buttonLabel;
+  late String? label;
+  final String? buttonLabel;
 
   CopyText({Key? key, required this.text, this.label, this.buttonLabel}) : super(key: key) {
     label ??= text;

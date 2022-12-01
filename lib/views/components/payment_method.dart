@@ -16,7 +16,7 @@ class PaymentMethod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDefault = name == context.select<GlobalState, String>((state) => state.defaultPaymentMethod ?? '');
+    var isDefault = name == context.select<GlobalState, String>((state) => state.defaultPaymentMethod ?? '');
     return OptionItem(
       onTap: () => onTap(name),
       child: Text(

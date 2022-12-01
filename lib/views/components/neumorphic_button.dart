@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
@@ -24,7 +23,7 @@ class NeumorphicButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(Dimensions.buttonRadius)),
+        borderRadius: const BorderRadius.all(Radius.circular(Dimensions.buttonRadius)),
         gradient: gradient,
         boxShadow: ThemeDecoration.neumorphicShadow,
       ),

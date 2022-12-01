@@ -1,10 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
 import 'neumorphic_button.dart';
 
 class ExitAlertDialog extends StatelessWidget {
+  /// AlertDialog with 'Exit' and 'Cancel' Button
   const ExitAlertDialog({
     Key? key,
     this.title = "Are you sure to exit?",

@@ -34,13 +34,14 @@ class _MachinePageState extends State<MachinePage> {
   @override
   void initState() {
     super.initState();
-    collectClothes();
+    collectLaundry();
   }
 
-  collectClothes() {
+  /// Take out clothes if laundry done
+  collectLaundry() {
     var state = GlobalState.instance;
     if (data == state.currentMachine && data.status.code == StatusCode.overdue) {
-      Future.delayed(const Duration(seconds: 1), () => FakeData.takeOutClothes(state));
+      Future.delayed(const Duration(seconds: 1), () => FakeData.collectLaundry(state));
     }
   }
 
@@ -53,7 +54,7 @@ class _MachinePageState extends State<MachinePage> {
   Widget _machinePicture() => NeumorphicContainer(
         width: null,
         padding: const EdgeInsets.all(32),
-        shadows: [...ThemeDecoration.neumorphicShadow, ...ThemeDecoration.neumorphicShadow],
+        shadows: const [...ThemeDecoration.neumorphicShadow, ...ThemeDecoration.neumorphicShadow],
         borderRadius: 43.0,
         child: Circle(
           shadows: ThemeDecoration.circleShadow,
@@ -135,7 +136,7 @@ class _MachinePageState extends State<MachinePage> {
             ),
           ),
           const SizedBox(height: 24),
-          NeumorphicButton(text: "Normal", onPressed: () => FakeData.wash(context, mode: "Normal")),
+          NeumorphicButton(text: "Normal", onPressed: () => FakeData.wash(context)),
           const SizedBox(height: 24),
           NeumorphicButton(
             text: data.type == WashingMachine ? "Delicate Wash" : "Low Temperature",
@@ -171,7 +172,7 @@ class _MachinePageState extends State<MachinePage> {
             alignment: Alignment.bottomCenter,
             height: 96,
             child: Text(
-              "Launry is done!",
+              "Laundry is done!",
               style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
               textAlign: TextAlign.center,
             ),
@@ -196,7 +197,7 @@ class _MachinePageState extends State<MachinePage> {
     }
 
     // TODO: Alarm pages
-    Widget _machinePage = ScaffoldPage(
+    Widget machinePage = ScaffoldPage(
       appBar: AppBar(
         title: const CenterAppBar(),
         backgroundColor: Colors.transparent,
@@ -220,7 +221,7 @@ class _MachinePageState extends State<MachinePage> {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  "${data.floor} Floor" + (machine.section != null ? ", Area ${data.section}" : ""),
+                  "${data.floor} Floor${machine.section != null ? ", Area ${data.section}" : ""}",
                 ),
                 const SizedBox(height: 40),
                 _machinePicture(),
@@ -244,7 +245,7 @@ class _MachinePageState extends State<MachinePage> {
         final willPop = await showDialog<bool>(context: context, builder: (context) => const ExitAlertDialog());
         return willPop!;
       },
-      child: _machinePage,
+      child: machinePage,
     );
   }
 }

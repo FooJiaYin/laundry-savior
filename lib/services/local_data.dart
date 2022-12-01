@@ -6,16 +6,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/global_state.dart';
 
 class LocalData {
+  /// Load GlobalState from local storage
   static Future<GlobalState> loadGlobalState() async {
     var state = GlobalState.instance;
     final sharedPreferences = await SharedPreferences.getInstance();
+
+    // Load saved state from sharedPreference
     final config = sharedPreferences.getString('config');
     if (config != null) state.fromJson(config);
 
     // Write to local storage when GlobalState updates
-    state.addListener(() {
-      sharedPreferences.setString('config', state.toJson());
-    });
+    state.addListener(() => sharedPreferences.setString('config', state.toJson()));
+
     FlutterNativeSplash.remove();
     return state;
   }

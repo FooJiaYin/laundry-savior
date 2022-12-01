@@ -37,6 +37,6 @@ class WaitingSwitch extends StatelessWidget {
           ),
         ),
       );
-    } else return SizedBox(height: 48);
+    } else return const SizedBox(height: 48);
   }
 }

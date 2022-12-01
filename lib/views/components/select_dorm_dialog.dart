@@ -1,10 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../../models/dormitory.dart';
+import '../../models/global_state.dart';
 import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
-import '../../models/global_state.dart';
 import '../widgets/container.dart';
 import 'select_dialog.dart';
 import 'select_floor_dialog.dart';

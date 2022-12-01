@@ -129,11 +129,12 @@ extension MachineTypeName on Type {
   String get name => this == WashingMachine? "washing machine" : "dryer machine";
 }
 
-extension query on List<Machine> {
+extension Query on List<Machine> {
   List<Machine> sortByNearestFloor(int floor) {
     return this..sort((a, b) => (a.floor - floor).abs() - (b.floor - floor).abs());
   }
 
+  /// Get available machine which is nearest to `state.floor`
   Machine? nearestAvailable(state) {
     try {
       return where((machine) => state.subscribedFloors.contains(machine.floor) && machine.status.code == StatusCode.available).toList().sortByNearestFloor(state.floor!).first;

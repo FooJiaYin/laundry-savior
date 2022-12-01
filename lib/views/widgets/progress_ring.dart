@@ -1,8 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import '../../theme/theme.dart';
 
@@ -29,7 +27,7 @@ class ProgressRing extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        double _size = size ?? min(constraints.maxWidth, constraints.maxHeight); 
+        var _size = size ?? min(constraints.maxWidth, constraints.maxHeight);
         return Stack(
           alignment: Alignment.center,
           children: [
@@ -71,7 +69,7 @@ class ProgressRing extends StatelessWidget {
             )
           ],
         );
-      }
+      },
     );
   }
 }

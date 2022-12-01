@@ -124,22 +124,36 @@ class GlobalState with ChangeNotifier {
   fromJson(String source) => fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
+/// Enable listen to field with context, 
+/// ex: `context.dormitory` => `context.select<GlobalState, Dormitory?>((state) => state.dormitory);`
 extension GetState on BuildContext {
   state({bool listen = true}) {
     Provider.of<GlobalState>(this, listen: listen);
   }
 
+  /// context.select<GlobalState, Dormitory?>((state) => state.dormitory);
   Dormitory? get dormitory => select<GlobalState, Dormitory?>((state) => state.dormitory);
+  /// context.select<GlobalState, Machine?>((state) => state.currentMachine);
   Machine? get currentMachine => select<GlobalState, Machine?>((state) => state.currentMachine);
+  /// context.select<GlobalState, int?>((state) => state.floor);
   int? get floor => select<GlobalState, int?>((state) => state.floor);
+  /// context.select<GlobalState, int>((state) => state.viewIndex);
   int get viewIndex => select<GlobalState, int>((state) => state.viewIndex);
+  /// context.select<GlobalState, Status>((state) => state.status);
   Status get status => select<GlobalState, Status>((state) => state.status);
+  /// context.select<GlobalState, Type?>((state) => state.waitingMachine);
   Type? get waitingMachine => select<GlobalState, Type?>((state) => state.waitingMachine);
+  /// context.select<GlobalState, Set<int>>((state) => state.subscribedFloors);
   Set<int> get subscribedFloors => select<GlobalState, Set<int>>((state) => state.subscribedFloors);
+  /// context.select<GlobalState, String?>((state) => state.defaultPaymentMethod);
   String? get defaultPaymentMethod => select<GlobalState, String?>((state) => state.defaultPaymentMethod);
+  /// context.select<GlobalState, ReminderConfig>((state) => state.machineAvailable);
   ReminderConfig get machineAvailable => select<GlobalState, ReminderConfig>((state) => state.machineAvailable);
+  /// context.select<GlobalState, ReminderConfig>((state) => state.laundryDone);
   ReminderConfig get laundryDone => select<GlobalState, ReminderConfig>((state) => state.laundryDone);
+  /// context.select<GlobalState, bool>((state) => state.anonymous);
   bool get anonymous => select<GlobalState, bool>((state) => state.anonymous);
+  /// context.select<GlobalState, String?>((state) => state.subscribedFloorsString);
   String? get subscribedFloorsString => select<GlobalState, String?>((state) => state.subscribedFloorsString);
 
   get update => Provider.of<GlobalState>(this, listen: false).update;

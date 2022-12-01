@@ -50,7 +50,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
                   children: [
                     TextSpan(
                       text: widget.price.toString(),
-                      style: TextStyle(fontSize: 48),
+                      style: const TextStyle(fontSize: 48),
                     ),
                   ],
                 ),

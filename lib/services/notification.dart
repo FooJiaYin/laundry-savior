@@ -15,14 +15,13 @@ class NotificationService {
 
   static Future<void> init(context) async {
     void onDidReceiveNotificationResponse(NotificationResponse notificationResponse) async {
-      final String? payload = notificationResponse.payload;
       if (notificationResponse.payload == "current_machine" && GlobalState.instance.currentMachine != null) {
         await Navigator.pushNamed(context, '/current_machine');
       }
     }
 
     void onDidReceiveLocalNotification(int id, String? title, String? body, String? payload) {
-      print('id $id');
+      // print('id $id');
     }
 
     const initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
@@ -30,7 +29,7 @@ class NotificationService {
     final initializationSettingsDarwin = DarwinInitializationSettings(
       onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
-    final initializationSettingsLinux = LinuxInitializationSettings(defaultActionName: 'Open notification');
+    const initializationSettingsLinux = LinuxInitializationSettings(defaultActionName: 'Open notification');
 
     // final IOSInitializationSettings initializationSettingsIOS =
     //     IOSInitializationSettings(
@@ -114,6 +113,8 @@ class NotificationService {
     );
   }
 
+  /// You just missed it! <br>
+  /// Washing machine on 8A is being used by other
   static void machineMissed(Machine machine) {
     showNotification(
       title: "You just missed it!",
@@ -122,6 +123,8 @@ class NotificationService {
     );
   }
 
+  /// Washing machine Available! <br>
+  /// Hurry up before it's used by other!
   static void machineAvailable(Machine machine) {
     showNotification(
       title: "${machine.type.name.capitalizeFirst} available",
@@ -131,6 +134,8 @@ class NotificationService {
     );
   }
 
+  /// Laundry is Done! <br>
+  /// on 8A, Male 1 dorm
   static void laundryDone(Machine machine, Dormitory dorm) {
     showNotification(
       title: "Laundry is done!",

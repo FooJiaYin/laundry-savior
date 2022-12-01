@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
@@ -36,7 +35,7 @@ class Button extends StatelessWidget {
     if (borderColor != null) {
       style = style.merge(TextStyle(color: borderColor));
     } else if (disabled) {
-      style = style.merge(TextStyle(color: Colors.black54));
+      style = style.merge(const TextStyle(color: Colors.black54));
     }
     return style.merge(textStyle);
   }

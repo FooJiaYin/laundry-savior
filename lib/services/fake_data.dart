@@ -67,19 +67,19 @@ class FakeData {
     noFloors * washingMachinesPerFloor,
     (i) => WashingMachine(
       id: i,
-      floor: ((i + 1) / 3).ceil(),
+      floor: ((i + 1) / washingMachinesPerFloor).ceil(),
       // section: 'A',
       status: const MachineStatus(code: StatusCode.available),
-    )..simulateStatus(0),
+    )..simulateStatus(0), // init machine status
   );
 
   static var dryerMachines = List<DryerMachine>.generate(
     noFloors * dryerMachinesPerFloor,
     (i) => DryerMachine(
       id: i + noFloors * washingMachinesPerFloor,
-      floor: ((i + 1) / 2).ceil(),
+      floor: ((i + 1) / dryerMachinesPerFloor).ceil(),
       status: const MachineStatus(code: StatusCode.available),
-    )..simulateStatus(0),
+    )..simulateStatus(0), // init machine status
   );
 
   static get machines => <Machine>[...washingMachines, ...dryerMachines];
@@ -133,7 +133,7 @@ class FakeData {
     /// Update current machine status
     else if (state.status == Status.using) {
       state.currentMachine!..updateStatus()..notifyListeners();
-      if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < Duration(minutes: 2)) {
+      if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < const Duration(minutes: 2)) {
         NotificationService.laundryDone(state.currentMachine!, state.dormitory!);
       }
     }
@@ -184,19 +184,26 @@ class FakeData {
   }
 
   static pay(context, {required String paymentMethod, int minutes = 40, required Machine machine}) {
+    // Update machine duration
     machine.status = machine.status.copyWith(durationEstimated: Duration(minutes: minutes));
+    
     GlobalState.set(context, status: Status.pay, currentMachine: machine);
     Navigator.pushNamed(context, "/pay");
   }
 
-  static takeOutClothes(GlobalState state) {
+  static collectLaundry(GlobalState state) {
     state.currentMachine!.done();
+    
+    // Set waiting machine to another type
     if (state.currentMachine?.type == DryerMachine) {
       state.waitingMachine = WashingMachine;
     } else {
       state.waitingMachine = DryerMachine;
     }
+
     state.update(status: Status.idle, currentMachine: null);
+    
+    // Find available machine for currentMachine
     updateCurrentMachine(state);
   }
 }
