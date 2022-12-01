@@ -58,7 +58,7 @@ class GlobalState with ChangeNotifier {
     this.viewIndex = viewIndex ?? this.viewIndex;
     this.currentMachine = currentMachine != "" ? currentMachine : this.currentMachine;
     this.waitingMachine = waitingMachine ?? this.waitingMachine;
-    this.subscribedFloors = subscribedFloors ?? (floor != "" ? <int>{floor} : this.subscribedFloors);
+    this.subscribedFloors = subscribedFloors ?? (floor != "" ? <int>{floor!} : this.subscribedFloors);
     this.defaultPaymentMethod = defaultPaymentMethod != "" ? defaultPaymentMethod : this.defaultPaymentMethod;
     this.machineAvailable = machineAvailable ?? this.machineAvailable;
     this.laundryDone = laundryDone ?? this.laundryDone;
