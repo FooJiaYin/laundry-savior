@@ -21,17 +21,6 @@ class MachineStatus {
 
   int get minutesLeft => durationEstimated.inMinutes - durationPassed.inMinutes;
 
-  updateStatus(int minutes) {
-    var newDurationPassed = durationPassed + Duration(minutes: minutes);
-    if (code == StatusCode.in_use && newDurationPassed >= durationEstimated) {
-      return copyWith(
-        code: StatusCode.overdue,
-        durationPassed: newDurationPassed - durationEstimated,
-      );
-    }
-    return copyWith(durationPassed: durationPassed + Duration(minutes: minutes));
-  }
-
   MachineStatus copyWith({
     StatusCode? code,
     Duration? durationPassed,

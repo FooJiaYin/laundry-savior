@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/dormitory.dart';
 import '../models/global_state.dart';
+import '../services/machine.dart';
 import '../utils/string.dart';
 import 'notification.dart';
 
@@ -131,7 +132,7 @@ class FakeData {
 
     /// Update current machine status
     else if (state.status == Status.using) {
-      state.currentMachine!.status = state.currentMachine!.status.updateStatus(1);
+      state.currentMachine!.updateStatus();
       if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < Duration(minutes: 2)) {
         NotificationService.laundryDone(state.currentMachine!, state.dormitory!);
       }
@@ -175,12 +176,9 @@ class FakeData {
     ].map(getDormitoryById).toList();
   }
 
-  static wash(GlobalState state) {
-    // var state = context.watch<GlobalState>();
-    state.currentMachine!.status = const MachineStatus(
-      code: StatusCode.in_use,
-      durationEstimated: Duration(minutes: 40),
-    );
+  static wash(context, {String mode = "Normal"}) {
+    var state = GlobalState.of(context, listen: false);
+    state.currentMachine!.use();
     state.update(status: Status.using);
   }
 
@@ -189,7 +187,7 @@ class FakeData {
   }
 
   static takeOutClothes(GlobalState state) {
-    state.currentMachine!.status = const MachineStatus(code: StatusCode.available);
+    state.currentMachine!.done();
     if (state.currentMachine?.type == DryerMachine) {
       state.waitingMachine = WashingMachine;
     } else {
