@@ -5,64 +5,101 @@ import 'package:flutter/material.dart';
 import '../models/dormitory.dart';
 import '../models/global_state.dart';
 import '../utils/string.dart';
-import '../views/route.dart';
 import 'notification.dart';
 
-extension washingMachineSimulator on WashingMachine {
+extension WashingMachineSimulator on WashingMachine {
+  /// Scale = 5 min
   int get phaseOffset => (12 - (id % 3) * 4 - floor + 1) % 12;
-  MachineStatus updateStatus(int timePassed) {
-    int time = (timePassed + phaseOffset * 5) % (12 * 5);
+
+  /// timePassed : scale = 1 min
+  simulateStatus(int timePassed) {
+    var timeStep = (timePassed + phaseOffset * 5) % (12 * 5);
+
     status = MachineStatus(
-      code: time < 2 * 5
+      code: timeStep < 2 * 5
           ? StatusCode.available
-          : time < 10 * 5
+          : timeStep < 10 * 5
               ? StatusCode.in_use
               : StatusCode.overdue,
       durationEstimated: const Duration(minutes: 40),
-      durationPassed: Duration(minutes: time - 2 * 5),
+      durationPassed: Duration(minutes: timeStep - 2 * 5),
     );
+
     notifyListeners();
-    return status;
   }
 }
 
-extension dryerMachineSimulator on DryerMachine {
+extension DryerMachineSimulator on DryerMachine {
+  /// Scale = 5 min
   int get phaseOffset => (22 - (id % 2) * 4 + (floor - 1) * 7) % 22;
-  MachineStatus updateStatus(int timePassed) {
-    int time = (timePassed + phaseOffset * 5) % (22 * 5);
+
+  /// timePassed : scale = 1 min
+  simulateStatus(int timePassed) {
+    var timeStep = (timePassed + phaseOffset * 5) % (22 * 5);
+
     status = MachineStatus(
-      code: time < 2 * 5
+      code: timeStep < 2 * 5
           ? StatusCode.available
-          : time < 7 * 5
+          : timeStep < 7 * 5
               ? StatusCode.in_use
-              : time < 9 * 5
+              : timeStep < 9 * 5
                   ? StatusCode.overdue
-                  : time < 11 * 5
+                  : timeStep < 11 * 5
                       ? StatusCode.available
-                      : time < 21 * 5
+                      : timeStep < 21 * 5
                           ? StatusCode.in_use
                           : StatusCode.overdue,
-      durationEstimated: Duration(minutes: time < 11 * 5 ? 25 : 50),
-      durationPassed: Duration(minutes: (time >= 11 * 5 ? time - 11 * 5 : time - 2 * 5)),
+      durationEstimated: Duration(minutes: timeStep < 11 * 5 ? 25 : 50),
+      durationPassed: Duration(minutes: (timeStep >= 11 * 5 ? timeStep - 11 * 5 : timeStep - 2 * 5)),
     );
+
     notifyListeners();
-    return status;
   }
 }
 
 class FakeData {
-  static int timer = 0;
+  static int noFloors = 11;
+  static int washingMachinesPerFloor = 3;
+  static int dryerMachinesPerFloor = 2;
 
-  static void init() {
+  static var washingMachines = List<WashingMachine>.generate(
+    noFloors * washingMachinesPerFloor,
+    (i) => WashingMachine(
+      id: i,
+      floor: ((i + 1) / 3).ceil(),
+      // section: 'A',
+      status: const MachineStatus(code: StatusCode.available),
+    )..simulateStatus(0),
+  );
+
+  static var dryerMachines = List<DryerMachine>.generate(
+    noFloors * dryerMachinesPerFloor,
+    (i) => DryerMachine(
+      id: i + noFloors * washingMachinesPerFloor,
+      floor: ((i + 1) / 2).ceil(),
+      status: const MachineStatus(code: StatusCode.available),
+    )..simulateStatus(0),
+  );
+
+  static get machines => <Machine>[...washingMachines, ...dryerMachines];
+
+  static void updateMachinesPeriodically() {
     var state = GlobalState.instance;
-    Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      timer = (timer + 1) % (132 * 5);
-      for (var machine in washingMachines) {
-        if (machine != state.currentMachine || state.status == Status.waiting || state.status == Status.idle) washingMachineSimulator(machine).updateStatus(timer);
+
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      var time = timer.tick % (132 * 5);
+
+      for (var machine in machines) {
+        // Except currentMachine if it's in use
+        if (machine != state.currentMachine || state.status == Status.idle || state.status == Status.waiting) {
+          if (machine.type == WashingMachine) {
+            WashingMachineSimulator(machine).simulateStatus(time);
+          } else {
+            DryerMachineSimulator(machine).simulateStatus(time);
+          }
+        }
       }
-      for (var machine in dryerMachines) {
-        if (machine != state.currentMachine || state.status == Status.waiting || state.status == Status.idle) dryerMachineSimulator(machine).updateStatus(timer);
-      }
+
       updateCurrentMachine(GlobalState.instance);
       GlobalState.instance.notifyListeners();
     });
@@ -70,10 +107,12 @@ class FakeData {
 
   static void updateCurrentMachine(GlobalState state) {
     if (state.status == Status.idle || state.status == Status.waiting) {
+      // currentMachine is used by other
       if (state.currentMachine != null && state.currentMachine!.status.code != StatusCode.available) {
         if (state.status == Status.waiting) NotificationService.machineMissed(state.currentMachine!);
         state.currentMachine = null;
       }
+      // Find new machine if no currentMachine set or it's on other floor
       if (state.currentMachine == null || state.currentMachine!.floor != state.floor) {
         Machine? availableMachine;
         if (state.waitingMachine == WashingMachine) {
@@ -82,40 +121,22 @@ class FakeData {
           availableMachine = dryerMachines.nearestAvailable(state);
         }
 
-        /// Update if no currentMachine or availableMachine is nearer
+        // Update currentMachine if no currentMachine or found a nearer machine
         if (availableMachine != null && (state.currentMachine == null || (availableMachine.floor - state.floor!).abs() < (state.currentMachine!.floor - state.floor!).abs())) {
           state.currentMachine = availableMachine;
           if (state.status == Status.waiting) NotificationService.machineAvailable(state.currentMachine!);
         }
       }
-    } else if (state.status == Status.using) {
+    }
+
+    /// Update current machine status
+    else if (state.status == Status.using) {
       state.currentMachine!.status = state.currentMachine!.status.updateStatus(1);
       if (state.currentMachine!.status.code == StatusCode.overdue && state.currentMachine!.status.durationPassed < Duration(minutes: 2)) {
         NotificationService.laundryDone(state.currentMachine!, state.dormitory!);
       }
     }
   }
-
-  static var washingMachines = List<WashingMachine>.generate(
-    33,
-    (i) => WashingMachine(
-      id: i,
-      floor: ((i + 1) / 3).ceil(),
-      // section: 'A',
-      status: const MachineStatus(code: StatusCode.available),
-    )..updateStatus(0),
-  );
-
-  static var dryerMachines = List<DryerMachine>.generate(
-    22,
-    (i) => DryerMachine(
-      id: i,
-      floor: ((i + 1) / 2).ceil(),
-      status: const MachineStatus(code: StatusCode.available),
-    )..updateStatus(0),
-  );
-
-  static get machines => <Machine>[...washingMachines, ...dryerMachines];
 
   static Future<List<Machine>> getMachines(Dormitory dorm, Type? type) async {
     return type == null ? machines : machines.where((machine) => machine.type == type).toList();
@@ -126,7 +147,7 @@ class FakeData {
         name: id.replaceAll("_", " ").capitalizeEach,
         imageUrl: "assets/images/ntu_$id.png",
         university: "ntu",
-        floors: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        floors: List.generate(noFloors, (i) => i+1),
       );
 
   static Future<List<Dormitory>> getDormitories(String university) async {
