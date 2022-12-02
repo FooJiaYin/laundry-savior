@@ -6,7 +6,7 @@ Laundry Savior provide a dashboard to **check availability** of the washing mach
 
 *   Made with: [Flutter](https://flutter.dev/)
 *   Target Platform: Android 12+
-*   Prototype Link: [APK Link](https://drive.google.com/file/d/1IidOl6F9v_4immisYDybYTN-HcTSUHes/view?usp=drivesdk)
+*   Prototype Link: [APK Link](https://github.com/FooJiaYin/laundry-savior/releases/download/v1.0.2/laundry_savior_v1.0.2.apk)
 
 Please visit our [website](https://yenyu-tung.github.io/HCI_LaundrySavior_website/) for further information.
 
