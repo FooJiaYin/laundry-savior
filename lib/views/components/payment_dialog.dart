@@ -40,7 +40,6 @@ class _PaymentDialogState extends State<PaymentDialog> {
   @override
   Widget build(BuildContext context) {
     pay() {
-      if (selectedMethod == null) return;
       if (setAsDefault) {
         GlobalState.set(context, defaultPaymentMethod: selectedMethod);
       }
@@ -92,11 +91,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
               const Text("Set as default"),
             ],
           ),
-          NeumorphicButton(
-            text: "Confirm",
-            textColor: selectedMethod == null ? ThemeColors.grey : ThemeColors.primaryColor,
-            onPressed: pay,
-          ),
+          NeumorphicButton.confirm(disabled: selectedMethod == null, onPressed: pay),
         ],
       ),
     );

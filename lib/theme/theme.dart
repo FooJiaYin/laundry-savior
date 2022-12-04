@@ -28,7 +28,7 @@ class CustomTheme with ChangeNotifier {
     scaffoldBackgroundColor: ThemeColors.backgroundColor,
     backgroundColor: ThemeColors.backgroundColor,
     shadowColor: ThemeColors.grey,
-    disabledColor: Colors.grey,
+    disabledColor: ThemeColors.lightGrey,
     textTheme: ThemeFont.textTheme,
     buttonTheme: ButtonThemeData(
       // 4

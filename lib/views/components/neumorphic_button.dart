@@ -8,6 +8,7 @@ class NeumorphicButton extends StatelessWidget {
     Key? key,
     required this.text,
     this.textColor,
+    this.disabled = false,
     this.gradient,
     this.width = double.infinity,
     this.onPressed,
@@ -17,6 +18,7 @@ class NeumorphicButton extends StatelessWidget {
   final Color? textColor;
   final Gradient? gradient;
   final double? width;
+  final bool disabled;
   final dynamic onPressed;
 
   @override
@@ -28,15 +30,25 @@ class NeumorphicButton extends StatelessWidget {
         boxShadow: ThemeDecoration.neumorphicShadow,
       ),
       child: Button(
+        disabled: disabled,
         backgroundColor: gradient == null ? ThemeColors.backgroundColor : Colors.transparent,
         gradient: gradient,
         text: text,
         textStyle: TextStyle(
-          color: textColor ?? (gradient != null ? Colors.white : ThemeColors.darkGrey),
+          color: textColor ?? (disabled ? ThemeColors.grey : gradient != null ? Colors.white : ThemeColors.darkGrey),
         ),
         width: width,
         onPressed: onPressed,
       ),
+    );
+  }
+
+  static confirm({bool disabled = false, onPressed}) {
+    return NeumorphicButton(
+      text: "Confirm",
+      disabled: disabled,
+      gradient: ThemeColors.blueRingGradient,
+      onPressed: onPressed,
     );
   }
 }
