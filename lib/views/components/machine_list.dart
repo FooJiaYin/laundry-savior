@@ -58,7 +58,7 @@ class _MachineListState extends State<MachineList> {
             const SizedBox(width: 8),
             Text(type.name.capitalizeEach, style: ThemeFont.header()),
             const SizedBox(width: 8),
-            if (state?.status != Status.using) _waitingButton(),
+            state?.status != Status.using ? _waitingButton() : const SizedBox(height: 48),
           ],
         ),
         if (state?.status != Status.using) _floorChipsPanel(),
