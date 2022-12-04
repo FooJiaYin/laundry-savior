@@ -71,6 +71,17 @@ class _MachinePageState extends State<MachinePage> {
     // TODO: Message for dryer machine
     // TODO: i18n strings
 
+    showPaymentDialog() {
+      showDialog(
+        context: context,
+        builder: (context) => PaymentDialog(
+          data,
+          price: _selectedPrice,
+          minutes: _selectedDuration,
+        ),
+      );
+    }
+
     List<Widget> getContents(data) {
       var contents = {
         // TODO: Use multiple machines
@@ -99,28 +110,23 @@ class _MachinePageState extends State<MachinePage> {
                         PriceButton(price: 30, name: "75 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
                       ],
                     )
-                  : Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
+                  : null,
             ),
             const SizedBox(height: 24),
-            if (defaultPaymentMethod != null)
+            if (defaultPaymentMethod != null) ...[
               NeumorphicButton(
                 gradient: ThemeColors.blueRingGradient,
-                text: "Use $defaultPaymentMethod",
+                text: "Pay with $defaultPaymentMethod",
                 onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, minutes: _selectedDuration, machine: data),
               ),
-            if (defaultPaymentMethod != null) const SizedBox(height: 12),
-            NeumorphicButton(
-              gradient: defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
-              text: "Select a payment method",
-              onPressed: () => showDialog(
-                context: context,
-                builder: (context) => PaymentDialog(
-                  data,
-                  price: _selectedPrice,
-                  minutes: _selectedDuration,
-                ),
+              const SizedBox(height: 12),
+              NeumorphicButton(text: "Other payment method", onPressed: showPaymentDialog),
+            ] else
+              NeumorphicButton(
+                gradient: ThemeColors.blueRingGradient,
+                text: "Pay to use",
+                onPressed: showPaymentDialog,
               ),
-            ),
             const SizedBox(height: 24),
             const Text("or Insert Coin into the machine")
           ]
