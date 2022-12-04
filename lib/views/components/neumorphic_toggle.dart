@@ -47,12 +47,12 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedIndex = (_selectedIndex + 1) % widget.optionWidgets.length;
-        });
-        widget.onChanged?.call(_selectedIndex);
-      },
+      // onTap: () {
+      //   setState(() {
+      //     _selectedIndex = (_selectedIndex + 1) % widget.optionWidgets.length;
+      //   });
+      //   widget.onChanged?.call(_selectedIndex);
+      // },
       child: FractionallySizedBox(
         widthFactor: 1.0,
         child: SizedBox(
@@ -96,17 +96,25 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
                       .entries
                       .map(
                         (e) => Expanded(
-                          child: AnimatedDefaultTextStyle(
-                            duration: animationDuration,
-                            style: ThemeFont.title(
-                              color: selectedIndex == e.key
-                                  ? widget.gradient != null
-                                      ? Colors.white
-                                      : ThemeColors.primaryColor
-                                  : ThemeColors.grey,
-                              // fontWeight: selectedIndex == e.key ? FontWeight.bold : FontWeight.normal,
-                            ),
-                            child: e.value,
+                            child: InkWell(
+                          onTap: () => setState(() {
+                            _selectedIndex = e.key;
+                            widget.onChanged?.call(e.key);
+                          }),
+                          child: Expanded(
+                            child: AnimatedDefaultTextStyle(
+                                duration: animationDuration,
+                                style: ThemeFont.title(
+                                  color: selectedIndex == e.key
+                                      ? widget.gradient != null
+                                          ? Colors.white
+                                          : ThemeColors.primaryColor
+                                      : ThemeColors.grey,
+                                  // fontWeight: selectedIndex == e.key ? FontWeight.bold : FontWeight.normal,
+                                ),
+                                child: e.value,
+                              ),
+                          ),
                           ),
                         ),
                       )
