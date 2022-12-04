@@ -189,13 +189,6 @@ class _MachinePageState extends State<MachinePage> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
-          // TODO: Notification
-          if (data != currentMachine)
-            NeumorphicButton(
-              text: "Ping",
-              gradient: ThemeColors.pinkRingGradient,
-              onPressed: () => {},
-            ),
         ],
       };
 
