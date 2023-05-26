@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/global_state.dart';
 import '../../models/machine.dart';
+import '../../services/fake_data.dart';
 import '../../services/notification.dart';
 import '../../theme/theme.dart';
 
@@ -30,6 +31,7 @@ class WaitingSwitch extends StatelessWidget {
           onChanged: (value) {
             if (state.waitingMachine != machineType || state.status != Status.waiting) {
               state.update(status: Status.waiting, waitingMachine: machineType, currentMachine: null);
+              FakeData.updateCurrentMachine(state);
             } else {
               state.update(status: Status.idle);
             }
