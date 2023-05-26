@@ -59,9 +59,7 @@ class _ReminderConfigDialogState extends State<ReminderConfigDialog> {
             onChanged: (value) => _config.remindBefore = value,
           ),
           const Expanded(child: SizedBox(height: 42)),
-          NeumorphicButton(
-            text: "Confirm",
-            textColor: ThemeColors.primaryColor,
+          NeumorphicButton.confirm(
             onPressed: () => {
               widget.onChanged(_config),
               Navigator.of(context).pop(),

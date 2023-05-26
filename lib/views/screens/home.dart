@@ -35,8 +35,9 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           const StatusCard(),
           const SizedBox(height: 40),
-          _floorSelector(context.dormitory, "${context.floor ?? '--'} Floor", context.subscribedFloors != {context.floor}? context.subscribedFloorsString : null),
-          const SizedBox(height: 24),
+          _floorSelector(context.dormitory, "${context.subscribedFloorsString ?? '-- Floor'}", context.subscribedFloors != {context.floor} ? context.subscribedFloorsString : null),
+          // if (_selectingFloors) ..._floorChipsPanel(),
+          const SizedBox(height: 8),
           const MachineList(type: WashingMachine),
           const SizedBox(height: 32),
           const MachineList(type: DryerMachine),

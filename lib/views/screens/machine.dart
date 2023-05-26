@@ -11,6 +11,7 @@ import '../components/exit_alert_dialog.dart';
 import '../components/neumorphic_button.dart';
 import '../components/neumorphic_container.dart';
 import '../components/payment_dialog.dart';
+import '../components/payment_method.dart';
 import '../components/price_button.dart';
 import '../widgets/scaffold_page.dart';
 import '../widgets/shape.dart';
@@ -71,6 +72,17 @@ class _MachinePageState extends State<MachinePage> {
     // TODO: Message for dryer machine
     // TODO: i18n strings
 
+    showPaymentDialog() {
+      showDialog(
+        context: context,
+        builder: (context) => PaymentDialog(
+          data,
+          price: _selectedPrice,
+          minutes: _selectedDuration,
+        ),
+      );
+    }
+
     List<Widget> getContents(data) {
       var contents = {
         // TODO: Use multiple machines
@@ -85,7 +97,7 @@ class _MachinePageState extends State<MachinePage> {
               ),
             ),
             const SizedBox(height: 24),
-            const Text("You are using another machine", textAlign: TextAlign.center),
+            const Text("You are using another machine.", textAlign: TextAlign.center),
           ] else ...[
             Container(
               alignment: Alignment.bottomCenter,
@@ -99,28 +111,37 @@ class _MachinePageState extends State<MachinePage> {
                         PriceButton(price: 30, name: "75 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
                       ],
                     )
-                  : Text("Pay to use", style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey)),
+                  : Text.rich(
+                      textAlign: TextAlign.center,
+                      TextSpan(
+                        text: "NT ",
+                        style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
+                        children: const [
+                          TextSpan(text: "10", style: TextStyle(fontSize: 48)),
+                          TextSpan(text: " (40 min)", style: TextStyle(fontSize: 20)),
+                        ],
+                      ),
+                    ),
             ),
             const SizedBox(height: 24),
-            if (defaultPaymentMethod != null)
+            if (defaultPaymentMethod != null) ...[
+              PaymentMethod(
+                defaultPaymentMethod,
+                onTap: (_) => showPaymentDialog(),
+              ),
+              const SizedBox(height: 12),
               NeumorphicButton(
                 gradient: ThemeColors.blueRingGradient,
-                text: "Use $defaultPaymentMethod",
+                text: "Pay",
                 onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, minutes: _selectedDuration, machine: data),
               ),
-            if (defaultPaymentMethod != null) const SizedBox(height: 12),
-            NeumorphicButton(
-              gradient: defaultPaymentMethod == null ? ThemeColors.blueRingGradient : null,
-              text: "Select a payment method",
-              onPressed: () => showDialog(
-                context: context,
-                builder: (context) => PaymentDialog(
-                  data,
-                  price: _selectedPrice,
-                  minutes: _selectedDuration,
-                ),
+              const SizedBox(height: 12),
+            ] else
+              NeumorphicButton(
+                gradient: ThemeColors.blueRingGradient,
+                text: "Select a payment method",
+                onPressed: showPaymentDialog,
               ),
-            ),
             const SizedBox(height: 24),
             const Text("or Insert Coin into the machine")
           ]
@@ -162,8 +183,8 @@ class _MachinePageState extends State<MachinePage> {
             ),
           ),
           const SizedBox(height: 24),
-          const Text(
-            "You’ll be reminded when the laundry is done.",
+          Text(
+            data.id != currentMachine?.id ? 'This machine is being used by other. Please wait until the laundry is done.' : 'You’ll be reminded when the laundry is done.',
             textAlign: TextAlign.center,
           ),
         ],
@@ -183,13 +204,6 @@ class _MachinePageState extends State<MachinePage> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
-          // TODO: Notification
-          if (data != currentMachine)
-            NeumorphicButton(
-              text: "Ping",
-              gradient: ThemeColors.pinkRingGradient,
-              onPressed: () => {},
-            ),
         ],
       };
 
@@ -220,9 +234,7 @@ class _MachinePageState extends State<MachinePage> {
                   style: ThemeFont.header(fontSize: 24),
                 ),
                 const SizedBox(height: 14),
-                Text(
-                  "${data.floor} Floor${machine.section != null ? ", Area ${data.section}" : ""}",
-                ),
+                Text(data.name),
                 const SizedBox(height: 40),
                 _machinePicture(),
                 const SizedBox(height: 48),

@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 import '../../models/global_state.dart';
 import '../../theme/theme.dart';
 import 'option_item.dart';
 
 class PaymentMethod extends StatelessWidget {
-  const PaymentMethod({
+  const PaymentMethod(
+    this.name, {
     Key? key,
-    required this.name,
+    this.selectedMethod,
     this.onTap,
   }) : super(key: key);
 
   final String name;
   final dynamic onTap;
+  final String? selectedMethod;
 
   @override
   Widget build(BuildContext context) {
-    var isDefault = name == context.select<GlobalState, String>((state) => state.defaultPaymentMethod ?? '');
+    var isDefault = name == (selectedMethod ?? context.defaultPaymentMethod);
     return OptionItem(
       onTap: () => onTap(name),
       child: Text(
@@ -32,9 +35,9 @@ class PaymentMethod extends StatelessWidget {
   }
 }
 
-List<Widget> paymentMethods({Function(String)? onSelect}) => [
-      PaymentMethod(name: "Line Pay", onTap: onSelect),
-      PaymentMethod(name: "Apple Pay", onTap: onSelect),
-      PaymentMethod(name: "JKO Pay", onTap: onSelect),
-      PaymentMethod(name: "Credit Card", onTap: onSelect),
+List<Widget> paymentMethods({Function(String)? onSelect, String? selectedMethod}) => [
+      PaymentMethod("Line Pay", onTap: onSelect, selectedMethod: selectedMethod),
+      if (Platform.isIOS) PaymentMethod("Apple Pay", onTap: onSelect, selectedMethod: selectedMethod),
+      PaymentMethod("JKO Pay", onTap: onSelect, selectedMethod: selectedMethod),
+      PaymentMethod("Credit Card", onTap: onSelect, selectedMethod: selectedMethod),
     ];

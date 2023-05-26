@@ -28,7 +28,7 @@ class CustomTheme with ChangeNotifier {
     scaffoldBackgroundColor: ThemeColors.backgroundColor,
     backgroundColor: ThemeColors.backgroundColor,
     shadowColor: ThemeColors.grey,
-    disabledColor: Colors.grey,
+    disabledColor: ThemeColors.lightGrey,
     textTheme: ThemeFont.textTheme,
     buttonTheme: ButtonThemeData(
       // 4
@@ -87,7 +87,12 @@ class CustomTheme with ChangeNotifier {
     chipTheme: ChipThemeData(
       side: BorderSide.none,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.buttonRadius)),
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+    ),
+    checkboxTheme: CheckboxThemeData(
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      side: const BorderSide(color: ThemeColors.grey, width: 1.5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
     ),
   );
 

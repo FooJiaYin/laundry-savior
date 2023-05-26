@@ -46,56 +46,54 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedIndex = (_selectedIndex + 1) % widget.optionWidgets.length;
-        });
-        widget.onChanged?.call(_selectedIndex);
-      },
-      child: FractionallySizedBox(
-        widthFactor: 1.0,
-        child: SizedBox(
-          height: widget.height,
-          child: Stack(
-            children: [
-              NeumorphicContainer(
-                pressed: true,
-                shadowRotation: 1.4,
-                borderRadius: widget.radius ?? Dimensions.cardRadius,
-                gradient: const LinearGradient(
-                  transform: GradientRotation(1.4),
-                  stops: [0.3, 0.5, 0.7],
-                  colors: [
-                    ThemeColors.grey30,
-                    ThemeColors.backgroundColor,
-                    Colors.white,
-                  ],
-                ),
-                child: const SizedBox.expand(),
+    return FractionallySizedBox(
+      widthFactor: 1.0,
+      child: SizedBox(
+        height: widget.height,
+        child: Stack(
+          children: [
+            NeumorphicContainer(
+              pressed: true,
+              shadowRotation: 1.4,
+              borderRadius: widget.radius ?? Dimensions.cardRadius,
+              gradient: const LinearGradient(
+                transform: GradientRotation(1.4),
+                stops: [0.3, 0.5, 0.7],
+                colors: [
+                  ThemeColors.grey30,
+                  ThemeColors.backgroundColor,
+                  Colors.white,
+                ],
               ),
-              AnimatedAlign(
-                alignment: _alignment(selectedIndex),
-                duration: animationDuration,
-                child: FractionallySizedBox(
-                  widthFactor: 1 / widget.optionWidgets.length,
-                  heightFactor: 1,
-                  child: NeumorphicContainer(
-                    borderRadius: widget.radius ?? Dimensions.cardRadius,
-                    gradient: widget.gradient,
-                    // shadows: ThemeDecoration.circleShadow,
-                    child: const SizedBox.expand(),
-                  ),
+              child: const SizedBox.expand(),
+            ),
+            AnimatedAlign(
+              alignment: _alignment(selectedIndex),
+              duration: animationDuration,
+              child: FractionallySizedBox(
+                widthFactor: 1 / widget.optionWidgets.length,
+                heightFactor: 1,
+                child: NeumorphicContainer(
+                  borderRadius: widget.radius ?? Dimensions.cardRadius,
+                  gradient: widget.gradient,
+                  // shadows: ThemeDecoration.circleShadow,
+                  child: const SizedBox.expand(),
                 ),
               ),
-              SizedBox(
-                height: widget.height,
-                child: Row(
-                  children: widget.optionWidgets
-                      .asMap()
-                      .entries
-                      .map(
-                        (e) => Expanded(
+            ),
+            SizedBox(
+              height: widget.height,
+              child: Row(
+                children: widget.optionWidgets
+                    .asMap()
+                    .entries
+                    .map(
+                      (e) => Expanded(
+                        child: InkWell(
+                          onTap: () => setState(() {
+                            _selectedIndex = e.key;
+                            widget.onChanged?.call(e.key);
+                          }),
                           child: AnimatedDefaultTextStyle(
                             duration: animationDuration,
                             style: ThemeFont.title(
@@ -109,12 +107,12 @@ class _NeumorphicToggleState extends State<NeumorphicToggle> {
                             child: e.value,
                           ),
                         ),
-                      )
-                      .toList(),
-                ),
+                      ),
+                    )
+                    .toList(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

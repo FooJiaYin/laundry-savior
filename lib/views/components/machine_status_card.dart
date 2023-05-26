@@ -14,36 +14,39 @@ class MachineStatusCard extends StatelessWidget {
 
   final Machine data;
 
+  void openMachinePage(context) {
+    if (GlobalState.of(context, listen: false).currentMachine?.status.code != StatusCode.in_use) {
+      GlobalState.set(context, status: Status.pay);
+    }
+    Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => MachinePage(data),
+              ),
+            );
+  }
+
   @override
   Widget build(BuildContext context) {
     return NeumorphicContainer(
       padding: const EdgeInsets.all(16),
       onTap: () => GlobalState.of(context, listen: false).anonymous
           ? showDialog(context: context, builder: (context) => const SelectDormDialog())
-          : Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (context) => MachinePage(data),
-              ),
-            ),
+          : openMachinePage(context),
       child: Column(
         children: [
-          Text(
-            data.locationString,
-            style: ThemeFont.small,
-          ),
+          Text(data.name, style: ThemeFont.small),
           const SizedBox(height: 4),
-          if (data.status.code == StatusCode.in_use)
-            Expanded(
-              child: ProgressRing(
-                value: data.status.durationPassed.inMinutes / data.status.durationEstimated.inMinutes,
-                strokeWidth: 5.5,
-                strokeGradient: ThemeColors.blueRingGradient,
-                child: Text("${data.status.minutesLeft}m"),
-              ),
-            )
-          else
-            SvgPicture.asset('assets/images/home_${data.status.code.name}.svg'),
+          Expanded(
+            child: data.status.code == StatusCode.in_use
+                ? ProgressRing(
+                    value: data.status.durationPassed.inMinutes / data.status.durationEstimated.inMinutes,
+                    strokeWidth: 5.5,
+                    strokeGradient: ThemeColors.blueRingGradient,
+                    child: Text("${data.status.minutesLeft}m"),
+                  )
+                : SvgPicture.asset('assets/images/home_${data.status.code.name}.svg'),
+          ),
           const SizedBox(height: 6),
           Text(
             data.status.code.name.splitUnderScore.capitalizeEach,

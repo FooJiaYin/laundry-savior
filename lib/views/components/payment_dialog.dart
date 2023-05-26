@@ -4,6 +4,7 @@ import '../../models/global_state.dart';
 import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
 import '../screens/machine.dart';
+import 'neumorphic_button.dart';
 import 'payment_method.dart';
 import 'select_dialog.dart';
 
@@ -24,15 +25,21 @@ class PaymentDialog extends StatefulWidget {
 }
 
 class _PaymentDialogState extends State<PaymentDialog> {
-  bool setAsDefault = false;
+  String? selectedMethod;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      selectedMethod = GlobalState.instance.defaultPaymentMethod;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    selectMode(String name) {
-      if (setAsDefault) {
-        GlobalState.set(context, defaultPaymentMethod: name);
-      }
-      FakeData.pay(context, machine: widget.data, minutes: widget.minutes, paymentMethod: name);
+    pay(String selectedMethod) {
+      GlobalState.set(context, defaultPaymentMethod: selectedMethod);
+      FakeData.pay(context, machine: widget.data, minutes: widget.minutes, paymentMethod: selectedMethod);
     }
 
     return SelectDialog(
@@ -59,22 +66,11 @@ class _PaymentDialogState extends State<PaymentDialog> {
           ),
           Text("Select Payment Method", style: ThemeFont.header()),
           const SizedBox(height: 12),
-          ...paymentMethods(onSelect: selectMode),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              // TODO: Neumorphic style checkbox
-              Checkbox(
-                value: setAsDefault,
-                onChanged: (value) {
-                  setState(() {
-                    setAsDefault = value ?? setAsDefault;
-                  });
-                },
-              ),
-              const Text("Set as default"),
-            ],
-          )
+          ...paymentMethods(
+            selectedMethod: selectedMethod,
+            onSelect: pay,
+          ),
+          const SizedBox(height: 8)
         ],
       ),
     );

@@ -44,7 +44,7 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     var button = backgroundColor != null || borderColor == null
         ? ElevatedButton(
-            onPressed: onPressed,
+            onPressed: disabled ? null : onPressed,
             onLongPress: disabled ? onPressed : onLongPress,
             style: ElevatedButton.styleFrom(
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
