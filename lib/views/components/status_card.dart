@@ -73,7 +73,7 @@ class StatusCard extends StatelessWidget {
       title: "Waiting for a ${context.waitingMachine!.name}",
       description: 'We’ll send you ${context.machineAvailable.remindMethod.toLowerCase()} when any ${context.waitingMachine!.name} available on ${context.subscribedFloorsString!}!',
       actionWidget: checkOther ? const ActionText('Check Other Floors', color: ThemeColors.royalBlue) : const ActionText('Cancel Waiting', icon: null),
-      onTap: checkOther? () => context.update(availableOnly: true, subscribedFloors: allFloors)
+      onTap: checkOther? () => context.update(viewIndex: 1, subscribedFloors: allFloors)
         : () => context.update(status: Status.idle),
     );
   }
