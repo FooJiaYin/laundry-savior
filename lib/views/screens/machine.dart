@@ -110,7 +110,17 @@ class _MachinePageState extends State<MachinePage> {
                         PriceButton(price: 30, name: "75 min", onPressed: selectPrice, isSelected: _selectedPrice == 30),
                       ],
                     )
-                  : null,
+                  : Text.rich(
+                      textAlign: TextAlign.center,
+                      TextSpan(
+                        text: "NT ",
+                        style: ThemeFont.header(fontSize: 20, color: ThemeColors.darkGrey),
+                        children: const [
+                          TextSpan(text: "10", style: TextStyle(fontSize: 48)),
+                          TextSpan(text: " (40 min)", style: TextStyle(fontSize: 20)),
+                        ],
+                      ),
+                    ),
             ),
             const SizedBox(height: 24),
             if (defaultPaymentMethod != null) ...[
