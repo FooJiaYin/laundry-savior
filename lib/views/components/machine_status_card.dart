@@ -14,18 +14,23 @@ class MachineStatusCard extends StatelessWidget {
 
   final Machine data;
 
+  void openMachinePage(context) {
+    GlobalState.set(context, status: Status.pay);
+    Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => MachinePage(data),
+              ),
+            );
+  }
+
   @override
   Widget build(BuildContext context) {
     return NeumorphicContainer(
       padding: const EdgeInsets.all(16),
       onTap: () => GlobalState.of(context, listen: false).anonymous
           ? showDialog(context: context, builder: (context) => const SelectDormDialog())
-          : Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (context) => MachinePage(data),
-              ),
-            ),
+          : openMachinePage(context),
       child: Column(
         children: [
           Text(data.name, style: ThemeFont.small),
