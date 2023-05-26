@@ -28,12 +28,8 @@ class MachineStatusCard extends StatelessWidget {
             ),
       child: Column(
         children: [
-          Text(
-            data.locationString,
-            style: ThemeFont.small,
-          ),
+          Text(data.name, style: ThemeFont.small),
           const SizedBox(height: 4),
-          
           Expanded(
             child: data.status.code == StatusCode.in_use
                 ? ProgressRing(

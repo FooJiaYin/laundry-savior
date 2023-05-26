@@ -20,7 +20,8 @@ class Machine with ChangeNotifier {
     required this.status,
   });
 
-  get locationString => "$floor${section ?? ' Floor'}";
+  get locationString => section!= null ? '$floor$section' : 'Floor $floor';
+  get name => "${id+1},$locationString";
 
   Machine copyWith({
     int? id,

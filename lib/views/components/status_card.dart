@@ -96,7 +96,7 @@ class StatusCard extends StatelessWidget {
     );
     return _statusCard(
       title: "${currentMachine!.type == WashingMachine ? 'Washing' : 'Drying'} in progress",
-      description: 'On ${currentMachine.locationString}, ${context.dormitory!.name}',
+      description: '${currentMachine.type.name.capitalizeFirst} ${currentMachine.name}, ${context.dormitory!.name}',
       leading: inUseProgress,
       actionWidget: ActionText(
         '${machineStatus.minutesLeft} min left',
@@ -111,7 +111,7 @@ class StatusCard extends StatelessWidget {
     var currentMachine = context.currentMachine;
     return _statusCard(
       title: "Laundry is done!",
-      description: 'Please collect your laundry ASAP at ${currentMachine!.locationString}, ${context.dormitory!.name}',
+      description: 'Please collect your laundry ASAP at ${currentMachine!.type.name} ${currentMachine.name}',
       leading: SvgPicture.asset("assets/images/stats_overdue.svg"),
       actionWidget: const ActionText('Collect', color: ThemeColors.pink),
       onTap: () => Navigator.pushNamed(context, "/current_machine"),

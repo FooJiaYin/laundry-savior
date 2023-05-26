@@ -219,9 +219,7 @@ class _MachinePageState extends State<MachinePage> {
                   style: ThemeFont.header(fontSize: 24),
                 ),
                 const SizedBox(height: 14),
-                Text(
-                  "${data.floor} Floor${machine.section != null ? ", Area ${data.section}" : ""}",
-                ),
+                Text(data.name),
                 const SizedBox(height: 40),
                 _machinePicture(),
                 const SizedBox(height: 48),

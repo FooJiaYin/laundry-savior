@@ -118,7 +118,7 @@ class NotificationService {
   static void machineMissed(Machine machine) {
     showNotification(
       title: "You just missed it!",
-      body: "${machine.type.name.capitalizeFirst} on ${machine.floor}F is being used by other",
+      body: "${machine.type.name.capitalizeFirst} ${machine.name} is being used by other",
       details: NotificationService.machineAvailableNotificationDetails,
     );
   }
@@ -139,7 +139,7 @@ class NotificationService {
   static void laundryDone(Machine machine, Dormitory dorm) {
     showNotification(
       title: "Laundry is done!",
-      body: "on ${machine.locationString}, ${dorm.name}",
+      body: "${machine.type.name.capitalizeFirst} ${machine.name}, ${dorm.name}",
       payload: "current_machine",
       details: NotificationService.laundryDoneNotificationDetails,
     );
