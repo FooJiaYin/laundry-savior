@@ -87,7 +87,7 @@ class CustomTheme with ChangeNotifier {
     chipTheme: ChipThemeData(
       side: BorderSide.none,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.buttonRadius)),
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
     ),
   );
 
