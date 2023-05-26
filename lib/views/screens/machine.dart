@@ -126,7 +126,7 @@ class _MachinePageState extends State<MachinePage> {
             const SizedBox(height: 24),
             if (defaultPaymentMethod != null) ...[
               PaymentMethod(
-                name: defaultPaymentMethod,
+                defaultPaymentMethod,
                 onTap: (_) => showPaymentDialog(),
               ),
               const SizedBox(height: 12),

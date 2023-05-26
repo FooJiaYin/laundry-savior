@@ -6,9 +6,9 @@ import '../../theme/theme.dart';
 import 'option_item.dart';
 
 class PaymentMethod extends StatelessWidget {
-  const PaymentMethod({
+  const PaymentMethod(
+    this.name, {
     Key? key,
-    required this.name,
     this.selectedMethod,
     this.onTap,
   }) : super(key: key);
@@ -36,8 +36,8 @@ class PaymentMethod extends StatelessWidget {
 }
 
 List<Widget> paymentMethods({Function(String)? onSelect, String? selectedMethod}) => [
-      PaymentMethod(name: "Line Pay", onTap: onSelect, selectedMethod: selectedMethod),
-      if (Platform.isIOS) PaymentMethod(name: "Apple Pay", onTap: onSelect, selectedMethod: selectedMethod),
-      PaymentMethod(name: "JKO Pay", onTap: onSelect, selectedMethod: selectedMethod),
-      PaymentMethod(name: "Credit Card", onTap: onSelect, selectedMethod: selectedMethod),
+      PaymentMethod("Line Pay", onTap: onSelect, selectedMethod: selectedMethod),
+      if (Platform.isIOS) PaymentMethod("Apple Pay", onTap: onSelect, selectedMethod: selectedMethod),
+      PaymentMethod("JKO Pay", onTap: onSelect, selectedMethod: selectedMethod),
+      PaymentMethod("Credit Card", onTap: onSelect, selectedMethod: selectedMethod),
     ];
