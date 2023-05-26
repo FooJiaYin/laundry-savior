@@ -56,8 +56,8 @@ class StatusCard extends StatelessWidget {
   Widget statusCard_busy(BuildContext context) {
     var waitingMachine = context.waitingMachine!;
     return _statusCard(
-      title: "${waitingMachine.name.capitalizeFirst}s on ${context.floor}F are busy.",
-      description: 'Remind when any ${waitingMachine.name} available on ${context.subscribedFloorsString ?? "${context.floor}F"}?',
+      title: "${waitingMachine.name.capitalizeFirst}s on ${context.subscribedFloorsString} are busy.",
+      description: 'Remind when any ${waitingMachine.name} available on ${context.subscribedFloorsString}?',
       actionWidget: const ActionText('Notify me', color: ThemeColors.royalBlue),
       onTap: () {
         // if (state.subscribedFloors.isEmpty) state.subscribedFloors.add(state.config.floor!);
@@ -67,18 +67,14 @@ class StatusCard extends StatelessWidget {
   }
 
   Widget statusCard_waiting(BuildContext context) {
-    var viewIndex = context.viewIndex;
+    var checkOther = context.subscribedFloors.length <= 1;
+    var allFloors = context.dormitory!.floors.toSet();
     return _statusCard(
       title: "Waiting for a ${context.waitingMachine!.name}",
       description: 'We’ll send you ${context.machineAvailable.remindMethod.toLowerCase()} when any ${context.waitingMachine!.name} available on ${context.subscribedFloorsString!}!',
-      actionWidget: viewIndex == 0 ? const ActionText('Check Other Floors', color: ThemeColors.royalBlue) : const ActionText('Cancel Waiting', icon: null),
-      onTap: () {
-        if (viewIndex == 0) {
-          context.update(viewIndex: 1);
-        } else {
-          context.update(status: Status.idle);
-        }
-      },
+      actionWidget: checkOther ? const ActionText('Check Other Floors', color: ThemeColors.royalBlue) : const ActionText('Cancel Waiting', icon: null),
+      onTap: checkOther? () => context.update(availableOnly: true, subscribedFloors: allFloors)
+        : () => context.update(status: Status.idle),
     );
   }
 

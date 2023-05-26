@@ -47,7 +47,7 @@ class _MachineListState extends State<MachineList> {
   @override
   Widget build(BuildContext context) {
     state = GlobalState.of(context);
-    floorFilter(machine) => state?.viewIndex == 0 ? machine.floor == state?.floor : machine.status.code == StatusCode.available;
+    floorFilter(machine) => state?.viewIndex == 0 ? state!.subscribedFloors.contains(machine.floor) : machine.status.code == StatusCode.available;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,15 +61,15 @@ class _MachineListState extends State<MachineList> {
             state?.status != Status.using ? _waitingButton() : const SizedBox(height: 48),
           ],
         ),
-        if (state?.status != Status.using) _floorChipsPanel(),
+        _floorChipsPanel(),
         const SizedBox(height: 8),
         ProxyProvider<GlobalState, List<Machine>>(
-          update: (_, state, __) => state.floor != null ? machines.where(floorFilter).toList() : [],
+          update: (_, state, __) => state.floor != null ? machines.where(floorFilter).toList().sortByNearestFloor(state.floor ?? 0) : [],
           child: Builder(
             builder: (context) => GridView.count(
               clipBehavior: Clip.none,
               crossAxisCount: 3,
-              crossAxisSpacing: 24,
+              crossAxisSpacing: 20,
               mainAxisSpacing: 24,
               childAspectRatio: 0.65,
               primary: true,
@@ -108,65 +108,51 @@ class _MachineListState extends State<MachineList> {
         ),
       );
 
-  Widget _floorChipsPanel() => InkWell(
-        onTap: () => setState(() {
-          selectFloors = false;
-        }),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 100),
-          height: selectFloors ? null : 0,
-          child: Wrap(
-            clipBehavior: Clip.hardEdge,
-            spacing: 4,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              /// Select All or Clear
-              state!.subscribedFloors.length >= floors.length ? _clearAllButton : _selectAllButton,
+  Widget _floorChipsPanel() => AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        height: selectFloors ? null : 0,
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Wrap(
+          clipBehavior: Clip.hardEdge,
+          spacing: 8,
+          runSpacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            /// Select All or Clear
+            state!.subscribedFloors.length >= floors.length ? _clearAllButton : _selectAllButton,
 
-              /// Floor chips
-              ...floors.map(floorChip).toList(),
-              // Icon(Icons.keyboard_arrow_up_rounded)
-              // Text("Close", style: ThemeFont.small)
-            ],
-          ),
+            /// Floor chips
+            ...floors.map(floorChip).toList(),
+          ],
         ),
       );
 
   Widget get _selectAllButton => NeumorphicChip(
         "All",
-        icon: "bell_outlined",
         onSelected: (_) => setState(() {
-          GlobalState.set(context, subscribedFloors: floors.toSet(), status: Status.waiting);
+          GlobalState.set(context, subscribedFloors: floors.toSet());
         }),
       );
 
   Widget get _clearAllButton => NeumorphicChip(
         "Reset",
         onSelected: (_) => setState(() {
-          GlobalState.set(context, subscribedFloors: {state!.floor!}, status: Status.idle);
+          GlobalState.set(context, subscribedFloors: {state!.floor!});
         }),
       );
 
   Widget floorChip(int floor) => NeumorphicChip(
         "${floor}F",
-        icon: "bell_outlined",
-        isSelected: state?.status == Status.waiting && subscribedFloors.contains(floor),
+        isSelected: subscribedFloors.contains(floor),
         onSelected: (isSelected) => setState(() {
           if (isSelected) {
-            if (state?.status == Status.waiting) {
-              subscribedFloors.add(floor);
-            } else {
-              state?.subscribedFloors = {floor};
-            }
-            GlobalState.set(context, status: Status.waiting);
+            subscribedFloors.add(floor);
           } else {
             subscribedFloors.remove(floor);
-            GlobalState.set(
-              context,
-              status: subscribedFloors.isEmpty ? Status.idle : null,
-              subscribedFloors: subscribedFloors.isEmpty ? {state!.floor!} : subscribedFloors,
-            );
+            if (subscribedFloors.isEmpty) subscribedFloors.add(state!.floor!);
           }
+          GlobalState.set(context, currentMachine: null);
+          FakeData.updateCurrentMachine(GlobalState.instance);
         }),
       );
 }
