@@ -7,7 +7,7 @@ import '../../services/fake_data.dart';
 import '../../theme/theme.dart';
 import '../../utils/string.dart';
 import 'machine_status_card.dart';
-import 'select_chip.dart';
+import 'neumorphic_container.dart';
 import 'waiting_switch.dart';
 
 class MachineList extends StatefulWidget {
@@ -132,23 +132,23 @@ class _MachineListState extends State<MachineList> {
         ),
       );
 
-  Widget get _selectAllButton => SelectChip(
-        label: " All",
+  Widget get _selectAllButton => NeumorphicChip(
+        "All",
         icon: "bell_outlined",
         onSelected: (_) => setState(() {
           GlobalState.set(context, subscribedFloors: floors.toSet(), status: Status.waiting);
         }),
       );
 
-  Widget get _clearAllButton => SelectChip(
-        label: " Clear",
+  Widget get _clearAllButton => NeumorphicChip(
+        "Reset",
         onSelected: (_) => setState(() {
           GlobalState.set(context, subscribedFloors: {state!.floor!}, status: Status.idle);
         }),
       );
 
-  SelectChip floorChip(int floor) => SelectChip(
-        label: " ${floor}F",
+  Widget floorChip(int floor) => NeumorphicChip(
+        "${floor}F",
         icon: "bell_outlined",
         isSelected: state?.status == Status.waiting && subscribedFloors.contains(floor),
         onSelected: (isSelected) => setState(() {
@@ -170,3 +170,14 @@ class _MachineListState extends State<MachineList> {
         }),
       );
 }
+
+Widget NeumorphicChip(String label, {bool isSelected = false, double? fontSize = 12, EdgeInsets padding = const EdgeInsets.symmetric(vertical: 6, horizontal: 12), onSelected}) => NeumorphicContainer(
+      width: null,
+      borderRadius: 40.0,
+      padding: padding,
+      shadows: ThemeDecoration.circleShadow,
+      backgroundColor: isSelected ? ThemeColors.backgroundColor : ThemeColors.lightGrey,
+      gradient: isSelected ? ThemeColors.blueRingGradient : null,
+      onTap: () => onSelected(!isSelected),
+      child: Text(label, style: ThemeFont.style(color: isSelected ? Colors.white : null, fontSize: fontSize)),
+    );
