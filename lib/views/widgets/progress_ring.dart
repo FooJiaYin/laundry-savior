@@ -44,14 +44,17 @@ class ProgressRing extends StatelessWidget {
               ),
             ),
             // Progress (empty)
-            SizedBox(
-              width: _size * 2 / 3,
-              height: _size * 2 / 3,
-              child: CircularProgressIndicator(
-                value: 1 - value,
-                strokeWidth: _size / 3 + 1,
-                backgroundColor: Colors.transparent,
-                color: ThemeColors.lightGrey,
+            Transform.scale(
+              scaleX: -1,
+              child: SizedBox(
+                width: _size * 2 / 3,
+                height: _size * 2 / 3,
+                child: CircularProgressIndicator(
+                  value: 1 - value,
+                  strokeWidth: _size / 3 + 1,
+                  backgroundColor: Colors.transparent,
+                  color: ThemeColors.lightGrey,
+                ),
               ),
             ),
             // Inner space
