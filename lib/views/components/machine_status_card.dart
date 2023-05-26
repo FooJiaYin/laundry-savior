@@ -15,7 +15,9 @@ class MachineStatusCard extends StatelessWidget {
   final Machine data;
 
   void openMachinePage(context) {
-    GlobalState.set(context, status: Status.pay);
+    if (GlobalState.of(context, listen: false).currentMachine?.status.code != StatusCode.in_use) {
+      GlobalState.set(context, status: Status.pay);
+    }
     Navigator.push(
               context,
               MaterialPageRoute<void>(
