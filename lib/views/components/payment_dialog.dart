@@ -79,7 +79,6 @@ class _PaymentDialogState extends State<PaymentDialog> {
           const SizedBox(height: 8),
           Row(
             children: [
-              // TODO: Neumorphic style checkbox
               Checkbox(
                 value: setAsDefault,
                 onChanged: (value) {
