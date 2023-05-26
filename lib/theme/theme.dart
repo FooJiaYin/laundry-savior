@@ -93,7 +93,7 @@ class CustomTheme with ChangeNotifier {
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       side: const BorderSide(color: ThemeColors.grey, width: 1.5),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-    )
+    ),
   );
 
   static ThemeData darkTheme = ThemeData.dark();
