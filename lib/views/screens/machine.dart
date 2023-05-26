@@ -97,7 +97,7 @@ class _MachinePageState extends State<MachinePage> {
               ),
             ),
             const SizedBox(height: 24),
-            const Text("You are using another machine", textAlign: TextAlign.center),
+            const Text("You are using another machine.", textAlign: TextAlign.center),
           ] else ...[
             Container(
               alignment: Alignment.bottomCenter,
@@ -183,8 +183,8 @@ class _MachinePageState extends State<MachinePage> {
             ),
           ),
           const SizedBox(height: 24),
-          const Text(
-            "You’ll be reminded when the laundry is done.",
+          Text(
+            data.id != currentMachine?.id ? 'This machine is being used by other. Please wait until the laundry is done.' : 'You’ll be reminded when the laundry is done.',
             textAlign: TextAlign.center,
           ),
         ],
