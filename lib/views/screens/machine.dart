@@ -11,6 +11,7 @@ import '../components/exit_alert_dialog.dart';
 import '../components/neumorphic_button.dart';
 import '../components/neumorphic_container.dart';
 import '../components/payment_dialog.dart';
+import '../components/payment_method.dart';
 import '../components/price_button.dart';
 import '../widgets/scaffold_page.dart';
 import '../widgets/shape.dart';
@@ -124,17 +125,21 @@ class _MachinePageState extends State<MachinePage> {
             ),
             const SizedBox(height: 24),
             if (defaultPaymentMethod != null) ...[
+              PaymentMethod(
+                name: defaultPaymentMethod,
+                onTap: (_) => showPaymentDialog(),
+              ),
+              const SizedBox(height: 12),
               NeumorphicButton(
                 gradient: ThemeColors.blueRingGradient,
-                text: "Pay with $defaultPaymentMethod",
+                text: "Pay",
                 onPressed: () => FakeData.pay(context, paymentMethod: defaultPaymentMethod, minutes: _selectedDuration, machine: data),
               ),
               const SizedBox(height: 12),
-              NeumorphicButton(text: "Other payment method", onPressed: showPaymentDialog),
             ] else
               NeumorphicButton(
                 gradient: ThemeColors.blueRingGradient,
-                text: "Pay to use",
+                text: "Select a payment method",
                 onPressed: showPaymentDialog,
               ),
             const SizedBox(height: 24),
